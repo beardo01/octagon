@@ -1,1 +1,1 @@
-# octagon
+# Octagon - Timeline based, event reminder app.

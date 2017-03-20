@@ -42,10 +42,9 @@ TimelineItem::TimelineItem(int type, string description, time_t start, time_t en
 	type(type),
 	description(description),
 	start(start),
-	end(end){
-		linked_int = NULL;
-		linked_items = NULL;
-}
+	end(end),
+	link_int(linked_int),
+	linked_items(linked_items){}
 
 // Getters
 int TimelineItem::getID(){

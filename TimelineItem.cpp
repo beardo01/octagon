@@ -20,7 +20,7 @@ class TimelineItem {
 	public:
 
 		// Constructor
-		TimelineItem(int, string);
+		TimelineItem(int, string, time_t, time_t, unsigned int, unsigned int);
 
 		// Getters
 		int getID();
@@ -38,11 +38,13 @@ class TimelineItem {
 };
 
 // Constructor
-TimelineItem::TimelineItem(int type, string description):
+TimelineItem::TimelineItem(int type, string description, time_t start, time_t end, unsigned int linked_int = NULL, unsigned int linked_items = NULL):
 	type(type),
-	description(description){
-		start = time(0);
-		end = time(0);
+	description(description),
+	start(start),
+	end(end){
+		linked_int = NULL;
+		linked_items = NULL;
 }
 
 // Getters

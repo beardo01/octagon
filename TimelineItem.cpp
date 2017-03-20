@@ -13,8 +13,8 @@ class TimelineItem {
         time_t start;
         time_t end;
         string description;
-        unsigned int linked_int
-        unsigned int linked_items
+        unsigned int linked;
+        unsigned int linked_items;
 
     // Timeline Item methods
     public:
@@ -23,7 +23,7 @@ class TimelineItem {
         TimelineItem(int, string, time_t, time_t, unsigned int, unsigned int);
 
         // Getters
-        int getID();
+        int getID(); //Death to
         int getTimelineID();
         short int getType();
         time_t getStartTime();
@@ -39,14 +39,16 @@ class TimelineItem {
 
 // Constructor
 TimelineItem::TimelineItem(int type, string description, time_t start, 
-    time_t end, unsigned int linked_int = NULL, 
-    unsigned int linked_items = NULL):
+    time_t end, unsigned int *linked = nullptr, 
+    unsigned int *linked_items = nullptr):
     type(type),
     description(description),
     start(start),
     end(end),
-    link_int(linked_int),
-    linked_items(linked_items){}
+    linked(linked),
+    linked_items(linked_items) { 
+
+    }
 
 // Getters
 int TimelineItem::getID(){
@@ -79,7 +81,7 @@ void TimelineItem::setType(short int type){
 }
 
 void TimelineItem::setStartTime(time_t start){
-    this->start = start
+    this->start = start;
 }
 
 void TimelineItem::setEndTime(time_t end){

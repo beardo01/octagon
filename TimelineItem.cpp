@@ -20,7 +20,7 @@ class TimelineItem {
 	public:
 
 		// Constructor
-		TimelineItem();
+		TimelineItem(int, string);
 
 		// Getters
 		int getID();
@@ -36,3 +36,53 @@ class TimelineItem {
 		void setEndTime(time_t);
 		void setDescrition(string);
 };
+
+// Constructor
+TimelineItem::TimelineItem(int type, string description):
+	type(type),
+	description(description){
+		start = time(0);
+		end = time(0);
+}
+
+// Getters
+int TimelineItem::getID(){
+	return id;
+}
+
+int TimelineItem::getTimelineID(){
+	return timeline_id;
+}
+
+short int TimelineItem::getType(){
+	return type;
+}
+
+time_t TimelineItem::getStartTime(){
+	return start;
+}
+
+time_t TimelineItem::getEndTime(){
+	return end;
+}
+
+string TimelineItem::getDescription(){
+	return description;
+}
+
+// Setters
+void TimelineItem::setType(short int type){
+	this->type = type;
+}
+
+void TimelineItem::setStartTime(time_t start){
+	this->start = start
+}
+
+void TimelineItem::setEndTime(time_t end){
+	this->end = end;
+}
+
+void TimelineItem::setDescrition(string description){
+	this->description = description;
+}

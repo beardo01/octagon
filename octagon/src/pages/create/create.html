@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Create</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label>Type</ion-label>
+      <ion-select [(ngModel)]="types">
+        <ion-option value="meeting">Meeting</ion-option>
+        <ion-option value="event">Event</ion-option>
+        <ion-option value="assignment">Assignment</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-input placeholder="Location"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>Start Date</ion-label>
+      <ion-datetime displayFormat="MMMM DD YYYY" [(ngModel)]="event.dateStarts"></ion-datetime>
+    </ion-item>
+
+     <ion-item>
+      <ion-label>End Date</ion-label>
+      <ion-datetime displayFormat="MMMM DD YYYY" [(ngModel)]="event.dateEnds"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Start Time</ion-label>
+      <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeStarts"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>End Time</ion-label>
+      <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="event.timeEnds"></ion-datetime>
+    </ion-item>
+
+    <button ion-item>
+      <ion-label>Repeat</ion-label>
+      <ion-note item-right>Never</ion-note>
+    </button>
+</ion-list>
+
+<ion-list>
+    <ion-item>
+      <ion-textarea placeholder="Enter a description"></ion-textarea>
+    </ion-item>
+  </ion-list>
+</ion-content>

@@ -1,6 +1,7 @@
+
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title><ion-datetime displayFormat="DDDD D MMMM" [(ngModel)]="title.day"></ion-datetime></ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="createPage()">
         <ion-icon name="add-circle"></ion-icon>

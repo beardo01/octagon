@@ -24,7 +24,7 @@ class TimelineItem {
         TimelineItem(int, string, string, time_t, time_t, unsigned int, unsigned int);
 
         // Getters
-        int getID(); //Death to
+        int getID();
         int getTimelineID();
         short int getType();
         time_t getStartTime();

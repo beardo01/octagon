@@ -5,6 +5,9 @@
 // ODB database include
 #include <odb/core.hxx>
 
+// String declaration for ODB persistence
+#prgma db value(std::string) type("VARCHAR(128)")
+
 using namespace std;
 
 #pragma db object
@@ -21,13 +24,13 @@ class User {
 		#pragma db id auto
 		unsigned long id;
 
-		string name;
-		string email;
-		string password;
+		std::string name;
+		std::string email;
+		std::string password;
 		int timeline;
 		time_t create_date;
 		short int activated;
-		string last_ip;
+		std::string last_ip;
 		unsigned int meetings;
 		unsigned int events;
 		unsigned int assignments;

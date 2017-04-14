@@ -1,13 +1,26 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+
+// ODB database include
+#include <odb/core.hxx>
+
 using namespace std;
 
+#pragma db object
 class User {
 
 	// User data fields
 	private:
-		int id;
+
+		// Default constructor for ODB
+		User () {}
+		
+		friend class odb::access;
+
+		#pragma db id auto
+		unsigned long id;
+
 		string name;
 		string email;
 		string password;
@@ -25,7 +38,7 @@ class User {
 		User(string, string, string, string);
 
 		// Getters
-		int getID();
+		unsigned long getID();
 		string getName();
 		string getEmail();
 		string getPassword();
@@ -63,7 +76,7 @@ User::User(string name, string email, string password, string ip):
 }
 
 // Getters
-int User::getID() {
+unsigned long User::getID() {
 	return id;
 }
 

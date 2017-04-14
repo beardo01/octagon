@@ -1,20 +1,36 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+
+// ODB database include
+#include <odb/core.hxx>
+
+// String declaration for ODB persistence
+#prgma db value(std::string) type("VARCHAR(128)")
+
 using namespace std;
 
+#pragma db object
 class User {
 
 	// User data fields
 	private:
-		int id;
-		string name;
-		string email;
-		string password;
+
+		// Default constructor for ODB
+		User () {}
+		
+		friend class odb::access;
+
+		#pragma db id auto
+		unsigned long id;
+
+		std::string name;
+		std::string email;
+		std::string password;
 		int timeline;
 		time_t create_date;
 		short int activated;
-		string last_ip;
+		std::string last_ip;
 		unsigned int meetings;
 		unsigned int events;
 		unsigned int assignments;
@@ -25,7 +41,7 @@ class User {
 		User(string, string, string, string);
 
 		// Getters
-		int getID();
+		unsigned long getID();
 		string getName();
 		string getEmail();
 		string getPassword();
@@ -63,7 +79,7 @@ User::User(string name, string email, string password, string ip):
 }
 
 // Getters
-int User::getID() {
+unsigned long User::getID() {
 	return id;
 }
 

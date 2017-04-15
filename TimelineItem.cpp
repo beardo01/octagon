@@ -13,6 +13,7 @@ class TimelineItem {
         time_t start;
         time_t end;
         string description;
+        string location;
         unsigned int linked;
         unsigned int linked_items;
 
@@ -20,29 +21,36 @@ class TimelineItem {
     public:
 
         // Constructor
-        TimelineItem(int, string, time_t, time_t, unsigned int, unsigned int);
+        TimelineItem(int, string, string, time_t, time_t, unsigned int, unsigned int);
 
         // Getters
-        int getID(); //Death to
+        int getID();
         int getTimelineID();
         short int getType();
         time_t getStartTime();
         time_t getEndTime();
         string getDescription();
+        string getLocation();
+        unsigned int getLinked();
+        unsigned int getLinkedItems();
+
 
         // Setters
         void setType(short int);
         void setStartTime(time_t);
         void setEndTime(time_t);
         void setDescrition(string);
+        void setLinked(unsigned int);
+        void setLinkedItems(unsigned int);
+        void setLocation(string);
 };
 
 // Constructor
-TimelineItem::TimelineItem(int type, string description, time_t start, 
-    time_t end, unsigned int *linked = nullptr, 
-    unsigned int *linked_items = nullptr):
+TimelineItem::TimelineItem(int type, string description, string location, 
+    time_t start, time_t end, unsigned int linked, unsigned int linked_items):
     type(type),
     description(description),
+    location(location),
     start(start),
     end(end),
     linked(linked),
@@ -75,6 +83,17 @@ string TimelineItem::getDescription(){
     return description;
 }
 
+string TimelineItem::getLocation(){
+    return location;
+}
+
+unsigned int TimelineItem::getLinked(){
+    return linked;
+}
+unsigned int TimelineItem::getLinkedItems(){
+    return linked_items;
+}
+
 // Setters
 void TimelineItem::setType(short int type){
     this->type = type;
@@ -90,4 +109,36 @@ void TimelineItem::setEndTime(time_t end){
 
 void TimelineItem::setDescrition(string description){
     this->description = description;
+}
+
+void TimelineItem::setLocation(string location){
+    this->location = location;
+}
+
+void TimelineItem::setLinked(unsigned int linked){
+    this->linked = linked;
+}
+
+void TimelineItem::setLinkedItems(unsigned int linked_items){
+    this->linked_items = linked_items;
+}
+
+
+
+
+
+int main() {
+
+    //Testing code
+    TimelineItem item(1,"A Test Item","Lab A",time(0),time(0),-1,-1);
+
+    cout << item.getID() << endl;
+    cout << item.getTimelineID() << endl;
+    cout << item.getType() << endl;
+    cout << item.getStartTime() << endl;
+    cout << item.getEndTime() << endl;
+    cout << item.getDescription() << endl;
+    cout << item.getLocation() << endl;
+    cout << item.getLinked() << endl;
+    cout << item.getLinkedItems() << endl;
 }

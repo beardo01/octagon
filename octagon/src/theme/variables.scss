@@ -12,7 +12,19 @@ $font-path: "../assets/fonts";
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 $tabs-background: (
-  rgba(255, 255, 255, 0.3),
+  rgba(255, 255, 255, 0.3)
+);
+
+$toolbar-background: (
+  transparent
+);
+
+$text-color: (
+  #E7E7E7
+);
+
+$list-background-color: (
+  rgba(255, 255, 255, 0.3)
 );
 
 // Named Color Variables
@@ -38,7 +50,11 @@ $colors: (
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
+$toolbar-ios-border-color: (
+  transparent
+);
 
+$tabs-ios-tab-color-inactive: white;
 
 
 // App Material Design Variables

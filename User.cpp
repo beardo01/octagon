@@ -6,7 +6,7 @@
 #include <odb/core.hxx>
 
 // String declaration for ODB persistence
-#prgma db value(std::string) type("VARCHAR(128)")
+#pragma db value(std::string) type("VARCHAR(128)")
 
 using namespace std;
 

@@ -22,18 +22,18 @@ class User {
 		friend class odb::access;
 
 		#pragma db id auto
-		unsigned long id;
+		unsigned long id_;
 
-		std::string name;
-		std::string email;
-		std::string password;
-		int timeline;
-		time_t create_date;
-		short int activated;
-		std::string last_ip;
-		unsigned int meetings;
-		unsigned int events;
-		unsigned int assignments;
+		std::string name_;
+		std::string email_;
+		std::string password_;
+		int timeline_;
+		time_t create_date_;
+		short int activated_;
+		std::string last_ip_;
+		unsigned int meetings_;
+		unsigned int events_;
+		unsigned int assignments_;
 
 	// User methods
 	public:
@@ -69,99 +69,99 @@ class User {
 
 // User contrsuctor
 User::User(string name, string email, string password, string ip): 
-	name(name), 
-	email(email), 
-	password(password), 
-	last_ip(ip) {
-	create_date = time(0);
-	timeline = 1;
-	activated, meetings, events, assignments = 0;
+	name_(name), 
+	email_(email), 
+	password_(password), 
+	last_ip_(ip) {
+	create_date_ = time(0);
+	timeline_ = 1;
+	activated_, meetings_, events_, assignments_ = 0;
 }
 
 // Getters
 unsigned long User::getID() {
-	return id;
+	return id_;
 }
 
 string User::getName() {
-	return name;
+	return name_;
 }
 
 string User::getEmail() {
-	return email;
+	return email_;
 }
 
 string User::getPassword() {
-	return password;
+	return password_;
 }
 
 int User::getTimeline() {
-	return timeline;
+	return timeline_;
 }
 
 time_t User::getCreate() {
-	return create_date;
+	return create_date_;
 }
 
 short int User::getActivated() {
-	return activated;
+	return activated_;
 }
 
 string User::getLastIP() {
-	return last_ip;
+	return last_ip_;
 }
 
 unsigned int User::getMeetings() {
-	return meetings;
+	return meetings_;
 }
 
 unsigned int User::getEvents() {
-	return events;
+	return events_;
 }
 
 unsigned int User::getAssignments() {
-	return assignments;
+	return assignments_;
 }
 
 // Setters
 void User::setName(string name) {
-	this->name = name;
+	this->name_ = name;
 }
 
 void User::setEmail(string email) {
-	this->email = email;
+	this->email_ = email;
 }
 
 void User::setPassword(string password) {
-	this->password = password;
+	this->password_ = password;
 }
 
 void User::setTimeline(int timeline) {
-	this->timeline = timeline;
+	this->timeline_ = timeline;
 }
 
 void User::setCreate(time_t create) {
-	this->create_date = create;
+	this->create_date_ = create;
 }
 
 void User::setActivated(short int activated) {
-	this->activated = activated;
+	this->activated_ = activated;
 }
 
 void User::setLastIP(string ip) {
-	this->last_ip = ip;
+	this->last_ip_ = ip;
 }
 
 void User::setMeetings(unsigned int meetings) {
-	this->meetings = meetings;
+	this->meetings_ = meetings;
 }
 
 void User::setEvents(unsigned int events) {
-	this->events = events;
+	this->events_ = events;
 }
 
 void User::setAssignments(unsigned int assignments) {
-	this->assignments = assignments;
+	this->assignments_ = assignments;
 }
 
 int main() {

@@ -7,15 +7,15 @@ class TimelineItem {
     
     // Timeline Item data fields
     private:
-        int id;
-        int timeline_id;
-        short int type;
-        time_t start;
-        time_t end;
-        string description;
-        string location;
-        unsigned int linked;
-        unsigned int linked_items;
+        int id_;
+        int timeline_id_;
+        short int type_;
+        time_t start_;
+        time_t end_;
+        string description_;
+        string location_;
+        unsigned int linked_;
+        unsigned int linked_items_;
 
     // Timeline Item methods
     public:
@@ -48,79 +48,79 @@ class TimelineItem {
 // Constructor
 TimelineItem::TimelineItem(int type, string description, string location, 
     time_t start, time_t end, unsigned int linked, unsigned int linked_items):
-    type(type),
-    description(description),
-    location(location),
-    start(start),
-    end(end),
-    linked(linked),
-    linked_items(linked_items) { 
+    type_(type),
+    description_(description),
+    location_(location),
+    start_(start),
+    end_(end),
+    linked_(linked),
+    linked_items_(linked_items) { 
 
     }
 
 // Getters
 int TimelineItem::getID(){
-    return id;
+    return id_;
 }
 
 int TimelineItem::getTimelineID(){
-    return timeline_id;
+    return timeline_id_;
 }
 
 short int TimelineItem::getType(){
-    return type;
+    return type_;
 }
 
 time_t TimelineItem::getStartTime(){
-    return start;
+    return start_;
 }
 
 time_t TimelineItem::getEndTime(){
-    return end;
+    return end_;
 }
 
 string TimelineItem::getDescription(){
-    return description;
+    return description_;
 }
 
 string TimelineItem::getLocation(){
-    return location;
+    return location_;
 }
 
 unsigned int TimelineItem::getLinked(){
-    return linked;
+    return linked_;
 }
 unsigned int TimelineItem::getLinkedItems(){
-    return linked_items;
+    return linked_items_;
 }
 
 // Setters
 void TimelineItem::setType(short int type){
-    this->type = type;
+    this->type_ = type;
 }
 
 void TimelineItem::setStartTime(time_t start){
-    this->start = start;
+    this->start_ = start;
 }
 
 void TimelineItem::setEndTime(time_t end){
-    this->end = end;
+    this->end_ = end;
 }
 
 void TimelineItem::setDescrition(string description){
-    this->description = description;
+    this->description_ = description;
 }
 
 void TimelineItem::setLocation(string location){
-    this->location = location;
+    this->location_ = location;
 }
 
 void TimelineItem::setLinked(unsigned int linked){
-    this->linked = linked;
+    this->linked_ = linked;
 }
 
 void TimelineItem::setLinkedItems(unsigned int linked_items){
-    this->linked_items = linked_items;
+    this->linked_items_ = linked_items;
 }
 
 

@@ -15,7 +15,6 @@ class User {
 
 	// User data fields
 	private:
-
 		// Default constructor for ODB
 		User () {}
 		
@@ -24,13 +23,13 @@ class User {
 		#pragma db id auto
 		unsigned long id_;
 
-		std::string name_;
-		std::string email_;
-		std::string password_;
+		string name_;
+		string email_;
+		string password_;
 		int timeline_;
 		time_t create_date_;
 		short int activated_;
-		std::string last_ip_;
+		string last_ip_;
 		unsigned int meetings_;
 		unsigned int events_;
 		unsigned int assignments_;

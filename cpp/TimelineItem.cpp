@@ -3,14 +3,28 @@
 #include <ctime>
 #include <vector>
 
+// ODB database include
+#include <odb/core.hxx>
+
+// String declaration for ODB persistence
+#pragma db value(std::string) type("VARCHAR(128)")
+
 using namespace std;
 
+#pragma db object
 class TimelineItem {
     
     // Timeline Item data fields
     private:
-        int id_;
-        int timeline_id_;
+        // Default constructor for ODB
+        TimelineItem() {}
+
+        friend class odb::access;
+
+        #pragma db id auto
+        unsigned long id_;
+
+        unsigned long timeline_id_;
         short int type_;
         time_t start_;
         time_t end_;
@@ -23,11 +37,11 @@ class TimelineItem {
     public:
 
         // Constructor
-        TimelineItem(int, string, string, time_t, time_t, vector<int>, vector<int>);
+        TimelineItem(unsigned long, int, string, string, time_t, time_t, vector<int>, vector<int>);
 
         // Getters
-        int getID();
-        int getTimelineID();
+        unsigned long getID();
+        unsigned long getTimelineID();
         short int getType();
         time_t getStartTime();
         time_t getEndTime();
@@ -48,24 +62,23 @@ class TimelineItem {
 };
 
 // Constructor
-TimelineItem::TimelineItem(int type, string description, string location, 
-    time_t start, time_t end, vector<int> linked, vector<int> linked_items):
+TimelineItem::TimelineItem(unsigned long timeline_id, int type, string description, 
+    string location, time_t start, time_t end, vector<int> linked, vector<int> linked_items):
+    timeline_id_(timeline_id),
     type_(type),
     description_(description),
     location_(location),
     start_(start),
     end_(end),
     linked_(linked),
-    linked_items_(linked_items) { 
-
-    }
+    linked_items_(linked_items) {}
 
 // Getters
-int TimelineItem::getID(){
+unsigned long TimelineItem::getID(){
     return id_;
 }
 
-int TimelineItem::getTimelineID(){
+unsigned long TimelineItem::getTimelineID(){
     return timeline_id_;
 }
 
@@ -135,7 +148,7 @@ int main() {
     linked.push_back(-1);
     linked.push_back(10);
     vector<int> linked_items;
-    TimelineItem item(1,"A Test Item","Lab A",time(0),time(0), linked, linked_items);
+    TimelineItem item(1, 1,"A Test Item","Lab A",time(0),time(0), linked, linked_items);
 
     cout << item.getID() << endl;
     cout << item.getTimelineID() << endl;

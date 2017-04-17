@@ -3,13 +3,27 @@
 #include <ctime>
 #include <vector>
 
+// ODB database include
+#include <odb/core.hxx>
+
+// String declaration for ODB persistence
+#pragma db value(std::string) type("VARCHAR(128)")
+
 using namespace std;
 
+#pragma db object
 class Timeline {
 
     private:
-        int id_;
-        int user_id_;
+        // Default constructor for ODB
+        Timeline() {}
+
+        friend class odb::access;
+
+        #pragma db id auto
+        unsigned long id_;
+
+        unsigned long user_id_;
         vector<int> timeline_items_;
         string event_colour_;
         string meeting_colour_;
@@ -18,11 +32,11 @@ class Timeline {
     public:
 
         // Constructor
-        Timeline(int, vector<int>, string, string, string);
+        Timeline(unsigned long, vector<int>, string, string, string);
 
         // Getters
-        int getID();
-        int getUserID();
+        unsigned long getID();
+        unsigned long getUserID();
         vector<int> getTimelineItems();
         string getEventColour();
         string getMeetingColour();
@@ -43,7 +57,7 @@ class Timeline {
 };
 
 // Constructor
-Timeline::Timeline(int user_id, vector<int> timeline_items, string event_colour, string meeting_colour, string assignment_colour):
+Timeline::Timeline(unsigned long user_id, vector<int> timeline_items, string event_colour, string meeting_colour, string assignment_colour):
     user_id_(user_id),
     timeline_items_(timeline_items),
     event_colour_(event_colour),
@@ -51,11 +65,11 @@ Timeline::Timeline(int user_id, vector<int> timeline_items, string event_colour,
     assignment_colour_(assignment_colour) {}
 
 // Getters
-int Timeline::getID(){
+unsigned long Timeline::getID(){
     return id_;
 }
 
-int Timeline::getUserID(){
+unsigned long Timeline::getUserID(){
     return user_id_;
 }
 

@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <vector>
+
 using namespace std;
 
 class Timeline {
@@ -8,7 +10,7 @@ class Timeline {
     private:
         int id_;
         int user_id_;
-        int timeline_items_;
+        vector<int> timeline_items_;
         string event_colour_;
         string meeting_colour_;
         string assignment_colour_;
@@ -16,11 +18,12 @@ class Timeline {
     public:
 
         // Constructor
-        Timeline(int, string, string, string);
+        Timeline(int, vector<int>, string, string, string);
 
         // Getters
         int getID();
         int getUserID();
+        vector<int> getTimelineItems();
         string getEventColour();
         string getMeetingColour();
         string getAssignmentColour();
@@ -40,8 +43,9 @@ class Timeline {
 };
 
 // Constructor
-Timeline::Timeline(int user_id, string event_colour, string meeting_colour, string assignment_colour):
+Timeline::Timeline(int user_id, vector<int> timeline_items, string event_colour, string meeting_colour, string assignment_colour):
     user_id_(user_id),
+    timeline_items_(timeline_items),
     event_colour_(event_colour),
     meeting_colour_(meeting_colour),
     assignment_colour_(assignment_colour) {}
@@ -53,6 +57,10 @@ int Timeline::getID(){
 
 int Timeline::getUserID(){
     return user_id_;
+}
+
+vector<int> Timeline::getTimelineItems() {
+    return timeline_items_;
 }
 
 string Timeline::getEventColour(){
@@ -81,7 +89,8 @@ void Timeline::setAssignmentColour(string assignment_colour) {
 }
 
 int main() {
-    Timeline timeline(1, "FFFFFF", "FF00FF", "00FFFF");
+    vector<int> items;
+    Timeline timeline(1, items, "FFFFFF", "FF00FF", "00FFFF");
     cout << timeline.getUserID() << endl;  
     cout << timeline.getEventColour() << endl;  
     cout << timeline.getMeetingColour() << endl;

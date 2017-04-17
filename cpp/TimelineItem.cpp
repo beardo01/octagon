@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <vector>
+
 using namespace std;
 
 class TimelineItem {
@@ -14,14 +16,14 @@ class TimelineItem {
         time_t end_;
         string description_;
         string location_;
-        unsigned int linked_;
-        unsigned int linked_items_;
+        vector<int> linked_;
+        vector<int> linked_items_;
 
     // Timeline Item methods
     public:
 
         // Constructor
-        TimelineItem(int, string, string, time_t, time_t, unsigned int, unsigned int);
+        TimelineItem(int, string, string, time_t, time_t, vector<int>, vector<int>);
 
         // Getters
         int getID();
@@ -31,8 +33,8 @@ class TimelineItem {
         time_t getEndTime();
         string getDescription();
         string getLocation();
-        unsigned int getLinked();
-        unsigned int getLinkedItems();
+        vector<int> getLinked();
+        vector<int> getLinkedItems();
 
 
         // Setters
@@ -40,14 +42,14 @@ class TimelineItem {
         void setStartTime(time_t);
         void setEndTime(time_t);
         void setDescrition(string);
-        void setLinked(unsigned int);
-        void setLinkedItems(unsigned int);
+        void setLinked(vector<int>);
+        void setLinkedItems(vector<int>);
         void setLocation(string);
 };
 
 // Constructor
 TimelineItem::TimelineItem(int type, string description, string location, 
-    time_t start, time_t end, unsigned int linked, unsigned int linked_items):
+    time_t start, time_t end, vector<int> linked, vector<int> linked_items):
     type_(type),
     description_(description),
     location_(location),
@@ -87,10 +89,11 @@ string TimelineItem::getLocation(){
     return location_;
 }
 
-unsigned int TimelineItem::getLinked(){
+vector<int> TimelineItem::getLinked(){
     return linked_;
 }
-unsigned int TimelineItem::getLinkedItems(){
+
+vector<int> TimelineItem::getLinkedItems(){
     return linked_items_;
 }
 
@@ -115,22 +118,24 @@ void TimelineItem::setLocation(string location){
     this->location_ = location;
 }
 
-void TimelineItem::setLinked(unsigned int linked){
+void TimelineItem::setLinked(vector<int> linked){
     this->linked_ = linked;
 }
 
-void TimelineItem::setLinkedItems(unsigned int linked_items){
+void TimelineItem::setLinkedItems(vector<int> linked_items){
     this->linked_items_ = linked_items;
 }
 
 
-
-
-
 int main() {
+    int i = 0;
 
     //Testing code
-    TimelineItem item(1,"A Test Item","Lab A",time(0),time(0),-1,-1);
+    vector<int> linked;
+    linked.push_back(-1);
+    linked.push_back(10);
+    vector<int> linked_items;
+    TimelineItem item(1,"A Test Item","Lab A",time(0),time(0), linked, linked_items);
 
     cout << item.getID() << endl;
     cout << item.getTimelineID() << endl;
@@ -139,6 +144,8 @@ int main() {
     cout << item.getEndTime() << endl;
     cout << item.getDescription() << endl;
     cout << item.getLocation() << endl;
-    cout << item.getLinked() << endl;
-    cout << item.getLinkedItems() << endl;
+    while(i < item.getLinked().size()) {
+        cout << item.getLinked().at(i) << endl;
+        i++;
+    }
 }

@@ -18,7 +18,8 @@
 .page-bg {
     background: url('../assets/background.jpg');
     filter: blur(10px) brightness(50%);
-    transform: scale(1.07);
+    transform: scale(1.1);
+    overflow: hidden;
     position: fixed;
     width: 100%;
     height: 100%;

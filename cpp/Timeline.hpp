@@ -9,6 +9,8 @@
 // ODB database include
 #include <odb/core.hxx>
 
+#include "TimelineItem.hpp"
+
 // String declaration for ODB persistence
 #pragma db value(std::string) type("VARCHAR(128)")
 
@@ -50,12 +52,22 @@ class Timeline {
         void setMeetingColour(string);
         void setAssignmentColour(string);
 
-        // Methods
-        //void deleteItem(int);
-        //void getItem(int,time_t);
-        //void getTimeLine(time_t,time_t);
-        // updateItem(item_id);
-        // addItem(timeline_id,type,start,end,description);
+        // Methods (CRUD order)
+        
+        // addItem(1, 1, "Meeting on Tuesday", "Owheo Building", 123, 1234)
+        void addItem(unsigned long, int, string, string, time_t, time_t);
+
+        // getTimeline(1, 123, 1234)
+        vector<TimelineItem> getTimeline(unsigned long, time_t, time_t);
+
+        // getTimelineItem(1)
+        TimelineItem getTimelineItem(unsigned long);
+
+        // updateItem(1, 1, "Meeting on Tuesday afternoon", "Owheo, Lab A", 123, 1234)
+        void updateItem(unsigned long, int, string, string, time_t, time_t);
+
+        // deleteItem(1)
+        void deleteItem(unsigned long);
 
 };
 

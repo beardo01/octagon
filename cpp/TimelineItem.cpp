@@ -77,27 +77,3 @@ void TimelineItem::setLinked(vector<int> linked){
 void TimelineItem::setLinkedItems(vector<int> linked_items){
     this->linked_items_ = linked_items;
 }
-
-
-int main() {
-    int i = 0;
-
-    //Testing code
-    vector<int> linked;
-    linked.push_back(-1);
-    linked.push_back(10);
-    vector<int> linked_items;
-    TimelineItem item(1, 1,"A Test Item","Lab A",time(0),time(0), linked, linked_items);
-
-    cout << item.getID() << endl;
-    cout << item.getTimelineID() << endl;
-    cout << item.getType() << endl;
-    cout << item.getStartTime() << endl;
-    cout << item.getEndTime() << endl;
-    cout << item.getDescription() << endl;
-    cout << item.getLocation() << endl;
-    while(i < item.getLinked().size()) {
-        cout << item.getLinked().at(i) << endl;
-        i++;
-    }
-}

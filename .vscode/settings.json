@@ -37,6 +37,7 @@
         "utility": "cpp",
         "typeinfo": "cpp",
         "initializer_list": "cpp",
-        "*.txx": "cpp"
+        "*.txx": "cpp",
+        "*.ixx": "cpp"
     }
 }

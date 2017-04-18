@@ -46,13 +46,8 @@ void Timeline::setAssignmentColour(string assignment_colour) {
     this->assignment_colour_ = assignment_colour;
 }
 
-int main() {
-    vector<int> items;
-    Timeline timeline(1, items, "FFFFFF", "FF00FF", "00FFFF");
-    cout << timeline.getUserID() << endl;  
-    cout << timeline.getEventColour() << endl;  
-    cout << timeline.getMeetingColour() << endl;
-    cout << timeline.getAssignmentColour() << endl;
-    timeline.setAssignmentColour("000000");
-    cout << timeline.getAssignmentColour() << endl;
+// Methods
+void addItem(unsigned long timeline_id, short int type, string description, 
+    string location, time_t start, time_t end) {
+
 }

@@ -25,3 +25,17 @@
     background: url('../assets/background.png') no-repeat; 
     background-size: 100% 100%;
 }
+
+.list > .item-block:first-child {
+    border-radius: 10px 10px 0px 0px;
+    border: none;
+}
+
+.list > .item-block:last-child {
+    border-radius: 0px 0px 10px 10px;
+    border: none;
+}
+
+.list > .item-block:last-child:only-child {
+    border-radius: 10px;
+}

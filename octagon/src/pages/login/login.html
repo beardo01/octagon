@@ -1,5 +1,25 @@
 <ion-content padding>
-  <div class="page-bg"></div>
-  <img src='../../assets/Test.png' class="icon">
+  <img src='../../assets/Test.png' class="loginLogo">
 
+  <ion-list class="loginSocial">
+    <ion-icon name="logo-facebook" class="loginSocial"></ion-icon>
+    <ion-icon name="logo-google" class="loginSocial"></ion-icon>
+  </ion-list>
+
+  <ion-list>
+    <ion-item class=loginInput>
+      <ion-input type="text" placeholder="Email"></ion-input>
+    </ion-item>
+
+    <ion-item class=loginInput>
+      <ion-input type="password" placeholder="Password"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <button ion-button round>Sign In</button>
+
+  <div class="signup">
+    <p>Don't have an account?
+    <span ion-button clear class="signUpButton">Sign Up</span></p>
+  </div>
 </ion-content>

@@ -6,6 +6,8 @@ import { SettingsPage } from '../pages/settings/settings';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { CreatePage } from '../pages/create/create';
+import { LoginPage } from '../pages/login/login';
+import { JoinPage } from '../pages/join/join';
 
 @NgModule({
   declarations: [
@@ -14,7 +16,9 @@ import { CreatePage } from '../pages/create/create';
     WeekPage,
     SettingsPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    LoginPage,
+    JoinPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -26,7 +30,9 @@ import { CreatePage } from '../pages/create/create';
     WeekPage,
     SettingsPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    LoginPage,
+    JoinPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

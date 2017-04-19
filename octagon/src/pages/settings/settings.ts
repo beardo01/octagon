@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { ColourPage } from '../colour/colour';
-import { LabelPage } from '../labels/labels';
+import { LabelPage } from '../label/label';
 
 @Component({
   selector: 'page-settings',

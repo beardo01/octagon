@@ -8,6 +8,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { CreatePage } from '../pages/create/create';
 import { LoginPage } from '../pages/login/login';
 import { JoinPage } from '../pages/join/join';
+import { ColourPage } from '../pages/colour/colour';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { JoinPage } from '../pages/join/join';
     HomePage,
     TabsPage,
     LoginPage,
-    JoinPage
+    JoinPage,
+    ColourPage
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -32,7 +34,8 @@ import { JoinPage } from '../pages/join/join';
     HomePage,
     TabsPage,
     LoginPage,
-    JoinPage
+    JoinPage,
+    ColourPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
 })

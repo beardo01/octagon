@@ -11,12 +11,12 @@ page-login {
     width: 50%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 50px;
+    margin-top: 40px;
 }
 
 .loginInput:first-child {
     border-top: 0;
-    margin-top: 30px;
+    margin-top: 20px;
     background: transparent;
 }
 
@@ -25,20 +25,22 @@ page-login {
 }
 
 .loginSocial {
-    margin-top: 20px;
-    font-size: 60px;
+    margin: 20px 10px 0px 10px;
+    font-size: 50px;
     text-align: center;
 
+}
+
+.signIn, .signIn > button {
+    color: white;
+    text-align: center;
 }
 
 .signup {
     display: inline;
     text-align: center;
+    position: absolute;
+    width: 100%;
+    margin-left: -16px;
+    bottom: 0px;
 }
-
-.signUpButton {
-    margin: 0;
-    padding: 0;
-    font-size: 13px;
-}
-

@@ -16,9 +16,7 @@
 // automatically applied to the <body> element in the app.
 
 .page-bg {
-    background: url('../assets/background.jpg');
-    filter: blur(10px) brightness(50%);
-    transform: scale(1.1);
+    background: url('../assets/background.png');
     overflow: hidden;
     position: fixed;
     width: 100%;

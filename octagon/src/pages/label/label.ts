@@ -16,7 +16,7 @@ export class LabelPage {
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad LabelsPage');
+    console.log('ionViewDidLoad LabelPage');
   }
 
 }

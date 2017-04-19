@@ -18,6 +18,7 @@ export class SettingsPage {
     this.navCtrl.push(ColourPage);
   }
   logout() {
+    this.navCtrl.popToRoot();
     this.navCtrl.push(LoginPage);
   }
   labelPage() {

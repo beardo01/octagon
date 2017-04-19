@@ -12,11 +12,26 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'login.html'
 })
 export class LoginPage {
+  tabBarElement: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+      if (document.querySelector('.tabbar')) {
+        this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+      }
+   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
+  ionViewWillEnter() {
+    if (this.tabBarElement) {
+      this.tabBarElement.style.display = 'none';
+    }
+
+  }
+
+  ionViewWillLeave() {
+    if (this.tabBarElement) {
+      this.tabBarElement.style.display = 'flex';
+    }
+
   }
 
 }

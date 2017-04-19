@@ -14,6 +14,10 @@ page-login {
     margin-top: 40px;
 }
 
+.loginInput {
+    padding-right: 16px;
+}
+
 .loginInput:first-child {
     border-top: 0;
     margin-top: 20px;
@@ -28,7 +32,6 @@ page-login {
     margin: 20px 10px 0px 10px;
     font-size: 50px;
     text-align: center;
-
 }
 
 .signIn, .signIn > button {
@@ -37,10 +40,10 @@ page-login {
 }
 
 .signup {
-    display: inline;
     text-align: center;
     position: absolute;
     width: 100%;
     margin-left: -16px;
-    bottom: 0px;
+    bottom: 0;
+    overflow: hidden;
 }

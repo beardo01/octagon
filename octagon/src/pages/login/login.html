@@ -1,28 +1,29 @@
 <ion-content padding>
-  <img src='../../assets/Test.png' class="loginLogo">
+  <img src='../../assets/Test.png' class="accountLogo">
 
   <ion-list class="loginSocial">
-    <ion-icon name="logo-facebook" class="loginSocial"></ion-icon>
-    <ion-icon name="logo-google" class="loginSocial"></ion-icon>
+    <a href="www.facebook.com"><ion-icon name="logo-facebook" class="loginSocial"></ion-icon></a>
+    <a href="www.google.com"><ion-icon name="logo-google" class="loginSocial"></ion-icon></a>
   </ion-list>
 
   <ion-list>
-    <ion-item class=loginInput>
+    <ion-item class="accountInput">
       <ion-input type="text" placeholder="Email"></ion-input>
     </ion-item>
 
-    <ion-item class=loginInput>
+    <ion-item class="accountInput">
       <ion-input type="password" placeholder="Password"></ion-input>
     </ion-item>
   </ion-list>
 
   <div class="row">
-    <div class="col signIn">
-      <button ion-button>Sign In</button>
+    <div class="col actionButton">
+      <button (click)="homePage()" ion-button class="accountActionButton">Sign In</button>
     </div>
   </div>
 
-  <div class="signup text-center">
-    <p>Don't have an account? Join</p>
+  <div class="linkText text-center">
+    <p (click)="joinPage()">Don't have an account? Join</p>
   </div>
+
 </ion-content>

@@ -4,6 +4,7 @@ import { NavController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { ColourPage } from '../colour/colour';
 import { LabelPage } from '../label/label';
+import { HomePage } from '../home/home';
 
 @Component({
   selector: 'page-settings',
@@ -18,7 +19,6 @@ export class SettingsPage {
     this.navCtrl.push(ColourPage);
   }
   logout() {
-    this.navCtrl.popToRoot();
     this.navCtrl.push(LoginPage);
   }
   labelPage() {

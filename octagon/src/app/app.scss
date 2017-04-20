@@ -39,3 +39,50 @@
 .list > .item-block:last-child:only-child {
     border-radius: 10px;
 }
+
+.accountLogo {
+    display: block;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 40px;
+}
+
+.accountInput {
+    padding-right: 16px;
+    background: transparent;
+}
+
+.accountInput:first-child {
+    border-top: 0;
+    margin-top: 20px;
+    background: transparent;
+}
+
+.accountInput:last-child {
+    background: transparent;
+}
+
+.loginSocial {
+    margin: 20px 10px 0px 10px;
+    font-size: 50px;
+    text-align: center;
+}
+
+.actionButton, .actionButton > button {
+    color: white;
+    text-align: center;
+}
+
+.accountActionButton {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.linkText {
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    margin-left: -16px;
+    overflow: hidden;
+}

@@ -1,22 +1,43 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
-/*
-  Generated class for the Join page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-join',
   templateUrl: 'join.html'
 })
 export class JoinPage {
+  tabBarElement: any;
+  scrollContent: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+  constructor(public navCtrl: NavController, public navParams: NavParams) {
+    if (document.querySelector('.tabbar')) {
+      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+    }
+    this.scrollContent = document.querySelector('.scroll-content');
+  }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad JoinPage');
+  ionViewWillEnter() {
+    if (this.tabBarElement) {
+      this.tabBarElement.style.display = 'none';
+    }
+    this.scrollContent.style.margin = '0';
+  }
+
+  ionViewWillLeave() {
+    if (this.tabBarElement) {
+      this.tabBarElement.style.display = 'flex';
+      // Margin bottom needs to be set as 0 for scroll content.
+    }
+    this.scrollContent.style.margin = '0';
+
+  }
+
+  signInPage() {
+    this.navCtrl.pop(JoinPage);
+  }
+
+  homePage() {
+    this.navCtrl.popToRoot();
   }
 
 }

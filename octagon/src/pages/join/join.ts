@@ -20,16 +20,12 @@ export class JoinPage {
     if (this.tabBarElement) {
       this.tabBarElement.style.display = 'none';
     }
-    this.scrollContent.style.margin = '0';
   }
 
   ionViewWillLeave() {
     if (this.tabBarElement) {
       this.tabBarElement.style.display = 'flex';
-      // Margin bottom needs to be set as 0 for scroll content.
     }
-    this.scrollContent.style.margin = '0';
-
   }
 
   signInPage() {

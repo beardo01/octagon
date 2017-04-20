@@ -9,13 +9,20 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <div class="page-bg"></div>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs, update any existing page or create new pages.
-  </p>
+<ion-content padding class="page-bg">
+  <section id="cd-timeline" class="cd-container">
+    <div ng-repeat="activity in timeline">
+      <div class="cd-timeline-block">
+        <div class="cd-timeline-colour">
+          <i class="ion-image timelineIcon"></i>
+        </div>
+        <!-- cd-timeline-img -->
+        <div class="cd-timeline-content">
+          <h5 class="title">Title</h5>
+          <p class="cd-author">by Author on 14/14/14</p>
+          <p class="timelineText">Tested</p>
+        </div>
+      </div>
+    </div>
+  </section>
 </ion-content>

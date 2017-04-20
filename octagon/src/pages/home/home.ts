@@ -7,6 +7,7 @@ import { CreatePage } from '../create/create';
   selector: 'page-home',
   templateUrl: 'home.html'
 })
+
 export class HomePage {
 
   constructor(public navCtrl: NavController) {

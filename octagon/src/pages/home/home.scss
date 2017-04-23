@@ -5,13 +5,14 @@ page-home {
 /* -------------------------------- 
 Modules - reusable parts of our design
 -------------------------------- */
-.cd-container {
+.tl-container {
   /* this class is used to give a max-width to the element it is applied to, and center it horizontally when it reaches that max-width */
   width: 93%;
   max-width: 1170px;
   margin: 0 auto;
 }
-.cd-container::after {
+
+.tl-container::after {
   /* clearfix */
   content: '';
   display: table;
@@ -21,97 +22,81 @@ Modules - reusable parts of our design
 /* --------------------------------
 Main components 
 -------------------------------- */
-.timelineText {
-  color: black;
+.tl-title {
+  color: color($colors, primary);
+  font-size: 22px;
 }
 
-.timelineIcon {
-  font-size: 25px;
-  color: white;
+.tl-description {
+  color: color($colors, secondary);
+  font-size: 19px;
 }
 
-.cd-author {
-  color:gray;
+.tl-location, .tl-time {
+  color: color($colors, primary);
+  font-size: 19px;
+  margin: 2px;
 }
 
-#cd-timeline {
+#tl {
   position: relative;
   margin-top: 2em;
   margin-bottom: 2em;
   margin-left: 10px !important;
 }
 
-#cd-timeline::before {
+#tl::before {
   /* this is the vertical line */
   content: '';
   position: absolute;
   top: 1px;
-  left: 17px;
+  left: 15px;
   height: 100%;
-  width: 6px;
+  width: 11px;
   background: rgba(255, 255, 255, 0.3);
 }
 
-.cd-timeline-block {
+.tl-block {
   position: relative;
   margin: 2em 0;
 }
 
-.cd-timeline-block:after {
+.tl-block:after {
   content: "";
   display: table;
   clear: both;
 }
 
-.cd-timeline-block:first-child {
+.tl-block:first-child {
   margin-top: 0;
 }
 
-.cd-timeline-block:last-child {
+.tl-block:last-child {
   margin-bottom: 0;
 }
 
-.cd-timeline-colour {
+.tl-colour {
   position: absolute;
-  width: 40px;
-  height: 40px;
+  width: 35px;
+  height: 35px;
   border-radius: 50%;
+  margin-left: 2px;
   padding-top: 5px;
-  background: #E74C3C;
   border-color: transparent;
   box-shadow: 1px 2px 5px 1px rgba(0, 0, 0, 0.3); 
 }
 
-.cd-timeline-content {
+.tl-content {
   position: relative;
   margin-left: 60px;
   border-color: transparent;
   border-style: solid;
   border-width: 2px;
   margin-bottom: 10px;
+  padding-top: 6px;
 }
 
-.cd-timeline-content:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-.cd-timeline-content p, .cd-timeline-content .cd-read-more, .cd-timeline-content .cd-date {
-  font-size: 13px;
-  font-size: 0.8125rem;
-}
-
-.cd-timeline-content .cd-read-more, .cd-timeline-content .cd-date {
-  display: inline-block;
-}
-
-.cd-timeline-content p {
-  margin: 1em 0;
-  line-height: 1.6;
-}
-
-.cd-timeline-content::before {
+.tl-content::before {
   content: '';
   position: absolute;
   right: 100%;
@@ -120,4 +105,35 @@ Main components
   border: 7px solid transparent;
   border-right: 7px solid white;
   border-right-color: inherit;
+}
+
+.tl-content:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+// Timeline colours
+.tl-red {
+  background: color($colors, red);
+}
+
+.tl-green {
+  background: color($colors, green);
+}
+
+.tl-yellow {
+  background: color($colors, yellow);
+}
+
+.tl-blue {
+  background: color($colors, blue);
+}
+
+.tl-purple {
+  background: color($colors, purple);
+}
+
+.tl-grey {
+  background: color($colors, grey);
 }

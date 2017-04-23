@@ -40,6 +40,8 @@
     border-radius: 10px;
 }
 
+// Login and join pages
+
 .accountLogo {
     display: block;
     width: 50%;
@@ -85,4 +87,19 @@
     width: 100%;
     margin-left: -16px;
     overflow: hidden;
+}
+
+// Create Page
+
+ion-select {
+    background-color: transparent;
+}
+
+// Backdrop opactity
+ion-backdrop {
+    opacity: 1 !important;
+}
+
+.alert-title {
+    color: white;
 }

@@ -33,6 +33,7 @@ export class LoginPage {
 
   homePage() {
     this.navCtrl.popToRoot();
+    this.navCtrl.parent.select(0);
   }
 
 }

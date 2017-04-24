@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component , ViewChild } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-
+import { SassHelperComponent } from "../../providers/sass-helper/sass-helper.component";
 /*
   Generated class for the Colour page.
 
@@ -12,11 +12,16 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'colour.html'
 })
 export class ColourPage {
+  @ViewChild(SassHelperComponent)
+  private sassHelper: SassHelperComponent;
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
+
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad ColourPage');
   }
-
+  getTextColour(){
+    console.log (this.sassHelper.readProperty('text-color'));
+  }
 }

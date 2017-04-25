@@ -10,6 +10,7 @@ import { LoginPage } from '../pages/login/login';
 import { JoinPage } from '../pages/join/join';
 import { ColourPage } from '../pages/colour/colour';
 import { LabelPage } from '../pages/label/label';
+import { SassHelperComponent } from "../providers/sass-helper/sass-helper.component"
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { LabelPage } from '../pages/label/label';
     LoginPage,
     JoinPage,
     ColourPage,
-    LabelPage
+    LabelPage,
+    SassHelperComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)

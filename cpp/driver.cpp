@@ -1,5 +1,7 @@
 #include <memory>   // std::auto_ptr
 #include <iostream>
+#include <string>
+#include <vector>
 
 #include <odb/database.hxx>
 #include <odb/transaction.hxx>
@@ -8,6 +10,8 @@
 
 #include "Timeline.hpp"
 #include "Timeline-odb.hxx"
+#include "TimelineItem.hpp"
+#include "TimelineItem-odb.hxx"
 
 using namespace std;
 using namespace odb::core;
@@ -17,22 +21,22 @@ int main() {
     try
     {
         // Create database connection
-        auto_ptr<odb::database> db(new odb::pgsql::database("postgres",
-        "39HjaJPnMpta9WDu", "postgres", "104.197.11.127", 5432));
+        auto_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", "postgres", "104.197.11.127", 5432));
 
         unsigned long tl_id;
 
         // Create a few persistent person objects.
-        //
         {
             vector<int> items;
-            items.push_back(-1);
-            Timeline tl(1, items, "FF0000", "00FF00", "0000FF");
+            items.push_back(2);
+            string colour1 = "FF0000";
+            string colour2 = "00FF00";
+            string colour3 = "0000FF";
+            Timeline tl(1, items, colour1, colour2, colour3);
 
             transaction t(db->begin());
 
             // Make objects persistent and save their ids for later use.
-            //
             tl_id = db->persist(tl);
 
             t.commit();

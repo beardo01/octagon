@@ -45,4 +45,8 @@ export class CreatePage {
     this.getTimes();
   }
 
+  create() {
+    this.navCtrl.popToRoot();
+  }
+
 }

@@ -102,3 +102,13 @@ ion-backdrop {
 .alert-title {
     color: white;
 }
+
+.picker-above-highlight {
+    background: linear-gradient(to bottom, grey 20%, rgba(0, 0, 0, 0.1) 90%) !important;
+    border-bottom: 0px !important;
+}
+
+.picker-below-highlight {
+    background: linear-gradient(to top, grey 30%, rgba(0, 0, 0, 0.1) 90%) !important;
+    border-top: 0px !important;
+}

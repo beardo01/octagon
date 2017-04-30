@@ -31,6 +31,10 @@ $backdrop-color: (
   rgba(0,0,0, 0.7)
 );
 
+$text-input-placeholder-color: (
+  #BDC3C7
+);
+
 // Named Color Variables
 // --------------------------------------------------
 // Named colors makes it easy to reuse colors on various components.
@@ -65,7 +69,11 @@ $button-ios-background-color: (
 );
 
 $alert-ios-background: (
-  rgba(160, 160, 160, 0.6)
+ rgba(160, 160, 160, 0.5)
+);
+
+$alert-ios-radio-label-text-color: (
+  #FFFFFF
 );
 
 // App Material Design Variables

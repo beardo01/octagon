@@ -27,11 +27,8 @@
 #include <odb/pointer-traits.hxx>
 #include <odb/container-traits.hxx>
 #include <odb/no-op-cache-traits.hxx>
-#include <odb/result.hxx>
-#include <odb/simple-object-result.hxx>
 
 #include <odb/details/unused.hxx>
-#include <odb/details/shared-ptr.hxx>
 
 namespace odb
 {
@@ -84,107 +81,11 @@ namespace odb
 #include <odb/pgsql/forward.hxx>
 #include <odb/pgsql/binding.hxx>
 #include <odb/pgsql/pgsql-types.hxx>
-#include <odb/pgsql/query.hxx>
 
 namespace odb
 {
   // Timeline
   //
-  template <typename A>
-  struct query_columns< ::Timeline, id_pgsql, A >
-  {
-    // id
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        long unsigned int,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    id_type_;
-
-    static const id_type_ id;
-
-    // user_id
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        long unsigned int,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    user_id_type_;
-
-    static const user_id_type_ user_id;
-
-    // event_colour
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        ::std::string,
-        pgsql::id_string >::query_type,
-      pgsql::id_string >
-    event_colour_type_;
-
-    static const event_colour_type_ event_colour;
-
-    // meeting_colour
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        ::std::string,
-        pgsql::id_string >::query_type,
-      pgsql::id_string >
-    meeting_colour_type_;
-
-    static const meeting_colour_type_ meeting_colour;
-
-    // assignment_colour
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        ::std::string,
-        pgsql::id_string >::query_type,
-      pgsql::id_string >
-    assignment_colour_type_;
-
-    static const assignment_colour_type_ assignment_colour;
-  };
-
-  template <typename A>
-  const typename query_columns< ::Timeline, id_pgsql, A >::id_type_
-  query_columns< ::Timeline, id_pgsql, A >::
-  id (A::table_name, "\"id\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::Timeline, id_pgsql, A >::user_id_type_
-  query_columns< ::Timeline, id_pgsql, A >::
-  user_id (A::table_name, "\"user_id\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::Timeline, id_pgsql, A >::event_colour_type_
-  query_columns< ::Timeline, id_pgsql, A >::
-  event_colour (A::table_name, "\"event_colour\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::Timeline, id_pgsql, A >::meeting_colour_type_
-  query_columns< ::Timeline, id_pgsql, A >::
-  meeting_colour (A::table_name, "\"meeting_colour\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::Timeline, id_pgsql, A >::assignment_colour_type_
-  query_columns< ::Timeline, id_pgsql, A >::
-  assignment_colour (A::table_name, "\"assignment_colour\"", 0);
-
-  template <typename A>
-  struct pointer_query_columns< ::Timeline, id_pgsql, A >:
-    query_columns< ::Timeline, id_pgsql, A >
-  {
-  };
-
   template <>
   class access::object_traits_impl< ::Timeline, id_pgsql >:
     public access::object_traits< ::Timeline >
@@ -328,9 +229,6 @@ namespace odb
     static id_type
     id (const id_image_type&);
 
-    static id_type
-    id (const image_type&);
-
     static bool
     grow (image_type&,
           bool*);
@@ -358,8 +256,6 @@ namespace odb
 
     typedef pgsql::object_statements<object_type> statements_type;
 
-    typedef pgsql::query_base query_base_type;
-
     static const std::size_t column_count = 5UL;
     static const std::size_t id_column_count = 1UL;
     static const std::size_t inverse_column_count = 0UL;
@@ -375,10 +271,6 @@ namespace odb
     static const char find_statement[];
     static const char update_statement[];
     static const char erase_statement[];
-    static const char query_statement[];
-    static const char erase_query_statement[];
-
-    static const char table_name[];
 
     static void
     persist (database&, object_type&);
@@ -401,18 +293,10 @@ namespace odb
     static void
     erase (database&, const object_type&);
 
-    static result<object_type>
-    query (database&, const query_base_type&);
-
-    static unsigned long long
-    erase_query (database&, const query_base_type&);
-
     static const char persist_statement_name[];
     static const char find_statement_name[];
     static const char update_statement_name[];
     static const char erase_statement_name[];
-    static const char query_statement_name[];
-    static const char erase_query_statement_name[];
 
     static const unsigned int persist_statement_types[];
     static const unsigned int find_statement_types[];
@@ -434,9 +318,6 @@ namespace odb
     public access::object_traits_impl< ::Timeline, id_pgsql >
   {
   };
-
-  // Timeline
-  //
 }
 
 #include "Timeline-odb.ixx"

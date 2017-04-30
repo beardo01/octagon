@@ -9,6 +9,7 @@
 #include <odb/pgsql/database.hxx>
 
 #include "Timeline.hpp"
+#include "Timeline.cpp"
 #include "Timeline-odb.hxx"
 #include "TimelineItem.hpp"
 #include "TimelineItem-odb.hxx"
@@ -16,7 +17,7 @@
 using namespace std;
 using namespace odb::core;
 
-int main() {
+int main(int argc, char *argv[]) {
 
     try
     {
@@ -32,7 +33,8 @@ int main() {
             string colour1 = "FF0000";
             string colour2 = "00FF00";
             string colour3 = "0000FF";
-            Timeline tl(1, items, colour1, colour2, colour3);
+            unsigned long some_id = 1;
+            Timeline tl(some_id, items, colour1, colour2, colour3);
 
             transaction t(db->begin());
 

@@ -9,7 +9,10 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="page-bg">
+<ion-content scroll="false" padding class="page-bg">
+  <h2 id="headDate"></h2>
+  <span id="selection">
+  </span>
   <section id="tl" class="tl-container">
     <div ng-repeat="activity in timeline">
       <div class="tl-block">
@@ -17,8 +20,10 @@
         <div class="tl-content">
           <h5 class="tl-title">Title</h5>
           <p class="tl-description">This is a test message to see how it goes.</p>
-          <p class="tl-location"><ion-icon name="pin"></ion-icon> Ombrellos</p>
-          <p class="tl-time"><ion-icon name="time"></ion-icon> 10:00 to 12:00</p>
+          <p class="tl-location">
+            <ion-icon name="pin"></ion-icon> Ombrellos</p>
+          <p class="tl-time">
+            <ion-icon name="time"></ion-icon> 10:00 to 12:00</p>
         </div>
       </div>
     </div>
@@ -29,8 +34,10 @@
         <div class="tl-content">
           <h5 class="tl-title">Title</h5>
           <p class="tl-description">And another test.</p>
-          <p class="tl-location"><ion-icon name="pin"></ion-icon> Owheo Building</p>
-          <p class="tl-time"><ion-icon name="time"></ion-icon> 13:45 to 15:00</p>
+          <p class="tl-location">
+            <ion-icon name="pin"></ion-icon> Owheo Building</p>
+          <p class="tl-time">
+            <ion-icon name="time"></ion-icon> 13:45 to 15:00</p>
         </div>
       </div>
     </div>

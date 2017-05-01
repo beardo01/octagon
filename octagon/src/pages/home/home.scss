@@ -137,3 +137,21 @@ Main components
 .tl-grey {
   background: color($colors, grey);
 }
+
+/* --------------------------------
+Date Selection
+-------------------------------- */
+#headDate {
+  text-align: center;
+}
+
+span {
+  margin-left: 23px;
+  margin-right: 23px;
+}
+
+span h4 {
+  display: inline;
+  padding-left: 20px ;
+  padding-right: 20px ;
+}

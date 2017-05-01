@@ -56,19 +56,19 @@ class Timeline {
         // Methods (CRUD order)
         
         // addItem(1, 1, "Meeting on Tuesday", "Owheo Building", 123, 1234)
-        void addItem(unsigned long, short int, string, string, time_t, time_t);
+        //void addItem(unsigned long, short int, string, string, time_t, time_t);
 
         // getTimeline(1, 123, 1234)
-        vector<TimelineItem> getTimeline(unsigned long, time_t, time_t);
+        //vector<TimelineItem> getTimeline(unsigned long, time_t, time_t);
 
         // getTimelineItem(1)
-        TimelineItem getTimelineItem(unsigned long);
+        //TimelineItem getTimelineItem(unsigned long);
 
         // updateItem(1, 1, "Meeting on Tuesday afternoon", "Owheo, Lab A", 123, 1234)
-        void updateItem(unsigned long, short int, string, string, time_t, time_t);
+        //void updateItem(unsigned long, short int, string, string, time_t, time_t);
 
         // deleteItem(1)
-        void deleteItem(unsigned long);
+        //void deleteItem(unsigned long);
 
 };
 

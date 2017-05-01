@@ -19,7 +19,6 @@
 #include <odb/pgsql/simple-object-statements.hxx>
 #include <odb/pgsql/container-statements.hxx>
 #include <odb/pgsql/exceptions.hxx>
-#include <odb/pgsql/simple-object-result.hxx>
 
 namespace odb
 {
@@ -37,12 +36,6 @@ namespace odb
 
   const char access::object_traits_impl< ::Timeline, id_pgsql >::
   erase_statement_name[] = "erase_Timeline";
-
-  const char access::object_traits_impl< ::Timeline, id_pgsql >::
-  query_statement_name[] = "query_Timeline";
-
-  const char access::object_traits_impl< ::Timeline, id_pgsql >::
-  erase_query_statement_name[] = "erase_query_Timeline";
 
   const unsigned int access::object_traits_impl< ::Timeline, id_pgsql >::
   persist_statement_types[] =
@@ -356,26 +349,6 @@ namespace odb
   access::object_traits_impl< ::Timeline, id_pgsql >::id_type
   access::object_traits_impl< ::Timeline, id_pgsql >::
   id (const id_image_type& i)
-  {
-    pgsql::database* db (0);
-    ODB_POTENTIALLY_UNUSED (db);
-
-    id_type id;
-    {
-      pgsql::value_traits<
-          long unsigned int,
-          pgsql::id_bigint >::set_value (
-        id,
-        i.id_value,
-        i.id_null);
-    }
-
-    return id;
-  }
-
-  access::object_traits_impl< ::Timeline, id_pgsql >::id_type
-  access::object_traits_impl< ::Timeline, id_pgsql >::
-  id (const image_type& i)
   {
     pgsql::database* db (0);
     ODB_POTENTIALLY_UNUSED (db);
@@ -724,21 +697,6 @@ namespace odb
   const char access::object_traits_impl< ::Timeline, id_pgsql >::erase_statement[] =
   "DELETE FROM \"Timeline\" "
   "WHERE \"id\"=$1";
-
-  const char access::object_traits_impl< ::Timeline, id_pgsql >::query_statement[] =
-  "SELECT "
-  "\"Timeline\".\"id\", "
-  "\"Timeline\".\"user_id\", "
-  "\"Timeline\".\"event_colour\", "
-  "\"Timeline\".\"meeting_colour\", "
-  "\"Timeline\".\"assignment_colour\" "
-  "FROM \"Timeline\"";
-
-  const char access::object_traits_impl< ::Timeline, id_pgsql >::erase_query_statement[] =
-  "DELETE FROM \"Timeline\"";
-
-  const char access::object_traits_impl< ::Timeline, id_pgsql >::table_name[] =
-  "\"Timeline\"";
 
   void access::object_traits_impl< ::Timeline, id_pgsql >::
   persist (database& db, object_type& obj)
@@ -1115,88 +1073,6 @@ namespace odb
         v,
         esc.timeline_items_);
     }
-  }
-
-  result< access::object_traits_impl< ::Timeline, id_pgsql >::object_type >
-  access::object_traits_impl< ::Timeline, id_pgsql >::
-  query (database&, const query_base_type& q)
-  {
-    using namespace pgsql;
-    using odb::details::shared;
-    using odb::details::shared_ptr;
-
-    pgsql::connection& conn (
-      pgsql::transaction::current ().connection ());
-
-    statements_type& sts (
-      conn.statement_cache ().find_object<object_type> ());
-
-    image_type& im (sts.image ());
-    binding& imb (sts.select_image_binding ());
-
-    if (im.version != sts.select_image_version () ||
-        imb.version == 0)
-    {
-      bind (imb.bind, im, statement_select);
-      sts.select_image_version (im.version);
-      imb.version++;
-    }
-
-    std::string text (query_statement);
-    if (!q.empty ())
-    {
-      text += " ";
-      text += q.clause ();
-    }
-
-    q.init_parameters ();
-    shared_ptr<select_statement> st (
-      new (shared) select_statement (
-        sts.connection (),
-        query_statement_name,
-        text,
-        false,
-        true,
-        q.parameter_types (),
-        q.parameter_count (),
-        q.parameters_binding (),
-        imb));
-
-    st->execute ();
-    st->deallocate ();
-
-    shared_ptr< odb::object_result_impl<object_type> > r (
-      new (shared) pgsql::object_result_impl<object_type> (
-        q, st, sts, 0));
-
-    return result<object_type> (r);
-  }
-
-  unsigned long long access::object_traits_impl< ::Timeline, id_pgsql >::
-  erase_query (database&, const query_base_type& q)
-  {
-    using namespace pgsql;
-
-    pgsql::connection& conn (
-      pgsql::transaction::current ().connection ());
-
-    std::string text (erase_query_statement);
-    if (!q.empty ())
-    {
-      text += ' ';
-      text += q.clause ();
-    }
-
-    q.init_parameters ();
-    delete_statement st (
-      conn,
-      erase_query_statement_name,
-      text,
-      q.parameter_types (),
-      q.parameter_count (),
-      q.parameters_binding ());
-
-    return st.execute ();
   }
 }
 

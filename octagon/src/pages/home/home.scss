@@ -139,7 +139,7 @@ Main components
 /* --------------------------------
 Date Selection
 -------------------------------- */
-#dateArea {
+#dayDateArea {
   text-align: center;
 }
 
@@ -147,12 +147,10 @@ span h4 {
   width: 20%;
   display: inline-block;
   font-size: 12pt;
-  padding-left: 0px;
-  padding-right: 0px;
 }
 
 #timeBar {
-  content: '.';
+  content: '';
   margin: 30px auto 30px auto;
   background-color: rgba(255, 255, 255, 0.3);
   width: 100%;

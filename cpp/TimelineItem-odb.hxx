@@ -103,18 +103,6 @@ namespace odb
 
     static const id_type_ id;
 
-    // timeline_id
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        long unsigned int,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    timeline_id_type_;
-
-    static const timeline_id_type_ timeline_id;
-
     // type
     //
     typedef
@@ -174,17 +162,24 @@ namespace odb
     location_type_;
 
     static const location_type_ location;
+
+    // linked
+    //
+    typedef
+    pgsql::query_column<
+      pgsql::value_traits<
+        long int,
+        pgsql::id_bigint >::query_type,
+      pgsql::id_bigint >
+    linked_type_;
+
+    static const linked_type_ linked;
   };
 
   template <typename A>
   const typename query_columns< ::TimelineItem, id_pgsql, A >::id_type_
   query_columns< ::TimelineItem, id_pgsql, A >::
   id (A::table_name, "\"id\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::TimelineItem, id_pgsql, A >::timeline_id_type_
-  query_columns< ::TimelineItem, id_pgsql, A >::
-  timeline_id (A::table_name, "\"timeline_id\"", 0);
 
   template <typename A>
   const typename query_columns< ::TimelineItem, id_pgsql, A >::type_type_
@@ -212,6 +207,11 @@ namespace odb
   location (A::table_name, "\"location\"", 0);
 
   template <typename A>
+  const typename query_columns< ::TimelineItem, id_pgsql, A >::linked_type_
+  query_columns< ::TimelineItem, id_pgsql, A >::
+  linked (A::table_name, "\"linked\"", 0);
+
+  template <typename A>
   struct pointer_query_columns< ::TimelineItem, id_pgsql, A >:
     query_columns< ::TimelineItem, id_pgsql, A >
   {
@@ -236,11 +236,6 @@ namespace odb
       //
       long long id_value;
       bool id_null;
-
-      // timeline_id_
-      //
-      long long timeline_id_value;
-      bool timeline_id_null;
 
       // type_
       //
@@ -269,100 +264,15 @@ namespace odb
       std::size_t location_size;
       bool location_null;
 
+      // linked_
+      //
+      long long linked_value;
+      bool linked_null;
+
       std::size_t version;
     };
 
     struct extra_statement_cache_type;
-
-    // linked_
-    //
-    struct linked_traits
-    {
-      static const char select_name[];
-      static const char insert_name[];
-      static const char delete_name[];
-
-      static const unsigned int insert_types[];
-
-      static const std::size_t id_column_count = 1UL;
-      static const std::size_t data_column_count = 3UL;
-
-      static const bool versioned = false;
-
-      static const char insert_statement[];
-      static const char select_statement[];
-      static const char delete_statement[];
-
-      typedef ::std::vector< int > container_type;
-      typedef
-      odb::access::container_traits<container_type>
-      container_traits_type;
-      typedef container_traits_type::index_type index_type;
-      typedef container_traits_type::value_type value_type;
-
-      typedef ordered_functions<index_type, value_type> functions_type;
-      typedef pgsql::container_statements< linked_traits > statements_type;
-
-      struct data_image_type
-      {
-        // index
-        //
-        long long index_value;
-        bool index_null;
-
-        // value
-        //
-        int value_value;
-        bool value_null;
-
-        std::size_t version;
-      };
-
-      static void
-      bind (pgsql::bind*,
-            const pgsql::bind* id,
-            std::size_t id_size,
-            data_image_type&);
-
-      static void
-      grow (data_image_type&,
-            bool*);
-
-      static void
-      init (data_image_type&,
-            index_type*,
-            const value_type&);
-
-      static void
-      init (index_type&,
-            value_type&,
-            const data_image_type&,
-            database*);
-
-      static void
-      insert (index_type, const value_type&, void*);
-
-      static bool
-      select (index_type&, value_type&, void*);
-
-      static void
-      delete_ (void*);
-
-      static void
-      persist (const container_type&,
-               statements_type&);
-
-      static void
-      load (container_type&,
-            statements_type&);
-
-      static void
-      update (const container_type&,
-              statements_type&);
-
-      static void
-      erase (statements_type&);
-    };
 
     // linked_items_
     //

@@ -47,12 +47,12 @@ namespace odb
   const unsigned int access::object_traits_impl< ::TimelineItem, id_pgsql >::
   persist_statement_types[] =
   {
-    pgsql::int8_oid,
     pgsql::int2_oid,
     pgsql::int8_oid,
     pgsql::int8_oid,
     pgsql::text_oid,
-    pgsql::text_oid
+    pgsql::text_oid,
+    pgsql::int8_oid
   };
 
   const unsigned int access::object_traits_impl< ::TimelineItem, id_pgsql >::
@@ -64,18 +64,17 @@ namespace odb
   const unsigned int access::object_traits_impl< ::TimelineItem, id_pgsql >::
   update_statement_types[] =
   {
-    pgsql::int8_oid,
     pgsql::int2_oid,
     pgsql::int8_oid,
     pgsql::int8_oid,
     pgsql::text_oid,
     pgsql::text_oid,
+    pgsql::int8_oid,
     pgsql::int8_oid
   };
 
   struct access::object_traits_impl< ::TimelineItem, id_pgsql >::extra_statement_cache_type
   {
-    pgsql::container_statements_impl< linked_traits > linked_;
     pgsql::container_statements_impl< linked_items_traits > linked_items_;
 
     extra_statement_cache_type (
@@ -86,278 +85,10 @@ namespace odb
       pgsql::binding&,
       pgsql::native_binding& idn,
       const unsigned int* idt)
-    : linked_ (c, id, idn, idt),
-      linked_items_ (c, id, idn, idt)
+    : linked_items_ (c, id, idn, idt)
     {
     }
   };
-
-  // linked_
-  //
-
-  const char access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  select_name[] = "select_TimelineItem_linked";
-
-  const char access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  insert_name[] = "insert_TimelineItem_linked";
-
-  const char access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  delete_name[] = "delete_TimelineItem_linked";
-
-  const unsigned int access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  insert_types[] =
-  {
-    pgsql::int8_oid,
-    pgsql::int8_oid,
-    pgsql::int4_oid
-  };
-
-  const char access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  select_statement[] =
-  "SELECT "
-  "\"TimelineItem_linked\".\"index\", "
-  "\"TimelineItem_linked\".\"value\" "
-  "FROM \"TimelineItem_linked\" "
-  "WHERE \"TimelineItem_linked\".\"object_id\"=$1 ORDER BY \"TimelineItem_linked\".\"index\"";
-
-  const char access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  insert_statement[] =
-  "INSERT INTO \"TimelineItem_linked\" "
-  "(\"object_id\", "
-  "\"index\", "
-  "\"value\") "
-  "VALUES "
-  "($1, $2, $3)";
-
-  const char access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  delete_statement[] =
-  "DELETE FROM \"TimelineItem_linked\" "
-  "WHERE \"object_id\"=$1";
-
-  void access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  bind (pgsql::bind* b,
-        const pgsql::bind* id,
-        std::size_t id_size,
-        data_image_type& d)
-  {
-    using namespace pgsql;
-
-    statement_kind sk (statement_select);
-    ODB_POTENTIALLY_UNUSED (sk);
-
-    size_t n (0);
-
-    // object_id
-    //
-    if (id != 0)
-      std::memcpy (&b[n], id, id_size * sizeof (id[0]));
-    n += id_size;
-
-    // index
-    //
-    b[n].type = pgsql::bind::bigint;
-    b[n].buffer = &d.index_value;
-    b[n].is_null = &d.index_null;
-    n++;
-
-    // value
-    //
-    b[n].type = pgsql::bind::integer;
-    b[n].buffer = &d.value_value;
-    b[n].is_null = &d.value_null;
-  }
-
-  void access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  grow (data_image_type& i,
-        bool* t)
-  {
-    bool grew (false);
-
-    // index
-    //
-    t[0UL] = 0;
-
-    // value
-    //
-    t[1UL] = 0;
-
-    if (grew)
-      i.version++;
-  }
-
-  void access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  init (data_image_type& i,
-        index_type* j,
-        const value_type& v)
-  {
-    using namespace pgsql;
-
-    statement_kind sk (statement_insert);
-    ODB_POTENTIALLY_UNUSED (sk);
-
-    bool grew (false);
-
-    // index
-    //
-    if (j != 0)
-    {
-      bool is_null (false);
-      pgsql::value_traits<
-          index_type,
-          pgsql::id_bigint >::set_image (
-        i.index_value, is_null, *j);
-      i.index_null = is_null;
-    }
-
-    // value
-    //
-    {
-      bool is_null (false);
-      pgsql::value_traits<
-          value_type,
-          pgsql::id_integer >::set_image (
-        i.value_value, is_null, v);
-      i.value_null = is_null;
-    }
-
-    if (grew)
-      i.version++;
-  }
-
-  void access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  init (index_type& j,
-        value_type& v,
-        const data_image_type& i,
-        database* db)
-  {
-    ODB_POTENTIALLY_UNUSED (db);
-
-    // index
-    //
-    {
-      pgsql::value_traits<
-          index_type,
-          pgsql::id_bigint >::set_value (
-        j,
-        i.index_value,
-        i.index_null);
-    }
-
-    // value
-    //
-    {
-      pgsql::value_traits<
-          value_type,
-          pgsql::id_integer >::set_value (
-        v,
-        i.value_value,
-        i.value_null);
-    }
-  }
-
-  void access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  insert (index_type i, const value_type& v, void* d)
-  {
-    using namespace pgsql;
-
-    statements_type& sts (*static_cast< statements_type* > (d));
-    data_image_type& di (sts.data_image ());
-
-    init (di, &i, v);
-
-    if (sts.data_binding_test_version ())
-    {
-      const binding& id (sts.id_binding ());
-      bind (sts.data_bind (), id.bind, id.count, di);
-      sts.data_binding_update_version ();
-    }
-
-    if (!sts.insert_statement ().execute ())
-      throw object_already_persistent ();
-  }
-
-  bool access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  select (index_type& i, value_type& v, void* d)
-  {
-    using namespace pgsql;
-    using pgsql::select_statement;
-
-    statements_type& sts (*static_cast< statements_type* > (d));
-    data_image_type& di (sts.data_image ());
-
-    init (i, v, di, &sts.connection ().database ());
-
-    select_statement& st (sts.select_statement ());
-    select_statement::result r (st.fetch ());
-    return r != select_statement::no_data;
-  }
-
-  void access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  delete_ (void* d)
-  {
-    using namespace pgsql;
-
-    statements_type& sts (*static_cast< statements_type* > (d));
-    sts.delete_statement ().execute ();
-  }
-
-  void access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  persist (const container_type& c,
-           statements_type& sts)
-  {
-    using namespace pgsql;
-
-    functions_type& fs (sts.functions ());
-    fs.ordered_ = true;
-    container_traits_type::persist (c, fs);
-  }
-
-  void access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  load (container_type& c,
-        statements_type& sts)
-  {
-    using namespace pgsql;
-    using pgsql::select_statement;
-
-    const binding& id (sts.id_binding ());
-
-    if (sts.data_binding_test_version ())
-    {
-      bind (sts.data_bind (), id.bind, id.count, sts.data_image ());
-      sts.data_binding_update_version ();
-    }
-
-    select_statement& st (sts.select_statement ());
-    st.execute ();
-    auto_result ar (st);
-    select_statement::result r (st.fetch ());
-    bool more (r != select_statement::no_data);
-
-    functions_type& fs (sts.functions ());
-    fs.ordered_ = true;
-    container_traits_type::load (c, more, fs);
-  }
-
-  void access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  update (const container_type& c,
-          statements_type& sts)
-  {
-    using namespace pgsql;
-
-    functions_type& fs (sts.functions ());
-    fs.ordered_ = true;
-    container_traits_type::update (c, fs);
-  }
-
-  void access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_traits::
-  erase (statements_type& sts)
-  {
-    using namespace pgsql;
-
-    functions_type& fs (sts.functions ());
-    fs.ordered_ = true;
-    container_traits_type::erase (fs);
-  }
 
   // linked_items_
   //
@@ -679,25 +410,21 @@ namespace odb
     //
     t[0UL] = 0;
 
-    // timeline_id_
+    // type_
     //
     t[1UL] = 0;
 
-    // type_
+    // start_
     //
     t[2UL] = 0;
 
-    // start_
+    // end_
     //
     t[3UL] = 0;
 
-    // end_
-    //
-    t[4UL] = 0;
-
     // description_
     //
-    if (t[5UL])
+    if (t[4UL])
     {
       i.description_value.capacity (i.description_size);
       grew = true;
@@ -705,11 +432,15 @@ namespace odb
 
     // location_
     //
-    if (t[6UL])
+    if (t[5UL])
     {
       i.location_value.capacity (i.location_size);
       grew = true;
     }
+
+    // linked_
+    //
+    t[6UL] = 0;
 
     return grew;
   }
@@ -734,13 +465,6 @@ namespace odb
       b[n].is_null = &i.id_null;
       n++;
     }
-
-    // timeline_id_
-    //
-    b[n].type = pgsql::bind::bigint;
-    b[n].buffer = &i.timeline_id_value;
-    b[n].is_null = &i.timeline_id_null;
-    n++;
 
     // type_
     //
@@ -780,6 +504,13 @@ namespace odb
     b[n].size = &i.location_size;
     b[n].is_null = &i.location_null;
     n++;
+
+    // linked_
+    //
+    b[n].type = pgsql::bind::bigint;
+    b[n].buffer = &i.linked_value;
+    b[n].is_null = &i.linked_null;
+    n++;
   }
 
   void access::object_traits_impl< ::TimelineItem, id_pgsql >::
@@ -803,20 +534,6 @@ namespace odb
     using namespace pgsql;
 
     bool grew (false);
-
-    // timeline_id_
-    //
-    {
-      long unsigned int const& v =
-        o.timeline_id_;
-
-      bool is_null (false);
-      pgsql::value_traits<
-          long unsigned int,
-          pgsql::id_bigint >::set_image (
-        i.timeline_id_value, is_null, v);
-      i.timeline_id_null = is_null;
-    }
 
     // type_
     //
@@ -902,6 +619,20 @@ namespace odb
       grew = grew || (cap != i.location_value.capacity ());
     }
 
+    // linked_
+    //
+    {
+      long int const& v =
+        o.linked_;
+
+      bool is_null (false);
+      pgsql::value_traits<
+          long int,
+          pgsql::id_bigint >::set_image (
+        i.linked_value, is_null, v);
+      i.linked_null = is_null;
+    }
+
     return grew;
   }
 
@@ -926,20 +657,6 @@ namespace odb
         v,
         i.id_value,
         i.id_null);
-    }
-
-    // timeline_id_
-    //
-    {
-      long unsigned int& v =
-        o.timeline_id_;
-
-      pgsql::value_traits<
-          long unsigned int,
-          pgsql::id_bigint >::set_value (
-        v,
-        i.timeline_id_value,
-        i.timeline_id_null);
     }
 
     // type_
@@ -1013,6 +730,20 @@ namespace odb
         i.location_size,
         i.location_null);
     }
+
+    // linked_
+    //
+    {
+      long int& v =
+        o.linked_;
+
+      pgsql::value_traits<
+          long int,
+          pgsql::id_bigint >::set_value (
+        v,
+        i.linked_value,
+        i.linked_null);
+    }
   }
 
   void access::object_traits_impl< ::TimelineItem, id_pgsql >::
@@ -1031,12 +762,12 @@ namespace odb
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::persist_statement[] =
   "INSERT INTO \"TimelineItem\" "
   "(\"id\", "
-  "\"timeline_id\", "
   "\"type\", "
   "\"start\", "
   "\"end\", "
   "\"description\", "
-  "\"location\") "
+  "\"location\", "
+  "\"linked\") "
   "VALUES "
   "(DEFAULT, $1, $2, $3, $4, $5, $6) "
   "RETURNING \"id\"";
@@ -1044,24 +775,24 @@ namespace odb
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::find_statement[] =
   "SELECT "
   "\"TimelineItem\".\"id\", "
-  "\"TimelineItem\".\"timeline_id\", "
   "\"TimelineItem\".\"type\", "
   "\"TimelineItem\".\"start\", "
   "\"TimelineItem\".\"end\", "
   "\"TimelineItem\".\"description\", "
-  "\"TimelineItem\".\"location\" "
+  "\"TimelineItem\".\"location\", "
+  "\"TimelineItem\".\"linked\" "
   "FROM \"TimelineItem\" "
   "WHERE \"TimelineItem\".\"id\"=$1";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::update_statement[] =
   "UPDATE \"TimelineItem\" "
   "SET "
-  "\"timeline_id\"=$1, "
-  "\"type\"=$2, "
-  "\"start\"=$3, "
-  "\"end\"=$4, "
-  "\"description\"=$5, "
-  "\"location\"=$6 "
+  "\"type\"=$1, "
+  "\"start\"=$2, "
+  "\"end\"=$3, "
+  "\"description\"=$4, "
+  "\"location\"=$5, "
+  "\"linked\"=$6 "
   "WHERE \"id\"=$7";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::erase_statement[] =
@@ -1071,12 +802,12 @@ namespace odb
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::query_statement[] =
   "SELECT "
   "\"TimelineItem\".\"id\", "
-  "\"TimelineItem\".\"timeline_id\", "
   "\"TimelineItem\".\"type\", "
   "\"TimelineItem\".\"start\", "
   "\"TimelineItem\".\"end\", "
   "\"TimelineItem\".\"description\", "
-  "\"TimelineItem\".\"location\" "
+  "\"TimelineItem\".\"location\", "
+  "\"TimelineItem\".\"linked\" "
   "FROM \"TimelineItem\"";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::erase_query_statement[] =
@@ -1144,17 +875,6 @@ namespace odb
     }
 
     extra_statement_cache_type& esc (sts.extra_statement_cache ());
-
-    // linked_
-    //
-    {
-      ::std::vector< int > const& v =
-        obj.linked_;
-
-      linked_traits::persist (
-        v,
-        esc.linked_);
-    }
 
     // linked_items_
     //
@@ -1231,17 +951,6 @@ namespace odb
 
     extra_statement_cache_type& esc (sts.extra_statement_cache ());
 
-    // linked_
-    //
-    {
-      ::std::vector< int > const& v =
-        obj.linked_;
-
-      linked_traits::update (
-        v,
-        esc.linked_);
-    }
-
     // linked_items_
     //
     {
@@ -1281,11 +990,6 @@ namespace odb
     }
 
     extra_statement_cache_type& esc (sts.extra_statement_cache ());
-
-    // linked_
-    //
-    linked_traits::erase (
-      esc.linked_);
 
     // linked_items_
     //
@@ -1476,17 +1180,6 @@ namespace odb
     ODB_POTENTIALLY_UNUSED (reload);
 
     extra_statement_cache_type& esc (sts.extra_statement_cache ());
-
-    // linked_
-    //
-    {
-      ::std::vector< int >& v =
-        obj.linked_;
-
-      linked_traits::load (
-        v,
-        esc.linked_);
-    }
 
     // linked_items_
     //

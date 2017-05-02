@@ -1,9 +1,8 @@
 #include "TimelineItem.hpp"
 
 // Constructor
-TimelineItem::TimelineItem(unsigned long timeline_id, int type, string description, 
-    string location, time_t start, time_t end, vector<int> linked, vector<int> linked_items):
-    timeline_id_(timeline_id),
+TimelineItem::TimelineItem(short int type, string description, string location, 
+    time_t start, time_t end, long linked, vector<TimelineItem> linked_items):
     type_(type),
     description_(description),
     location_(location),
@@ -15,10 +14,6 @@ TimelineItem::TimelineItem(unsigned long timeline_id, int type, string descripti
 // Getters
 unsigned long TimelineItem::getID(){
     return id_;
-}
-
-unsigned long TimelineItem::getTimelineID(){
-    return timeline_id_;
 }
 
 short int TimelineItem::getType(){
@@ -41,11 +36,11 @@ string TimelineItem::getLocation(){
     return location_;
 }
 
-vector<int> TimelineItem::getLinked(){
+long TimelineItem::getLinked(){
     return linked_;
 }
 
-vector<int> TimelineItem::getLinkedItems(){
+vector<TimelineItem> TimelineItem::getLinkedItems(){
     return linked_items_;
 }
 
@@ -70,10 +65,10 @@ void TimelineItem::setLocation(string location){
     this->location_ = location;
 }
 
-void TimelineItem::setLinked(vector<int> linked){
+void TimelineItem::setLinked(long linked){
     this->linked_ = linked;
 }
 
-void TimelineItem::setLinkedItems(vector<int> linked_items){
+void TimelineItem::setLinkedItems(vector<TimelineItem> linked_items){
     this->linked_items_ = linked_items;
 }

@@ -9,14 +9,13 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content scroll="false" padding>
+<ion-content scroll="false" padding no-bounce>
   <div id="dayDateArea">
     <h2 id="dayDay"></h2>
     <span id="dayDates"></span>
     <div id="timeBar"></div>
   </div>
 
-  <ion-content padding no-bounce>
     <section id="tl" class="tl-container">
       <div ng-repeat="activity in timeline">
         <div class="tl-block">
@@ -46,4 +45,4 @@
       </div>
     </section>
 
-  </ion-content>
+</ion-content>

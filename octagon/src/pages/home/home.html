@@ -9,30 +9,41 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding no-bounce>
-  <section id="tl" class="tl-container">
-    <div ng-repeat="activity in timeline">
-      <div class="tl-block">
-        <div class="tl-colour tl-grey"></div>
-        <div class="tl-content">
-          <h5 class="tl-title">Title</h5>
-          <p class="tl-description">This is a test message to see how it goes.</p>
-          <p class="tl-location"><ion-icon name="pin"></ion-icon> Ombrellos</p>
-          <p class="tl-time"><ion-icon name="time"></ion-icon> 10:00 to 12:00</p>
+<ion-content scroll="false" padding>
+  <div id="dayDateArea">
+    <h2 id="dayDay"></h2>
+    <span id="dayDates"></span>
+    <div id="timeBar"></div>
+  </div>
+
+  <ion-content padding no-bounce>
+    <section id="tl" class="tl-container">
+      <div ng-repeat="activity in timeline">
+        <div class="tl-block">
+          <div class="tl-colour tl-grey"></div>
+          <div class="tl-content">
+            <h5 class="tl-title">Title</h5>
+            <p class="tl-description">This is a test message to see how it goes.</p>
+            <p class="tl-location">
+              <ion-icon name="pin"></ion-icon> Ombrellos</p>
+            <p class="tl-time">
+              <ion-icon name="time"></ion-icon> 10:00 to 12:00</p>
+          </div>
         </div>
       </div>
-    </div>
-    <div ng-repeat="activity in timeline">
-      <div class="tl-block">
-        <div class="tl-colour tl-blue"></div>
-        <!-- cd-timeline-img -->
-        <div class="tl-content">
-          <h5 class="tl-title">Title</h5>
-          <p class="tl-description">And another test.</p>
-          <p class="tl-location"><ion-icon name="pin"></ion-icon> Owheo Building</p>
-          <p class="tl-time"><ion-icon name="time"></ion-icon> 13:45 to 15:00</p>
+      <div ng-repeat="activity in timeline">
+        <div class="tl-block">
+          <div class="tl-colour tl-blue"></div>
+          <div class="tl-content">
+            <h5 class="tl-title">Title</h5>
+            <p class="tl-description">And another test.</p>
+            <p class="tl-location">
+              <ion-icon name="pin"></ion-icon> Owheo Building</p>
+            <p class="tl-time">
+              <ion-icon name="time"></ion-icon> 13:45 to 15:00</p>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-</ion-content>
+    </section>
+
+  </ion-content>

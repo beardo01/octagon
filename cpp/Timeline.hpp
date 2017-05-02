@@ -29,7 +29,7 @@ class Timeline {
         unsigned long id_;
 
         unsigned long user_id_;
-        vector<int> timeline_items_;
+        vector<TimelineItem> timeline_items_;
         string event_colour_;
         string meeting_colour_;
         string assignment_colour_;
@@ -37,13 +37,13 @@ class Timeline {
     public:
 
         // Constructor
-        Timeline(unsigned long, vector<int>, string, string, string);
+        Timeline(unsigned long, vector<TimelineItem>, string, string, string);
         ~Timeline();
 
         // Getters
         unsigned long getID();
         unsigned long getUserID();
-        vector<int> getTimelineItems();
+        vector<TimelineItem> getTimelineItems();
         string getEventColour();
         string getMeetingColour();
         string getAssignmentColour();
@@ -54,11 +54,15 @@ class Timeline {
         void setAssignmentColour(string);
 
         // Methods (CRUD order)
-        
-        // addItem(1, 1, "Meeting on Tuesday", "Owheo Building", 123, 1234)
-        //void addItem(unsigned long, short int, string, string, time_t, time_t);
 
-        // getTimeline(1, 123, 1234)
+        void printTimeline();
+        
+        // addItem(type, description, location, start date, end date, frequency, end date)
+        // addItem(1, "Meeting on Tuesday", "Owheo Building", 123, 1234, 0, 0)
+        void addItem(short int, string, string, time_t, time_t, 
+            short int frequency = -1, time_t ends = NULL);
+
+        // getTimeline(1, 123, 1234): start and end are optional
         //vector<TimelineItem> getTimeline(unsigned long, time_t, time_t);
 
         // getTimelineItem(1)

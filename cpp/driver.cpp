@@ -10,16 +10,17 @@
 
 #include "Timeline.hpp"
 #include "Timeline.cpp"
-#include "Timeline-odb.hxx"
+//#include "Timeline-odb.hxx"
 #include "TimelineItem.hpp"
-#include "TimelineItem-odb.hxx"
+#include "TimelineItem.cpp"
+//#include "TimelineItem-odb.hxx"
 
 using namespace std;
 using namespace odb::core;
 
 int main(int argc, char *argv[]) {
 
-    try
+    /*try
     {
         // Create database connection
         auto_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", "postgres", "104.197.11.127", 5432));
@@ -48,5 +49,23 @@ int main(int argc, char *argv[]) {
     {
         cerr << e.what() << endl;
         return 1;
+    }*/
+
+    Timeline timeline(1, vector<TimelineItem> (), "FF0000", "00FF00", "0000FF");
+
+    for(std::vector<int>::size_type i = 0; i != timeline.getTimelineItems().size(); i++) {
+        std::cout << timeline.getTimelineItems()[i].toString();
     }
+    
+    timeline.addItem(1, "Meeting with Sam", "11 Wharf Street", time_t(time), time_t(time) + 600);
+
+    timeline.printTimeline();
+
+    std::cout << endl;
+
+    timeline.addItem(2, "Meeting with Charlie", "11 Dock Street", time_t(time), 
+        time_t(time) + 600, 1, time_t(time) + (86400 * 21));
+
+    timeline.printTimeline();
+
 }

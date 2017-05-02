@@ -5,6 +5,7 @@
 #include <string>
 #include <ctime>
 #include <vector>
+#include <sstream>
 
 // ODB database include
 #include <odb/core.hxx>
@@ -27,41 +28,49 @@ class TimelineItem {
         #pragma db id auto
         unsigned long id_;
 
-        unsigned long timeline_id_;
         short int type_;
         time_t start_;
         time_t end_;
         string description_;
         string location_;
-        vector<int> linked_;
-        vector<int> linked_items_;
+        long linked_;
+        vector<TimelineItem> linked_items_;
 
     // Timeline Item methods
     public:
 
         // Constructor
-        TimelineItem(unsigned long, int, string, string, time_t, time_t, vector<int>, vector<int>);
+        TimelineItem(short int, string, string, time_t, time_t, long linked = -1, 
+            vector<TimelineItem> linked_items = vector<TimelineItem>());
+
+        // toString
+        string toString() {
+            std::stringstream ss;
+            ss << this->getID() << " " << this->getDescription() << " " << 
+                this->getStartTime() << " " << this->getEndTime() << " " << 
+                this->getLinkedItems().size() << endl;
+            std::string s = ss.str();
+            return s;
+        }
 
         // Getters
         unsigned long getID();
-        unsigned long getTimelineID();
         short int getType();
         time_t getStartTime();
         time_t getEndTime();
         string getDescription();
         string getLocation();
-        vector<int> getLinked();
-        vector<int> getLinkedItems();
-
+        long getLinked();
+        vector<TimelineItem> getLinkedItems();
 
         // Setters
         void setType(short int);
         void setStartTime(time_t);
         void setEndTime(time_t);
         void setDescrition(string);
-        void setLinked(vector<int>);
-        void setLinkedItems(vector<int>);
         void setLocation(string);
+        void setLinked(long);
+        void setLinkedItems(vector<TimelineItem>);
 };
 
 #endif

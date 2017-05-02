@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <limits>
 
 // ODB database include
 #include <odb/core.hxx>
@@ -66,6 +67,12 @@ class User {
 		void setMeetings(unsigned int);
 		void setEvents(unsigned int);
 		void setAssignments(unsigned int);
+
+		// Methods
+
+		// getTimeline(1, 123, 1234): start and end are optional
+        Timeline getTimeline(time_t start = 0, time_t end = 
+			std::numeric_limits<time_t>::max());
 
 };
 

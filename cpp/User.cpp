@@ -97,23 +97,10 @@ void User::setAssignments(unsigned int assignments) {
 	this->assignments_ = assignments;
 }
 
-int main() {
+// Methods
+/*Timeline getTimeline(time_t start, time_t end) {
+	if (start != 0) {
 
-	// Testing code
+	}
 
-	User user("Bob", "bob@xtra.co.nz", "123", "127.0.0.1");
-	cout << user.getName() << endl;
-	cout << user.getEmail() << endl;
-	user.setEmail("tony@xtra.co.nz");
-	cout << user.getEmail() << endl;
-	cout << user.getPassword() << endl;
-	cout << user.getTimeline() << endl;
-	cout << user.getCreate() << endl;
-	cout << user.getActivated() << endl;
-	cout << user.getLastIP() << endl;
-	cout << user.getMeetings() << endl;
-	cout << user.getEvents() << endl;
-	cout << user.getAssignments() << endl;
-
-
-}
+}*/

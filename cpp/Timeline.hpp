@@ -28,42 +28,45 @@ class Timeline {
         #pragma db id auto
         unsigned long id_;
 
-        unsigned long user_id_;
         vector<TimelineItem> timeline_items_;
-        string event_colour_;
-        string meeting_colour_;
-        string assignment_colour_;
+        string colour_one_;
+        string colour_two_;
+        string colour_three_;
+        string label_one_;
+        string label_two_;
+        string label_three_;
 
     public:
 
         // Constructor
-        Timeline(unsigned long, vector<TimelineItem>, string, string, string);
+        Timeline(vector<TimelineItem>, string, string, string, string, string, string);
         ~Timeline();
 
         // Getters
         unsigned long getID();
-        unsigned long getUserID();
         vector<TimelineItem> getTimelineItems();
-        string getEventColour();
-        string getMeetingColour();
-        string getAssignmentColour();
+        string getColourOne();
+        string getColourTwo();
+        string getColourThree();
+        string getLabelOne();
+        string getLabelTwo();
+        string getLabelThree();
 
         // Setters
-        void setEventColour(string);
-        void setMeetingColour(string);
-        void setAssignmentColour(string);
+        void setColourOne(string);
+        void setColourTwo(string);
+        void setColourThree(string);
+        void setLabelOne(string);
+        void setLabelTwo(string);
+        void setLabelThree(string);
 
         // Methods (CRUD order)
-
         void printTimeline();
         
         // addItem(type, description, location, start date, end date, frequency, end date)
         // addItem(1, "Meeting on Tuesday", "Owheo Building", 123, 1234, 0, 0)
         void addItem(short int, string, string, time_t, time_t, 
             short int frequency = -1, time_t ends = NULL);
-
-        // getTimeline(1, 123, 1234): start and end are optional
-        //vector<TimelineItem> getTimeline(unsigned long, time_t, time_t);
 
         // getTimelineItem(1)
         //TimelineItem getTimelineItem(unsigned long);

@@ -13,6 +13,9 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class LabelPage {
 
+  label1 : string = "Hey";
+  label2 : string = "Man";
+  label3 : string = "What's up";
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   ionViewDidLoad() {

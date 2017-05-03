@@ -5,43 +5,42 @@
   Ionic pages and navigation.
 -->
 <ion-header>
-
   <ion-navbar>
     <ion-title>Colour</ion-title>
   </ion-navbar>
-
 </ion-header>
 
 
-<ion-content padding>
-<sass-helper></sass-helper>
-<!--
-<ion-list>
-  <ion-item (click)="getTextColour()">
-      Console log text colour
-    <ion-icon name="arrow-forward" item-right></ion-icon>
-  </ion-item>
-</ion-list>
--->
-<ion-list>
-  <ion-item>
-      Assignment
-       <div class="colour-circle tl-grey"></div>
-  </ion-item>
-</ion-list>
+<ion-content padding class="page-bg">
 
-<ion-list>
-  <ion-item>
-      Meeting
-       <div class="colour-circle tl-blue"></div>
-  </ion-item>
-</ion-list>
+<button ion-button block class="item-container" (click)="displayHidden('colourOne')">
+<p>Assignment</p> <!-- will be {{ label1 }} when implemented -->
+<ul class="inner-list">
+  <li *ngIf="toggle1"><button ion-button ion-round [ngClass]='availableColours[0]'(click)="setEventColour(availableColours[0], 0)"></button></li>
+  <li *ngIf="toggle1"><button ion-button ion-round [ngClass]='availableColours[1]'(click)="setEventColour(availableColours[1], 0)"></button></li>
+  <li *ngIf="toggle1"><button ion-button ion-round [ngClass]='availableColours[2]'(click)="setEventColour(availableColours[2], 0)"></button></li>
+  <li><button ion-button ion-round [ngClass]='inUseColours[0]'></button></li>
+</ul>
+</button>
 
-<ion-list>
-  <ion-item>
-      Event
-       <div class="colour-circle tl-red"></div>
-  </ion-item>
-</ion-list>
+<button ion-button block id="colour2" class="item-container" (click)="displayHidden('colourTwo')">
+<p>Meeting</p>
+<ul class="inner-list">
+  <li *ngIf="toggle2"><button ion-button ion-round [ngClass]='availableColours[0]' (click)="setEventColour(availableColours[0], 1)"></button></li>
+  <li *ngIf="toggle2"><button ion-button ion-round [ngClass]='availableColours[1]' (click)="setEventColour(availableColours[1], 1)"></button></li>
+  <li *ngIf="toggle2"><button ion-button ion-round [ngClass]='availableColours[2]' (click)="setEventColour(availableColours[2], 1)"></button></li>
+  <li><button ion-button ion-round [ngClass]='inUseColours[1]'></button></li>
+</ul>
+</button>
+
+<button ion-button block id="colour2" class="item-container" (click)="displayHidden('colourThree')">
+<p>Event</p>
+<ul class="inner-list">
+  <li *ngIf="toggle3"><button ion-button ion-round [ngClass]='availableColours[0]'(click)="setEventColour(availableColours[0], 2)"></button></li>
+  <li *ngIf="toggle3"><button ion-button ion-round [ngClass]='availableColours[1]'(click)="setEventColour(availableColours[1], 2)"></button></li>
+  <li *ngIf="toggle3"><button ion-button ion-round [ngClass]='availableColours[2]'(click)="setEventColour(availableColours[2], 2)"></button></li>
+  <li><button ion-button ion-round [ngClass]='inUseColours[2]'></button></li>
+</ul>
+</button>
 
 </ion-content>

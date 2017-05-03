@@ -15,12 +15,20 @@ export class HomePage {
   }
 
   createPage() {
+    console.log("called");
     this.navCtrl.push(CreatePage);
+  }
+
+  dateChange(i) {
+    for (var x = 0; x < 5; x++) {
+      document.getElementById("button" + x).style.borderColor = "transparent";
+    }
+    document.getElementById("button" + i).style.borderBottom = "3px solid white";
   }
 
   ionViewDidLoad() {
     var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec',];
+    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',];
     var now = new Date();
     var day = days[now.getDay()];
 
@@ -29,7 +37,8 @@ export class HomePage {
 
     // Adds 5 dates to the page.
     for (var i = 0; i < 5; i++) {
-      document.getElementById("dayDates").innerHTML += "<h4>" + (now.getDate() + i).toString() + " " + months[(now.getMonth())] +  "</h4>";
+      console.log(i);
+      document.getElementById("button" + i).innerHTML += (now.getDate() + i).toString() + " " + months[(now.getMonth())];
     }
   }
 

@@ -12,37 +12,45 @@
 <ion-content scroll="false" padding no-bounce>
   <div id="dayDateArea">
     <h2 id="dayDay"></h2>
-    <span id="dayDates"></span>
+    <span id="dayDates">
+      <ion-buttons id="test">
+        <button id="button0" (click)="dateChange(0)" style="border-bottom:3px solid white;"></button>
+        <button id="button1" (click)="dateChange(1)"></button>
+        <button id="button2" (click)="dateChange(2)"></button>
+        <button id="button3" (click)="dateChange(3)"></button>
+        <button id="button4" (click)="dateChange(4)"></button>
+    </ion-buttons>
+    </span>
     <div id="timeBar"></div>
   </div>
 
-    <section id="tl" class="tl-container">
-      <div ng-repeat="activity in timeline">
-        <div class="tl-block">
-          <div class="tl-colour tl-grey"></div>
-          <div class="tl-content">
-            <h5 class="tl-title">Title</h5>
-            <p class="tl-description">This is a test message to see how it goes.</p>
-            <p class="tl-location">
-              <ion-icon name="pin"></ion-icon> Ombrellos</p>
-            <p class="tl-time">
-              <ion-icon name="time"></ion-icon> 10:00 to 12:00</p>
-          </div>
+  <section id="tl" class="tl-container">
+    <div ng-repeat="activity in timeline">
+      <div class="tl-block">
+        <div class="tl-colour tl-grey"></div>
+        <div class="tl-content">
+          <h5 class="tl-title">Title</h5>
+          <p class="tl-description">This is a test message to see how it goes.</p>
+          <p class="tl-location">
+            <ion-icon name="pin"></ion-icon> Ombrellos</p>
+          <p class="tl-time">
+            <ion-icon name="time"></ion-icon> 10:00 to 12:00</p>
         </div>
       </div>
-      <div ng-repeat="activity in timeline">
-        <div class="tl-block">
-          <div class="tl-colour tl-blue"></div>
-          <div class="tl-content">
-            <h5 class="tl-title">Title</h5>
-            <p class="tl-description">And another test.</p>
-            <p class="tl-location">
-              <ion-icon name="pin"></ion-icon> Owheo Building</p>
-            <p class="tl-time">
-              <ion-icon name="time"></ion-icon> 13:45 to 15:00</p>
-          </div>
+    </div>
+    <div ng-repeat="activity in timeline">
+      <div class="tl-block">
+        <div class="tl-colour tl-blue"></div>
+        <div class="tl-content">
+          <h5 class="tl-title">Title</h5>
+          <p class="tl-description">And another test.</p>
+          <p class="tl-location">
+            <ion-icon name="pin"></ion-icon> Owheo Building</p>
+          <p class="tl-time">
+            <ion-icon name="time"></ion-icon> 13:45 to 15:00</p>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
 </ion-content>

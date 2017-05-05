@@ -13,6 +13,7 @@
 
 <ion-content padding class="page-bg">
 
+<ion-list>
 <button ion-button block class="item-container" (click)="displayHidden('colourOne')">
 <p>Assignment</p> <!-- will be {{ label1 }} when implemented -->
 <ul class="inner-list">
@@ -22,7 +23,9 @@
   <li><button ion-button ion-round [ngClass]='inUseColours[0]'></button></li>
 </ul>
 </button>
+</ion-list>
 
+<ion-list>
 <button ion-button block id="colour2" class="item-container" (click)="displayHidden('colourTwo')">
 <p>Meeting</p>
 <ul class="inner-list">
@@ -32,7 +35,9 @@
   <li><button ion-button ion-round [ngClass]='inUseColours[1]'></button></li>
 </ul>
 </button>
+</ion-list>
 
+<ion-list>
 <button ion-button block id="colour2" class="item-container" (click)="displayHidden('colourThree')">
 <p>Event</p>
 <ul class="inner-list">
@@ -42,5 +47,6 @@
   <li><button ion-button ion-round [ngClass]='inUseColours[2]'></button></li>
 </ul>
 </button>
+</ion-list>
 
 </ion-content>

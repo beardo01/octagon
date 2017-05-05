@@ -1,8 +1,44 @@
 page-label {
-    .label-container {
-        color: white;
+    color: $text-color;
+    
+    .red {
+        background: color($colors, red);
     }
-    p {
-        justify-content: flex-start;
+
+    .green {
+        background: color($colors, green);
+    }
+
+    .yellow {
+        background: color($colors, yellow);
+    }
+
+    .blue {
+        background: color($colors, blue);
+    }
+
+    .purple {
+        background: color($colors, purple);
+    }
+
+    .grey {
+        background: color($colors, grey);
+    } 
+    .event-label {
+        width: 85%;
+        float: left;
+        }
+        ion-input {
+            //max-width: 50%;
+        }
+    .button-wrapper {
+        margin-top:6px; 
+        float:right;
+        div {
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            margin: 0 7.5px
+        }
     }
 }

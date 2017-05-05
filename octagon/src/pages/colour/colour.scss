@@ -33,7 +33,9 @@ page-colour {
     
     */
     .item-container {
-        color: white;
+        color: $text-color;
+        font-size: 17px;
+        border-radius: 10px;
         p {
             margin-right:auto;
             padding-left: 10px;

@@ -1,14 +1,16 @@
 #include "Timeline.hpp"
 
 // Constructor
-Timeline::Timeline(unsigned long user_id, vector<TimelineItem> timeline_items, 
-string event_colour, string meeting_colour, string assignment_colour) {
-
-    user_id_ = user_id;
-    timeline_items_ = timeline_items;
-    event_colour_ = event_colour;
-    meeting_colour_ = meeting_colour;
-    assignment_colour_ = assignment_colour;
+Timeline::Timeline(vector<TimelineItem> timeline_items, string colour_one, 
+    string colour_two, string colour_three, string label_one, string label_two, 
+    string label_three) {
+        timeline_items_ = timeline_items;
+        colour_one_ = colour_one;
+        colour_two_ = colour_two;
+        colour_three_ = colour_three;
+        label_one_ = label_one;
+        label_two_ = label_two;
+        label_three_ = label_three;
 }
 
 Timeline::~Timeline(void) {
@@ -20,37 +22,57 @@ unsigned long Timeline::getID(){
     return id_;
 }
 
-unsigned long Timeline::getUserID(){
-    return user_id_;
-}
-
 vector<TimelineItem> Timeline::getTimelineItems() {
     return timeline_items_;
 }
 
-string Timeline::getEventColour(){
-    return event_colour_;
+string Timeline::getColourOne(){
+    return colour_one_;
 }
 
-string Timeline::getMeetingColour(){
-    return meeting_colour_;
+string Timeline::getColourTwo(){
+    return colour_two_;
 }
 
-string Timeline::getAssignmentColour(){
-    return assignment_colour_;
+string Timeline::getColourThree(){
+    return colour_three_;
+}
+
+string Timeline::getLabelOne(){
+    return label_one_;
+}
+
+string Timeline::getLabelTwo(){
+    return label_two_;
+}
+
+string Timeline::getLabelThree(){
+    return label_three_;
 }
 
 // Setters
-void Timeline::setEventColour(string event_colour) {
-    this->event_colour_ = event_colour;
+void Timeline::setColourOne(string colour_one) {
+    this->colour_one_ = colour_one;
 }
 
-void Timeline::setMeetingColour(string meeting_colour) {
-    this->meeting_colour_ = meeting_colour;
+void Timeline::setColourTwo(string colour_two) {
+    this->colour_two_ = colour_two;
 }
 
-void Timeline::setAssignmentColour(string assignment_colour) {
-    this->assignment_colour_ = assignment_colour;
+void Timeline::setColourThree(string colour_three) {
+    this->colour_three_ = colour_three;
+}
+
+void Timeline::setLabelOne(string label_one) {
+    this->label_one_ = label_one;
+}
+
+void Timeline::setLabelTwo(string label_two) {
+    this->label_two_ = label_two;
+}
+
+void Timeline::setLabelThree(string label_three) {
+    this->label_three_ = label_three;
 }
 
 // Methods
@@ -113,5 +135,7 @@ void Timeline::addItem(short int type, string description, string location, time
         // Add the new item to the timeline
         this->timeline_items_.push_back(new_item);
     }
-}
 
+    // Sort the timeline items
+    std::sort(this->timeline_items_.begin(), this->timeline_items_.end());
+}

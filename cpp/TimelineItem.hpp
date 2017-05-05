@@ -53,6 +53,12 @@ class TimelineItem {
             return s;
         }
 
+        // Comparator
+        friend bool operator<(TimelineItem l, TimelineItem r) {
+            return l.start_ > r.start_;
+        }
+
+
         // Getters
         unsigned long getID();
         short int getType();

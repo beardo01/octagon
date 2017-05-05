@@ -1,14 +1,14 @@
 #include "User.hpp"
 
 // User contrsuctor
-User::User(string name, string email, string password, string ip): 
-	name_(name), 
-	email_(email), 
-	password_(password), 
-	last_ip_(ip) {
+User::User(string name, string email, string password, string ip) {
+	name_ = name;
+	email_ = email; 
+	password_ = password; 
+	last_ip_ = ip;
 	create_date_ = time(0);
-	timeline_ = 1;
-	activated_, meetings_, events_, assignments_ = 0;
+	timeline_ = new Timeline(vector<TimelineItem> (), "#3498DB", "#2ECC71", "#F1C40F", "Meeting", "Assignment", "Event");
+	activated_, ones_, twos_, threes_ = 0;
 }
 
 // Getters
@@ -28,8 +28,8 @@ string User::getPassword() {
 	return password_;
 }
 
-int User::getTimeline() {
-	return timeline_;
+Timeline* User::getTimeline() {
+	return this->timeline_;
 }
 
 time_t User::getCreate() {
@@ -44,16 +44,16 @@ string User::getLastIP() {
 	return last_ip_;
 }
 
-unsigned int User::getMeetings() {
-	return meetings_;
+unsigned int User::getOnes() {
+	return ones_;
 }
 
-unsigned int User::getEvents() {
-	return events_;
+unsigned int User::getTwos() {
+	return twos_;
 }
 
-unsigned int User::getAssignments() {
-	return assignments_;
+unsigned int User::getThrees() {
+	return threes_;
 }
 
 // Setters
@@ -69,10 +69,6 @@ void User::setPassword(string password) {
 	this->password_ = password;
 }
 
-void User::setTimeline(int timeline) {
-	this->timeline_ = timeline;
-}
-
 void User::setCreate(time_t create) {
 	this->create_date_ = create;
 }
@@ -85,22 +81,14 @@ void User::setLastIP(string ip) {
 	this->last_ip_ = ip;
 }
 
-void User::setMeetings(unsigned int meetings) {
-	this->meetings_ = meetings;
+void User::setOnes(unsigned int ones) {
+	this->ones_ = ones;
 }
 
-void User::setEvents(unsigned int events) {
-	this->events_ = events;
+void User::setTwos(unsigned int twos) {
+	this->twos_ = twos;
 }
 
-void User::setAssignments(unsigned int assignments) {
-	this->assignments_ = assignments;
+void User::setThrees(unsigned int threes) {
+	this->threes_ = threes;
 }
-
-// Methods
-/*Timeline getTimeline(time_t start, time_t end) {
-	if (start != 0) {
-
-	}
-
-}*/

@@ -14,6 +14,8 @@
 #include "TimelineItem.hpp"
 #include "TimelineItem.cpp"
 //#include "TimelineItem-odb.hxx"
+#include "User.hpp"
+#include "User.cpp"
 
 using namespace std;
 using namespace odb::core;
@@ -51,11 +53,16 @@ int main(int argc, char *argv[]) {
         return 1;
     }*/
 
-    Timeline timeline(1, vector<TimelineItem> (), "FF0000", "00FF00", "0000FF");
+    /* 
+    
+    Testing phase one
 
-    for(std::vector<int>::size_type i = 0; i != timeline.getTimelineItems().size(); i++) {
-        std::cout << timeline.getTimelineItems()[i].toString();
-    }
+    //////
+
+    Timeline timeline(1, vector<TimelineItem> (), "FF0000", "00FF00", "0000FF",
+        "Meeting", "Assignment", "Event");
+
+    timeline.printTimeline();
     
     timeline.addItem(1, "Meeting with Sam", "11 Wharf Street", time_t(time), time_t(time) + 600);
 
@@ -67,5 +74,16 @@ int main(int argc, char *argv[]) {
         time_t(time) + 600, 1, time_t(time) + (86400 * 21));
 
     timeline.printTimeline();
+
+    */
+
+    User user("Oliver Reid", "oliver.reid@otago.ac.nz", "password", "127.0.0.1");
+
+    std::cout << user.getTimeline()->getTimelineItems().size();
+
+    user.getTimeline()->addItem(1, "Meeting with Bob", "Something Street", time_t(0), time_t(0) + 600);
+
+    user.getTimeline()->printTimeline();
+
 
 }

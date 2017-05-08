@@ -14,5 +14,30 @@
 
 
 <ion-content padding>
+<form>
 
+<ion-list class="event-label">
+  <ion-item>
+  <ion-input min="1" max="12" clearOnEdit="true" name="labelOne" [(ngModel)]="label1"></ion-input>
+  </ion-item>
+</ion-list>
+ <div class="button-wrapper"><div [ngClass]='colours[0]'></div></div>
+
+<ion-list class="event-label">
+  <ion-item>
+  <ion-input min="1" max="12" clearOnEdit="true" name="labelTwo" [(ngModel)]="label2"></ion-input>
+  </ion-item>
+</ion-list>
+<div class="button-wrapper"><div [ngClass]='colours[1]'></div></div>
+
+<ion-list class="event-label">
+  <ion-item>
+    <ion-input min="1" max="12" clearOnEdit="true" name="labelThree" [(ngModel)]="label3"></ion-input>
+  </ion-item>
+</ion-list>
+<div class="button-wrapper"><div [ngClass]='colours[2]'></div></div>
+
+<button ion-button type="submit" block>Make Changes</button>
+
+</form>
 </ion-content>

@@ -12,11 +12,17 @@ import { NavController, NavParams } from 'ionic-angular';
   templateUrl: 'label.html'
 })
 export class LabelPage {
-
+  colours : string [] = ["red", "blue", "purple"];
+  label1 : string = "Hey";
+  label2 : string = "Man";
+  label3 : string = "What's up";
   constructor(public navCtrl: NavController, public navParams: NavParams) {}
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad LabelPage');
   }
-
+  getColours() {
+    // Get colours from cordova plugin
+  }
+  
 }

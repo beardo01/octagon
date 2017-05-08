@@ -9,6 +9,9 @@
 // ODB database include
 #include <odb/core.hxx>
 
+#include "Timeline.hpp"
+#include "TimelineItem.hpp"
+
 // String declaration for ODB persistence
 #pragma db value(std::string) type("VARCHAR(128)")
 
@@ -30,13 +33,13 @@ class User {
 		string name_;
 		string email_;
 		string password_;
-		int timeline_;
+		Timeline *timeline_;
 		time_t create_date_;
 		short int activated_;
 		string last_ip_;
-		unsigned int meetings_;
-		unsigned int events_;
-		unsigned int assignments_;
+		unsigned int ones_;
+		unsigned int twos_;
+		unsigned int threes_;
 
 	// User methods
 	public:
@@ -48,31 +51,26 @@ class User {
 		string getName();
 		string getEmail();
 		string getPassword();
-		int getTimeline();
+		Timeline * getTimeline();
 		time_t getCreate();
 		short int getActivated();
 		string getLastIP();
-		unsigned int getMeetings();
-		unsigned int getEvents();
-		unsigned int getAssignments();
+		unsigned int getOnes();
+		unsigned int getTwos();
+		unsigned int getThrees();
 
 		// Setters
 		void setName(string);
 		void setEmail(string);
 		void setPassword(string);
-		void setTimeline(int);
 		void setCreate(time_t);
 		void setActivated(short int);
 		void setLastIP(string);
-		void setMeetings(unsigned int);
-		void setEvents(unsigned int);
-		void setAssignments(unsigned int);
-
+		void setOnes(unsigned int);
+		void setTwos(unsigned int);
+		void setThrees(unsigned int);
+		
 		// Methods
-
-		// getTimeline(1, 123, 1234): start and end are optional
-        Timeline getTimeline(time_t start = 0, time_t end = 
-			std::numeric_limits<time_t>::max());
 
 };
 

@@ -24,7 +24,6 @@ export class ColourPage {
  */
   ionViewDidLoad() {
     this.getAvailableColours();
-
   }
   /**
    * When a user clicks a colour button the value of the button stored in the availableColours array is swapped with
@@ -38,6 +37,7 @@ export class ColourPage {
       var oldInUseColour = this.inUseColours[arrayPosition];
       this.inUseColours[arrayPosition] = colour;
       this.availableColours[availableArrayIndex] = oldInUseColour;
+      // Push data to plugin @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     }
   }
 /**

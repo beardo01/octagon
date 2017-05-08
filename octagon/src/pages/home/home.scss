@@ -157,6 +157,22 @@ span button {
   margin: 30px auto 30px auto;
   background-color: rgba(255, 255, 255, 0.3);
   width: 100%;
-  height: 15px;
+  height: 30px;
   border-radius: 25px;
+}
+
+.bubble {
+  content: '';
+  display: inline-block;
+  float: left;
+  margin-right: 4px;
+  height: 25px;
+  width: 8%;
+  margin-top: 2.5px;
+  border-radius: 25px;
+  background-color: white;
+}
+
+.bubble:first-child {
+  margin-left: 10px;
 }

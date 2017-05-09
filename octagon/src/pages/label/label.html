@@ -14,7 +14,7 @@
 
 
 <ion-content padding>
-<form>
+<form (ngSubmit)="changeLabels()">
 
 <ion-list class="event-label">
   <ion-item>
@@ -37,7 +37,7 @@
 </ion-list>
 <div class="button-wrapper"><div [ngClass]='colours[2]'></div></div>
 
-<button ion-button type="submit" block>Make Changes</button>
+<button id="submit-button" ion-button type="submit" block>Make Changes</button>
 
 </form>
 </ion-content>

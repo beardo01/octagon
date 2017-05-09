@@ -24,5 +24,7 @@ export class LabelPage {
   getColours() {
     // Get colours from cordova plugin
   }
-  
+  changeLabels() {
+    // push to cordova plugin
+  }
 }

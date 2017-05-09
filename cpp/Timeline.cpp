@@ -95,7 +95,8 @@ void Timeline::addItem(short int type, string description, string location, time
         // It doesn't have any repeats
 
         //Create new TimelineItem
-        TimelineItem new_item(type, description, location, start, end);
+        Event *new_event = new Event(type, description, location);
+        TimelineItem new_item(new_event, start, end);
 
         // Add the new item to the timeline
         this->timeline_items_.push_back(new_item);
@@ -121,11 +122,12 @@ void Timeline::addItem(short int type, string description, string location, time
         vector<TimelineItem> repeat_items;
 
         // Create intial event
-        TimelineItem new_item(type, description, location, start, end, -1, repeat_items); 
+        Event *new_event = new Event(type, description, location);
+        TimelineItem new_item(new_event, start, end, repeat_items); 
 
         // Create repeats (repeats - 1 because we make one less repeat because of new_item)
         for(int i = 0; i < (repeats - 1); i++) {
-            TimelineItem item(type, description, location, start, end, new_item.getID());
+            TimelineItem item(new_event, start, end, &new_item);
             repeat_items.push_back(item);
         }
 

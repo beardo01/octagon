@@ -16,6 +16,8 @@
 //#include "TimelineItem-odb.hxx"
 #include "User.hpp"
 #include "User.cpp"
+#include "Event.hpp"
+#include "Event.cpp"
 
 using namespace std;
 using namespace odb::core;
@@ -81,7 +83,15 @@ int main(int argc, char *argv[]) {
 
     std::cout << user.getTimeline()->getTimelineItems().size();
 
-    user.getTimeline()->addItem(1, "Meeting with Bob", "Something Street", time_t(0), time_t(0) + 600);
+    user.getTimeline()->addItem(1, "Meeting with Bob", "Something Street", time_t(0), 
+        time_t(0) + 600, 0, time_t(time) + (86400 * 2));
+    user.getTimeline()->addItem(2, "Meeting with Jim", "Another Street", time_t(0), time_t(time));
+
+    // std::cout << user.getTimeline()->getTimelineItems()[0].toString() << endl;
+
+    user.getTimeline()->printTimeline();
+
+    user.getTimeline()->getTimelineItems()[0].setDescription("Meeting with Bill");
 
     user.getTimeline()->printTimeline();
 

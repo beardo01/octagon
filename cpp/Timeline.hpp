@@ -70,13 +70,14 @@ class Timeline {
             short int frequency = -1, time_t ends = NULL);
 
         // getTimelineItem(1)
-        //TimelineItem getTimelineItem(unsigned long);
+        TimelineItem getTimelineItem(unsigned long);
 
         // updateItem(1, 1, "Meeting on Tuesday afternoon", "Owheo, Lab A", 123, 1234)
-        //void updateItem(unsigned long, short int, string, string, time_t, time_t);
+        void updateTimelineItem(unsigned long, short int, string, string, time_t, time_t,
+            short int frequency = -1, time_t ends = NULL);
 
         // deleteItem(1)
-        //void deleteItem(unsigned long);
+        void deleteTimelineItem(unsigned long);
 
 };
 

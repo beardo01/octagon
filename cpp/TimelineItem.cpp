@@ -27,6 +27,10 @@ unsigned long TimelineItem::getID(){
     return id_;
 }
 
+Event* TimelineItem::getEvent() {
+    return this->event_;
+}
+
 short int TimelineItem::getType(){
     return this->event_->getType();
 }

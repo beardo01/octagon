@@ -1,15 +1,26 @@
 #include "TimelineItem.hpp"
 
-// Constructor
-TimelineItem::TimelineItem(short int type, string description, string location, 
-    time_t start, time_t end, long linked, vector<TimelineItem> linked_items):
-    type_(type),
-    description_(description),
-    location_(location),
+// Constructors
+TimelineItem::TimelineItem(Event *event, time_t start, time_t end):
+    event_(event),
+    start_(start),
+    end_(end)
+    {}
+
+TimelineItem::TimelineItem(Event *event, time_t start, time_t end, TimelineItem *linked):
+    event_(event),
     start_(start),
     end_(end),
-    linked_(linked),
-    linked_items_(linked_items) {}
+    linked_(linked)
+    {}
+
+TimelineItem::TimelineItem(Event *event, time_t start, time_t end, 
+    vector<TimelineItem> linked_items):
+        event_(event),
+        start_(start),
+        end_(end),
+        linked_items_(linked_items) 
+        {}
 
 // Getters
 unsigned long TimelineItem::getID(){
@@ -17,36 +28,36 @@ unsigned long TimelineItem::getID(){
 }
 
 short int TimelineItem::getType(){
-    return type_;
+    return this->event_->getType();
 }
 
 time_t TimelineItem::getStartTime(){
-    return start_;
+    return this->start_;
 }
 
 time_t TimelineItem::getEndTime(){
-    return end_;
+    return this->end_;
 }
 
 string TimelineItem::getDescription(){
-    return description_;
+    return this->event_->getDescription();
 }
 
 string TimelineItem::getLocation(){
-    return location_;
+    return this->event_->getLocation();
 }
 
-long TimelineItem::getLinked(){
-    return linked_;
+TimelineItem* TimelineItem::getLinked(){
+    return this->linked_;
 }
 
 vector<TimelineItem> TimelineItem::getLinkedItems(){
-    return linked_items_;
+    return this->linked_items_;
 }
 
 // Setters
 void TimelineItem::setType(short int type){
-    this->type_ = type;
+    this->event_->setType(type);
 }
 
 void TimelineItem::setStartTime(time_t start){
@@ -57,15 +68,15 @@ void TimelineItem::setEndTime(time_t end){
     this->end_ = end;
 }
 
-void TimelineItem::setDescrition(string description){
-    this->description_ = description;
+void TimelineItem::setDescription(string description){
+    this->event_->setDescription(description);
 }
 
 void TimelineItem::setLocation(string location){
-    this->location_ = location;
+    this->event_->setLocation(location);
 }
 
-void TimelineItem::setLinked(long linked){
+void TimelineItem::setLinked(TimelineItem *linked){
     this->linked_ = linked;
 }
 

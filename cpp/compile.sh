@@ -3,6 +3,9 @@
 echo "Compiling Timeline..."
 g++ -c ~/dev/uni/345/octagon/cpp/Timeline.cpp
 
+echo "Compiling Event..."
+g++ -c ~/dev/uni/345/octagon/cpp/Event.cpp
+
 echo "Compiling TimelineItem..."
 g++ -c ~/dev/uni/345/octagon/cpp/TimelineItem.cpp
 

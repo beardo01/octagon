@@ -40,6 +40,8 @@
         "*.txx": "cpp",
         "*.ixx": "cpp",
         "*.ipp": "cpp",
-        "system_error": "cpp"
+        "system_error": "cpp",
+        "chrono": "cpp",
+        "ratio": "cpp"
     }
 }

@@ -10,6 +10,8 @@
 // ODB database include
 #include <odb/core.hxx>
 
+#include "Event.hpp"
+
 // String declaration for ODB persistence
 #pragma db value(std::string) type("VARCHAR(128)")
 
@@ -28,20 +30,19 @@ class TimelineItem {
         #pragma db id auto
         unsigned long id_;
 
-        short int type_;
+        Event *event_;
         time_t start_;
         time_t end_;
-        string description_;
-        string location_;
-        long linked_;
+        TimelineItem *linked_;
         vector<TimelineItem> linked_items_;
 
     // Timeline Item methods
     public:
 
         // Constructor
-        TimelineItem(short int, string, string, time_t, time_t, long linked = -1, 
-            vector<TimelineItem> linked_items = vector<TimelineItem>());
+        TimelineItem(Event*, time_t, time_t);
+        TimelineItem(Event*, time_t, time_t, TimelineItem*);
+        TimelineItem(Event*, time_t, time_t, vector<TimelineItem>);
 
         // toString
         string toString() {
@@ -66,16 +67,16 @@ class TimelineItem {
         time_t getEndTime();
         string getDescription();
         string getLocation();
-        long getLinked();
+        TimelineItem *getLinked();
         vector<TimelineItem> getLinkedItems();
 
         // Setters
         void setType(short int);
         void setStartTime(time_t);
         void setEndTime(time_t);
-        void setDescrition(string);
+        void setDescription(string);
         void setLocation(string);
-        void setLinked(long);
+        void setLinked(TimelineItem*);
         void setLinkedItems(vector<TimelineItem>);
 };
 

@@ -9,6 +9,7 @@
 // ODB database include
 #include <odb/core.hxx>
 
+#include "Event.hpp"
 #include "TimelineItem.hpp"
 
 // String declaration for ODB persistence

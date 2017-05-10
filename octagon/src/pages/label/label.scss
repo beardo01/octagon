@@ -27,7 +27,7 @@ page-label {
     .event-label {
         width: 85%;
         float: left;
-    }
+        }
 
     .button-wrapper {
         margin-top:6px; 
@@ -39,7 +39,8 @@ page-label {
             margin: 0 7.5px
         }
     }
-    #submit-button {
-        color: $text-color;
+    .invalid {
+        border-radius: 15px;
+        border: 1px solid #ea6153;
     }
 }

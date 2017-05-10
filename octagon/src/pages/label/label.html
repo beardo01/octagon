@@ -8,36 +8,50 @@
 
   <ion-navbar>
     <ion-title>Labels</ion-title>
+      <ion-buttons end>
+        <button ion-button icon-only type="submit" form="labelNames">
+         <ion-icon name="ios-ice-cream-outline"></ion-icon>
+        </button>
+      </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-<form (ngSubmit)="changeLabels()">
+<form id="labelNames" [formGroup]="labelForm" (ngSubmit)="save(labelForm.value)">
 
-<ion-list class="event-label">
+<ion-list class="event-label" [class.invalid]="!labelForm.controls.label1.valid && (labelForm.controls.label1.dirty || submitAttempt)">
   <ion-item>
-  <ion-input min="1" max="12" clearOnEdit="true" name="labelOne" [(ngModel)]="label1"></ion-input>
+    <ion-input clearOnEdit="true" formControlName="label1" ></ion-input>
+  </ion-item>
+  <ion-item *ngIf="!labelForm.controls.label1.valid && (labelForm.controls.label1.dirty || submitAttempt)" >
+      <small>Must be between 3 and 15 letters</small>
   </ion-item>
 </ion-list>
- <div class="button-wrapper"><div [ngClass]='colours[0]'></div></div>
+<div class="button-wrapper"><div [ngClass]='colours[0]'></div></div>
+ 
 
-<ion-list class="event-label">
+<ion-list class="event-label" [class.invalid]="!labelForm.controls.label2.valid && (labelForm.controls.label2.dirty || submitAttempt)">
   <ion-item>
-  <ion-input min="1" max="12" clearOnEdit="true" name="labelTwo" [(ngModel)]="label2"></ion-input>
+  <ion-input clearOnEdit="true" formControlName="label2"></ion-input>
+  </ion-item>
+    <ion-item *ngIf="!labelForm.controls.label2.valid && (labelForm.controls.label2.dirty || submitAttempt)" >
+      <small>Must be between 3 and 15 letters</small>
   </ion-item>
 </ion-list>
 <div class="button-wrapper"><div [ngClass]='colours[1]'></div></div>
 
-<ion-list class="event-label">
+<ion-list class="event-label" [class.invalid]="!labelForm.controls.label3.valid && (labelForm.controls.label3.dirty || submitAttempt)">
   <ion-item>
-    <ion-input min="1" max="12" clearOnEdit="true" name="labelThree" [(ngModel)]="label3"></ion-input>
+    <ion-input clearOnEdit="true" formControlName="label3"></ion-input>
+  </ion-item>
+    <ion-item *ngIf="!labelForm.controls.label3.valid && (labelForm.controls.label3.dirty || submitAttempt)" >
+      <small>Must be between 3 and 15 letters</small>
   </ion-item>
 </ion-list>
 <div class="button-wrapper"><div [ngClass]='colours[2]'></div></div>
 
-<button id="submit-button" ion-button type="submit" block>Make Changes</button>
 
 </form>
 </ion-content>

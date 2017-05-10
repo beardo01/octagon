@@ -63,6 +63,7 @@ class TimelineItem {
         // Getters
         unsigned long getID();
         short int getType();
+        Event *getEvent();
         time_t getStartTime();
         time_t getEndTime();
         string getDescription();

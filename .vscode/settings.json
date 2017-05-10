@@ -42,6 +42,13 @@
         "*.ipp": "cpp",
         "system_error": "cpp",
         "chrono": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "strstream": "cpp",
+        "complex": "cpp",
+        "valarray": "cpp",
+        "atomic": "cpp",
+        "condition_variable": "cpp",
+        "mutex": "cpp",
+        "thread": "cpp"
     }
 }

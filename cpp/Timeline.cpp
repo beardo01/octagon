@@ -11,6 +11,7 @@ Timeline::Timeline(vector<TimelineItem> timeline_items, string colour_one,
         label_one_ = label_one;
         label_two_ = label_two;
         label_three_ = label_three;
+        std::cout << "Constructing timeline" << endl;
 }
 
 Timeline::~Timeline(void) {
@@ -103,7 +104,7 @@ void Timeline::addItem(short int type, string description, string location, time
     } else {
         // It does have repeats
         time_t now = time_t(time);
-        long diff = ends - now;
+        long diff = ends - start;
         long seconds_day = 86400;
         int repeats;
         
@@ -140,4 +141,78 @@ void Timeline::addItem(short int type, string description, string location, time
 
     // Sort the timeline items
     std::sort(this->timeline_items_.begin(), this->timeline_items_.end());
+}
+
+TimelineItem Timeline::getTimelineItem(unsigned long id) {
+    for(int i = 0; i < this->timeline_items_.size(); i++) {
+        if (this->timeline_items_[i].getID() == id) {
+            return this->timeline_items_[i];
+        }
+    }
+
+    // Temp solution
+    Event *event = new Event(0, "Not found", "Not found");
+    return TimelineItem(event, time_t(0), time_t(0));
+}
+
+void Timeline::updateTimelineItem(unsigned long id, short int type, string description,
+    string location, time_t start, time_t end, short int frequency, time_t ends) {
+        TimelineItem item = getTimelineItem(id);
+
+        item.setType(type);
+        item.setDescription(description);
+        item.setLocation(location);
+        
+        if (frequency != -1) {
+            // Get the OG item
+            if(item.getLinkedItems().size() == 0) {
+                item = *item.getLinked();
+            }
+
+            // Update its times
+            item.setStartTime(start);
+            item.setEndTime(end);
+
+            // Delete the repeating items
+            for(int i = 0; i != item.getLinkedItems().size(); i++) {
+                this->deleteTimelineItem(item.getLinkedItems()[i].getID());
+            }
+
+            // Recreate them
+            time_t now = time_t(time);
+            long diff = ends - start;
+            long seconds_day = 86400;
+            int repeats;
+            
+            if(frequency == 0) {
+                // Daily repeats
+                repeats = diff/seconds_day;
+            } else if (frequency == 1) {
+                // Weekly repeats
+                repeats = diff/(seconds_day*7);
+            } else if (frequency == 2) {
+                // Monthly repeats
+                repeats = diff/(seconds_day*30);
+            }
+            
+            // Declare repeated items
+            vector<TimelineItem> repeat_items;
+
+            // Create repeats (repeats - 1 because we make one less repeat because of new_item)
+            for(int i = 0; i < (repeats - 1); i++) {
+                TimelineItem repeat_item(item.getEvent(), start, end, &item);
+                repeat_items.push_back(repeat_item);
+            }
+
+            // Update initial item
+            item.setLinkedItems(repeat_items);
+        }
+}
+
+void Timeline::deleteTimelineItem(unsigned long id) {
+    for(int i = 0; i < this->timeline_items_.size(); i++) {
+        if (this->timeline_items_[i].getID() == id) {
+            this->timeline_items_.erase(this->timeline_items_.begin() + i);
+        }
+     }
 }

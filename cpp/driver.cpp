@@ -79,18 +79,13 @@ int main(int argc, char *argv[]) {
 
     */
 
-    std::cout << "Before the before before" << endl;
     User user("Oliver Reid", "oliver.reid@otago.ac.nz", "password", "127.0.0.1");
 
-    std::cout << "Before before" << endl;
     std::cout << user.getTimeline()->getTimelineItems().size();
 
-    std::cout << "Before" << endl;
     user.getTimeline()->addItem(2, "Meeting with Jim", "Another Street", time_t(0), time_t(time));
     user.getTimeline()->addItem(1, "Meeting with Bob", "Something Street", time_t(time), 
          time_t(time) + 600, 0, time_t(time) + (86400 * 2));
-    std::cout << "During" << endl;
-    std::cout << "After" << endl;
 
     // std::cout << user.getTimeline()->getTimelineItems()[0].toString() << endl;
 
@@ -98,7 +93,7 @@ int main(int argc, char *argv[]) {
 
     std::cout << endl;
 
-    TimelineItem ti = user.getTimeline()->getTimelineItem(user.getTimeline()->getTimelineItems()[1].getID());
+    TimelineItem ti = user.getTimeline()->getTimelineItem(user.getTimeline()->getTimelineItems()[0].getID());
     std::cout << ti.toString() << endl;
     user.getTimeline()->deleteTimelineItem(ti.getID());
 

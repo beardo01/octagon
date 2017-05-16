@@ -11,7 +11,6 @@ Timeline::Timeline(vector<TimelineItem> timeline_items, string colour_one,
         label_one_ = label_one;
         label_two_ = label_two;
         label_three_ = label_three;
-        std::cout << "Constructing timeline" << endl;
 }
 
 Timeline::~Timeline(void) {

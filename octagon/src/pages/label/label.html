@@ -28,7 +28,7 @@
       <div class="coloured-dot-wrapper"><div [ngClass]='colours[0]'></div></div>
     </ion-label>
   </ion-item>
-  <ion-item *ngIf="!labelForm.controls.label1.valid && (labelForm.controls.label1.dirty || submitAttempt)" >
+  <ion-item *ngIf="!labelForm.controls.label1.valid && submitAttempt" >
       <small>Must be between 3 and 15 letters</small>
   </ion-item>
 </ion-list>
@@ -41,7 +41,7 @@
     <div class="coloured-dot-wrapper"><div [ngClass]='colours[1]'></div></div>
   </ion-label>
   </ion-item>
-    <ion-item *ngIf="!labelForm.controls.label2.valid && (labelForm.controls.label2.dirty || submitAttempt)" >
+    <ion-item *ngIf="!labelForm.controls.label2.valid && submitAttempt" >
       <small>Must be between 3 and 15 letters</small>
   </ion-item>
 </ion-list>
@@ -54,12 +54,12 @@
       <div class="coloured-dot-wrapper"><div [ngClass]='colours[2]'></div></div>
     </ion-label>
   </ion-item>
-    <ion-item *ngIf="!labelForm.controls.label3.valid && (labelForm.controls.label3.dirty || submitAttempt)" >
+    <ion-item *ngIf="!labelForm.controls.label3.valid && submitAttempt" >
       <small>Must be between 3 and 15 letters</small>
   </ion-item>
 </ion-list>
 
-
+<!-- <ion-item *ngIf="!labelForm.controls.label2.valid && (labelForm.controls.label2.dirty || submitAttempt)" > -->
 
 </form>
 </ion-content>

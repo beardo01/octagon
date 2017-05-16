@@ -24,21 +24,24 @@ page-label {
     .grey {
         background: color($colors, grey);
     } 
-    .event-label {
-        width: 85%;
-        float: left;
-        }
-
-    .button-wrapper {
-        margin-top:6px; 
-        float:right;
-        div {
+    /* Displays the ion-label at the end of the ion-input 
+     * ion-label contains the coloured circle
+     */
+    .input-wrapper {
+        flex-direction: row-reverse;
+    }
+    /* Controls the size of the coloured circle displayed
+     *
+     */
+    .coloured-dot-wrapper div {
             width: 30px;
             height: 30px;
             border-radius: 15px;
             margin: 0 7.5px
-        }
     }
+    /*  If user inputs invaild string into any ion-input 
+     * 
+     */
     .invalid {
         border-radius: 15px;
         border: 1px solid #ea6153;

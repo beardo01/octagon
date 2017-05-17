@@ -93,9 +93,9 @@ int main(int argc, char *argv[]) {
 
     std::cout << endl;
 
-    TimelineItem ti = user.getTimeline()->getTimelineItem(user.getTimeline()->getTimelineItems()[0].getID());
-    std::cout << ti.toString() << endl;
-    user.getTimeline()->deleteTimelineItem(ti.getID());
+    TimelineItem *ti = user.getTimeline()->getTimelineItem(user.getTimeline()->getTimelineItems()[0]->getID());
+    std::cout << ti->toString() << endl;
+    user.getTimeline()->deleteTimelineItem(ti->getID());
 
 
     user.getTimeline()->printTimeline();

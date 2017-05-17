@@ -5,9 +5,15 @@
 #include <string>
 #include <ctime>
 #include <limits>
+#include <regex>
 
 // ODB database include
 #include <odb/core.hxx>
+
+#include <odb/database.hxx>
+#include <odb/transaction.hxx>
+
+#include <odb/pgsql/database.hxx>
 
 #include "bcrypt/BCrypt.hpp"
 #include "Timeline.hpp"
@@ -17,6 +23,7 @@
 #pragma db value(std::string) type("VARCHAR(128)")
 
 using namespace std;
+using namespace odb::core;
 
 #pragma db object
 class User {
@@ -72,7 +79,9 @@ class User {
 		void setThrees(unsigned int);
 		
 		// Methods
-
+		void createUser(string, string, string, string);
+		void createUser(string, string, string, string, string);
+		User authenticateUser(string, string, string, string);
 };
 
 #endif

@@ -9,6 +9,7 @@
 // ODB database include
 #include <odb/core.hxx>
 
+#include "bcrypt/BCrypt.hpp"
 #include "Timeline.hpp"
 #include "TimelineItem.hpp"
 

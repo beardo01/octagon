@@ -2,17 +2,10 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Launch Chrome",
-            "url": "http://localhost:8080",
-            "webRoot": "${workspaceRoot}"
-        },
-        {
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/a.out",
+            "program": "${workspaceRoot}/cpp/driver",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",

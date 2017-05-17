@@ -2,9 +2,10 @@
 
 // User contrsuctor
 User::User(string name, string email, string password, string ip) {
+	BCrypt bcrypt;
 	name_ = name;
 	email_ = email; 
-	password_ = password; 
+	password_ = bcrypt.generateHash(password);
 	last_ip_ = ip;
 	create_date_ = time(0);
 	timeline_ = new Timeline(vector<TimelineItem> (), "#3498DB", "#2ECC71", "#F1C40F", "Meeting", "Assignment", "Event");

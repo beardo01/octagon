@@ -2,21 +2,25 @@
   <ion-navbar>
     <ion-title>Create</ion-title>
     <ion-buttons end>
-      <button ion-button (click)="create()">
+      <button ion-button type="submit" form="createForm">
         <ion-label>Add</ion-label>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
+
+
 <ion-content padding>
+
+  <form id="createForm" [formGroup]="createForm" (ngSubmit)="add(createForm.value)">
   <ion-list>
     <ion-item>
-      <ion-label>Type</ion-label>
-      <ion-select [(ngModel)]="types">
-        <ion-option value="meeting">Meeting</ion-option>
-        <ion-option value="event">Event</ion-option>
-        <ion-option value="assignment">Assignment</ion-option>
+      <ion-label>Label</ion-label>
+      <ion-select formControlName="label">
+          <ion-option>{{labels[0]}}</ion-option>
+          <ion-option>{{labels[1]}}</ion-option>
+          <ion-option>{{labels[2]}}</ion-option>
       </ion-select>
     </ion-item>
     <ion-item>
@@ -27,33 +31,49 @@
   <ion-list>
     <ion-item>
       <ion-label>Start Date</ion-label>
-      <ion-datetime displayFormat="MMMM DD YYYY" [(ngModel)]="item.dateStarts"></ion-datetime>
+      <ion-datetime displayFormat="MMMM DD YYYY" min="{{minDate}}" max="{{maxDate}}" formControlName="dateStarts" [(ngModel)]="item.dateStarts"></ion-datetime>
     </ion-item>
 
      <ion-item>
       <ion-label>End Date</ion-label>
-      <ion-datetime displayFormat="MMMM DD YYYY" [(ngModel)]="item.dateEnds"></ion-datetime>
+      <ion-datetime displayFormat="MMMM DD YYYY"  min="{{minDate}}" max="{{maxDate}}" formControlName="dateEnds" [(ngModel)]="item.dateEnds"></ion-datetime>
     </ion-item>
 
     <ion-item>
       <ion-label>Start Time</ion-label>
-      <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="item.timeStarts"></ion-datetime>
+      <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" formControlName="timeStarts" [(ngModel)]="item.timeStarts"></ion-datetime>
     </ion-item>
 
     <ion-item>
       <ion-label>End Time</ion-label>
-      <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" [(ngModel)]="item.timeEnds"></ion-datetime>
+      <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" formControlName="timeEnds" [(ngModel)]="item.timeEnds"></ion-datetime>
     </ion-item>
 
-    <button ion-item>
+  
+    <ion-item>
       <ion-label>Repeat</ion-label>
-      <ion-note item-right>Never</ion-note>
-    </button>
-</ion-list>
+      <ion-select formControlName="repeatFrequency" (onClick)="hiddenDateTime.style=block" (ionChange)="repeatDateTime.open()"> 
+          <ion-option>{{repeatFreqs[0]}}</ion-option>
+          <ion-option>{{repeatFreqs[1]}}</ion-option>
+          <ion-option>{{repeatFreqs[2]}}</ion-option>
+          <ion-option>{{repeatFreqs[3]}}</ion-option>
+      </ion-select>
+    </ion-item>
+ 
+
+ <!-- Change this so only appears if there is a repeat date -->
+  <ion-item #hiddenDateTime style="display:none">
+    <ion-datetime #repeatDateTime displayFormat="MMMM DD YYYY" max="{{maxDate}}" min="{{minDate}}" [(ngModel)]="repeatDate" formControlName="repeatEndDate"></ion-datetime>
+  </ion-item>
+
+  </ion-list>
+
 
 <ion-list>
     <ion-item>
-      <ion-textarea placeholder="Description"></ion-textarea>
+      <ion-textarea formControlName="description" placeholder="Description"></ion-textarea>
     </ion-item>
   </ion-list>
+
+  </form>
 </ion-content>

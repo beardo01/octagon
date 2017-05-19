@@ -34,7 +34,7 @@ class TimelineItem {
         time_t start_;
         time_t end_;
         TimelineItem *linked_;
-        vector<TimelineItem> linked_items_;
+        vector<TimelineItem*> linked_items_;
 
     // Timeline Item methods
     public:
@@ -42,7 +42,7 @@ class TimelineItem {
         // Constructor
         TimelineItem(Event*, time_t, time_t);
         TimelineItem(Event*, time_t, time_t, TimelineItem*);
-        TimelineItem(Event*, time_t, time_t, vector<TimelineItem>);
+        TimelineItem(Event*, time_t, time_t, vector<TimelineItem*>);
 
         // toString
         string toString() {
@@ -69,7 +69,7 @@ class TimelineItem {
         string getDescription();
         string getLocation();
         TimelineItem *getLinked();
-        vector<TimelineItem> getLinkedItems();
+        vector<TimelineItem*> getLinkedItems();
 
         // Setters
         void setType(short int);
@@ -78,7 +78,7 @@ class TimelineItem {
         void setDescription(string);
         void setLocation(string);
         void setLinked(TimelineItem*);
-        void setLinkedItems(vector<TimelineItem>);
+        void setLinkedItems(vector<TimelineItem*>);
 };
 
 #endif

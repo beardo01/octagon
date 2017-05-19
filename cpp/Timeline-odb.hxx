@@ -2,8 +2,8 @@
 // compiler for C++.
 //
 
-#ifndef TIMELINE_ITEM_ODB_HXX
-#define TIMELINE_ITEM_ODB_HXX
+#ifndef TIMELINE_ODB_HXX
+#define TIMELINE_ODB_HXX
 
 #include <odb/version.hxx>
 
@@ -13,9 +13,10 @@
 
 #include <odb/pre.hxx>
 
-#include "TimelineItem.hpp"
+#include "Timeline.hpp"
 
 #include "Event-odb.hxx"
+#include "TimelineItem-odb.hxx"
 
 #include <memory>
 #include <cstddef>
@@ -35,20 +36,20 @@
 
 namespace odb
 {
-  // TimelineItem
+  // Timeline
   //
   template <>
-  struct class_traits< ::TimelineItem >
+  struct class_traits< ::Timeline >
   {
     static const class_kind kind = class_object;
   };
 
   template <>
-  class access::object_traits< ::TimelineItem >
+  class access::object_traits< ::Timeline >
   {
     public:
-    typedef ::TimelineItem object_type;
-    typedef ::TimelineItem* pointer_type;
+    typedef ::Timeline object_type;
+    typedef ::Timeline* pointer_type;
     typedef odb::pointer_traits<pointer_type> pointer_traits;
 
     static const bool polymorphic = false;
@@ -88,10 +89,10 @@ namespace odb
 
 namespace odb
 {
-  // TimelineItem
+  // Timeline
   //
   template <typename A>
-  struct pointer_query_columns< ::TimelineItem, id_pgsql, A >
+  struct query_columns< ::Timeline, id_pgsql, A >
   {
     // id
     //
@@ -105,83 +106,123 @@ namespace odb
 
     static const id_type_ id;
 
-    // event
+    // colour_one
     //
     typedef
     pgsql::query_column<
       pgsql::value_traits<
-        long unsigned int,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    event_type_;
+        ::std::string,
+        pgsql::id_string >::query_type,
+      pgsql::id_string >
+    colour_one_type_;
 
-    static const event_type_ event;
+    static const colour_one_type_ colour_one;
 
-    // start
+    // colour_two
     //
     typedef
     pgsql::query_column<
       pgsql::value_traits<
-        ::time_t,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    start_type_;
+        ::std::string,
+        pgsql::id_string >::query_type,
+      pgsql::id_string >
+    colour_two_type_;
 
-    static const start_type_ start;
+    static const colour_two_type_ colour_two;
 
-    // end
+    // colour_three
     //
     typedef
     pgsql::query_column<
       pgsql::value_traits<
-        ::time_t,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    end_type_;
+        ::std::string,
+        pgsql::id_string >::query_type,
+      pgsql::id_string >
+    colour_three_type_;
 
-    static const end_type_ end;
+    static const colour_three_type_ colour_three;
 
-    // linked
+    // label_one
     //
     typedef
     pgsql::query_column<
       pgsql::value_traits<
-        long unsigned int,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    linked_type_;
+        ::std::string,
+        pgsql::id_string >::query_type,
+      pgsql::id_string >
+    label_one_type_;
 
-    static const linked_type_ linked;
+    static const label_one_type_ label_one;
+
+    // label_two
+    //
+    typedef
+    pgsql::query_column<
+      pgsql::value_traits<
+        ::std::string,
+        pgsql::id_string >::query_type,
+      pgsql::id_string >
+    label_two_type_;
+
+    static const label_two_type_ label_two;
+
+    // label_three
+    //
+    typedef
+    pgsql::query_column<
+      pgsql::value_traits<
+        ::std::string,
+        pgsql::id_string >::query_type,
+      pgsql::id_string >
+    label_three_type_;
+
+    static const label_three_type_ label_three;
   };
 
   template <typename A>
-  const typename pointer_query_columns< ::TimelineItem, id_pgsql, A >::id_type_
-  pointer_query_columns< ::TimelineItem, id_pgsql, A >::
+  const typename query_columns< ::Timeline, id_pgsql, A >::id_type_
+  query_columns< ::Timeline, id_pgsql, A >::
   id (A::table_name, "\"id\"", 0);
 
   template <typename A>
-  const typename pointer_query_columns< ::TimelineItem, id_pgsql, A >::event_type_
-  pointer_query_columns< ::TimelineItem, id_pgsql, A >::
-  event (A::table_name, "\"event\"", 0);
+  const typename query_columns< ::Timeline, id_pgsql, A >::colour_one_type_
+  query_columns< ::Timeline, id_pgsql, A >::
+  colour_one (A::table_name, "\"colour_one\"", 0);
 
   template <typename A>
-  const typename pointer_query_columns< ::TimelineItem, id_pgsql, A >::start_type_
-  pointer_query_columns< ::TimelineItem, id_pgsql, A >::
-  start (A::table_name, "\"start\"", 0);
+  const typename query_columns< ::Timeline, id_pgsql, A >::colour_two_type_
+  query_columns< ::Timeline, id_pgsql, A >::
+  colour_two (A::table_name, "\"colour_two\"", 0);
 
   template <typename A>
-  const typename pointer_query_columns< ::TimelineItem, id_pgsql, A >::end_type_
-  pointer_query_columns< ::TimelineItem, id_pgsql, A >::
-  end (A::table_name, "\"end\"", 0);
+  const typename query_columns< ::Timeline, id_pgsql, A >::colour_three_type_
+  query_columns< ::Timeline, id_pgsql, A >::
+  colour_three (A::table_name, "\"colour_three\"", 0);
 
   template <typename A>
-  const typename pointer_query_columns< ::TimelineItem, id_pgsql, A >::linked_type_
-  pointer_query_columns< ::TimelineItem, id_pgsql, A >::
-  linked (A::table_name, "\"linked\"", 0);
+  const typename query_columns< ::Timeline, id_pgsql, A >::label_one_type_
+  query_columns< ::Timeline, id_pgsql, A >::
+  label_one (A::table_name, "\"label_one\"", 0);
+
+  template <typename A>
+  const typename query_columns< ::Timeline, id_pgsql, A >::label_two_type_
+  query_columns< ::Timeline, id_pgsql, A >::
+  label_two (A::table_name, "\"label_two\"", 0);
+
+  template <typename A>
+  const typename query_columns< ::Timeline, id_pgsql, A >::label_three_type_
+  query_columns< ::Timeline, id_pgsql, A >::
+  label_three (A::table_name, "\"label_three\"", 0);
+
+  template <typename A>
+  struct pointer_query_columns< ::Timeline, id_pgsql, A >:
+    query_columns< ::Timeline, id_pgsql, A >
+  {
+  };
 
   template <>
-  class access::object_traits_impl< ::TimelineItem, id_pgsql >:
-    public access::object_traits< ::TimelineItem >
+  class access::object_traits_impl< ::Timeline, id_pgsql >:
+    public access::object_traits< ::Timeline >
   {
     public:
     struct id_image_type
@@ -199,34 +240,50 @@ namespace odb
       long long id_value;
       bool id_null;
 
-      // event_
+      // colour_one_
       //
-      long long event_value;
-      bool event_null;
+      details::buffer colour_one_value;
+      std::size_t colour_one_size;
+      bool colour_one_null;
 
-      // start_
+      // colour_two_
       //
-      long long start_value;
-      bool start_null;
+      details::buffer colour_two_value;
+      std::size_t colour_two_size;
+      bool colour_two_null;
 
-      // end_
+      // colour_three_
       //
-      long long end_value;
-      bool end_null;
+      details::buffer colour_three_value;
+      std::size_t colour_three_size;
+      bool colour_three_null;
 
-      // linked_
+      // label_one_
       //
-      long long linked_value;
-      bool linked_null;
+      details::buffer label_one_value;
+      std::size_t label_one_size;
+      bool label_one_null;
+
+      // label_two_
+      //
+      details::buffer label_two_value;
+      std::size_t label_two_size;
+      bool label_two_null;
+
+      // label_three_
+      //
+      details::buffer label_three_value;
+      std::size_t label_three_size;
+      bool label_three_null;
 
       std::size_t version;
     };
 
     struct extra_statement_cache_type;
 
-    // linked_items_
+    // timeline_items_
     //
-    struct linked_items_traits
+    struct timeline_items_traits
     {
       static const char select_name[];
       static const char insert_name[];
@@ -251,7 +308,7 @@ namespace odb
       typedef container_traits_type::value_type value_type;
 
       typedef ordered_functions<index_type, value_type> functions_type;
-      typedef pgsql::container_statements< linked_items_traits > statements_type;
+      typedef pgsql::container_statements< timeline_items_traits > statements_type;
 
       struct data_image_type
       {
@@ -314,9 +371,6 @@ namespace odb
       erase (statements_type&);
     };
 
-    struct event_tag;
-    struct linked_tag;
-
     using object_traits<object_type>::id;
 
     static id_type
@@ -354,7 +408,7 @@ namespace odb
 
     typedef pgsql::query_base query_base_type;
 
-    static const std::size_t column_count = 5UL;
+    static const std::size_t column_count = 7UL;
     static const std::size_t id_column_count = 1UL;
     static const std::size_t inverse_column_count = 0UL;
     static const std::size_t readonly_column_count = 0UL;
@@ -424,178 +478,17 @@ namespace odb
   };
 
   template <>
-  class access::object_traits_impl< ::TimelineItem, id_common >:
-    public access::object_traits_impl< ::TimelineItem, id_pgsql >
+  class access::object_traits_impl< ::Timeline, id_common >:
+    public access::object_traits_impl< ::Timeline, id_pgsql >
   {
   };
 
-  // TimelineItem
+  // Timeline
   //
-  template <>
-  struct alias_traits<
-    ::Event,
-    id_pgsql,
-    access::object_traits_impl< ::TimelineItem, id_pgsql >::event_tag>
-  {
-    static const char table_name[];
-  };
-
-  template <>
-  struct alias_traits<
-    ::TimelineItem,
-    id_pgsql,
-    access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_tag>
-  {
-    static const char table_name[];
-  };
-
-  template <>
-  struct query_columns_base< ::TimelineItem, id_pgsql >
-  {
-    // event
-    //
-    typedef
-    odb::alias_traits<
-      ::Event,
-      id_pgsql,
-      access::object_traits_impl< ::TimelineItem, id_pgsql >::event_tag>
-    event_alias_;
-
-    // linked
-    //
-    typedef
-    odb::alias_traits<
-      ::TimelineItem,
-      id_pgsql,
-      access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_tag>
-    linked_alias_;
-  };
-
-  template <typename A>
-  struct query_columns< ::TimelineItem, id_pgsql, A >:
-    query_columns_base< ::TimelineItem, id_pgsql >
-  {
-    // id
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        long unsigned int,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    id_type_;
-
-    static const id_type_ id;
-
-    // event
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        long unsigned int,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    event_column_type_;
-
-    typedef
-    odb::query_pointer<
-      odb::pointer_query_columns<
-        ::Event,
-        id_pgsql,
-        event_alias_ > >
-    event_pointer_type_;
-
-    struct event_type_: event_pointer_type_, event_column_type_
-    {
-      event_type_ (const char* t, const char* c, const char* conv)
-        : event_column_type_ (t, c, conv)
-      {
-      }
-    };
-
-    static const event_type_ event;
-
-    // start
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        ::time_t,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    start_type_;
-
-    static const start_type_ start;
-
-    // end
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        ::time_t,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    end_type_;
-
-    static const end_type_ end;
-
-    // linked
-    //
-    typedef
-    pgsql::query_column<
-      pgsql::value_traits<
-        long unsigned int,
-        pgsql::id_bigint >::query_type,
-      pgsql::id_bigint >
-    linked_column_type_;
-
-    typedef
-    odb::query_pointer<
-      odb::pointer_query_columns<
-        ::TimelineItem,
-        id_pgsql,
-        linked_alias_ > >
-    linked_pointer_type_;
-
-    struct linked_type_: linked_pointer_type_, linked_column_type_
-    {
-      linked_type_ (const char* t, const char* c, const char* conv)
-        : linked_column_type_ (t, c, conv)
-      {
-      }
-    };
-
-    static const linked_type_ linked;
-  };
-
-  template <typename A>
-  const typename query_columns< ::TimelineItem, id_pgsql, A >::id_type_
-  query_columns< ::TimelineItem, id_pgsql, A >::
-  id (A::table_name, "\"id\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::TimelineItem, id_pgsql, A >::event_type_
-  query_columns< ::TimelineItem, id_pgsql, A >::
-  event (A::table_name, "\"event\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::TimelineItem, id_pgsql, A >::start_type_
-  query_columns< ::TimelineItem, id_pgsql, A >::
-  start (A::table_name, "\"start\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::TimelineItem, id_pgsql, A >::end_type_
-  query_columns< ::TimelineItem, id_pgsql, A >::
-  end (A::table_name, "\"end\"", 0);
-
-  template <typename A>
-  const typename query_columns< ::TimelineItem, id_pgsql, A >::linked_type_
-  query_columns< ::TimelineItem, id_pgsql, A >::
-  linked (A::table_name, "\"linked\"", 0);
 }
 
-#include "TimelineItem-odb.ixx"
+#include "Timeline-odb.ixx"
 
 #include <odb/post.hxx>
 
-#endif // TIMELINE_ITEM_ODB_HXX
+#endif // TIMELINE_ODB_HXX

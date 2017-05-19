@@ -29,7 +29,7 @@ class Timeline {
         #pragma db id auto
         unsigned long id_;
 
-        vector<TimelineItem> timeline_items_;
+        vector<TimelineItem*> timeline_items_;
         string colour_one_;
         string colour_two_;
         string colour_three_;
@@ -40,12 +40,12 @@ class Timeline {
     public:
 
         // Constructor
-        Timeline(vector<TimelineItem>, string, string, string, string, string, string);
+        Timeline(vector<TimelineItem*>, string, string, string, string, string, string);
         ~Timeline();
 
         // Getters
         unsigned long getID();
-        vector<TimelineItem> getTimelineItems();
+        vector<TimelineItem*> getTimelineItems();
         string getColourOne();
         string getColourTwo();
         string getColourThree();
@@ -67,14 +67,14 @@ class Timeline {
         // addItem(type, description, location, start date, end date, frequency, end date)
         // addItem(1, "Meeting on Tuesday", "Owheo Building", 123, 1234, 0, 0)
         void addItem(short int, string, string, time_t, time_t, 
-            short int frequency = -1, time_t ends = NULL);
+            short int frequency = -1, time_t ends = 0);
 
         // getTimelineItem(1)
-        TimelineItem getTimelineItem(unsigned long);
+        TimelineItem* getTimelineItem(unsigned long);
 
         // updateItem(1, 1, "Meeting on Tuesday afternoon", "Owheo, Lab A", 123, 1234)
         void updateTimelineItem(unsigned long, short int, string, string, time_t, time_t,
-            short int frequency = -1, time_t ends = NULL);
+            short int frequency = -1, time_t ends = 0);
 
         // deleteItem(1)
         void deleteTimelineItem(unsigned long);

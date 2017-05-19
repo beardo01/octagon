@@ -15,7 +15,7 @@ TimelineItem::TimelineItem(Event *event, time_t start, time_t end, TimelineItem 
     {}
 
 TimelineItem::TimelineItem(Event *event, time_t start, time_t end, 
-    vector<TimelineItem> linked_items):
+    vector<TimelineItem*> linked_items):
         event_(event),
         start_(start),
         end_(end),
@@ -55,7 +55,7 @@ TimelineItem* TimelineItem::getLinked(){
     return this->linked_;
 }
 
-vector<TimelineItem> TimelineItem::getLinkedItems(){
+vector<TimelineItem*> TimelineItem::getLinkedItems(){
     return this->linked_items_;
 }
 
@@ -84,6 +84,6 @@ void TimelineItem::setLinked(TimelineItem *linked){
     this->linked_ = linked;
 }
 
-void TimelineItem::setLinkedItems(vector<TimelineItem> linked_items){
+void TimelineItem::setLinkedItems(vector<TimelineItem*> linked_items){
     this->linked_items_ = linked_items;
 }

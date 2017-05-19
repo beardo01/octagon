@@ -8,55 +8,89 @@ import { NavController } from 'ionic-angular';
 })
 
 export class CreatePage {
+  // form group
   createForm: FormGroup;
-  // date object
-  date = new Date();
 
-  repeatFreq: string;
-  repeatFreqs: string[] = ["Never", "Daily", "Weekly", "Monthly"];
-
+  // selected label
   label: string;
-  labels: string [];
 
-  repeat: boolean = false;
+  // list of label names
+  label_names: string [];
+
+  // date object
+  date: Date;
 
   // min and max dates for datetime picker
   minDate: Number;
   maxDate: Number;
 
-  repeatDate: string;
-  
-    public item = {
-    dateStarts: this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-' + ('0' + this.date.getDate()).slice(-2),
-    dateEnds: this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-' + ('0' + this.date.getDate()).slice(-2),
-    timeStarts: this.getTimes()[0],
-    timeEnds: this.getTimes()[1],
-  }
+  // Date strings
+  dateStarts: string;
+  dateEnds: string;
+  timeStarts: string;
+  timeEnds: string;
+  repeatEndDate: string;
+
+   // If item repeats or not
+  repeat: boolean;
+
+  // Frequency item repeats
+  repeatFreq: string;
+
+ // Events description
+  description: string;
 
   constructor(public navCtrl: NavController, public builder: FormBuilder) {
-    this.labels = ["Assignment", "Meeting", "Event"]; // Recieve call from plugin and pass data
-    // get freq of object (if editing existing)
-    this.repeatDate = this.item.dateEnds;
+    // initialise data fields
+    this.date = new Date();
+    this.label_names = ["Assignment", "Meeting", "Event"]; // Recieve call from plugin and pass data
+
     this.minDate = this.date.getFullYear();
     this.maxDate = this.date.getFullYear() + 2;
+
+    this.dateStarts =  this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-' + ('0' + this.date.getDate()).slice(-2);
+    this.dateEnds =  this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-' + ('0' + this.date.getDate()).slice(-2);
+    this.timeStarts =  this.getTimes()[0];
+    this.timeEnds =  this.getTimes()[1];
+
+    this.repeat = false;
+    this.repeatFreq = "Never";
+    // initalise repeat date to be set to end date to show a useful value when we need it
+    // logic should ignore this value if repeat variable set to false
+    this.repeatEndDate = this.dateEnds;
+    this.description = "";
+
     this.getTimes();
 
     this.createForm = this.builder.group({
       'label' : [this.label],
-      'dateStarts' : [this.item.dateStarts],
-      'dateEnds' : [this.item.dateEnds],
-      'timeStarts': [this.item.timeStarts],
-      'timeEnds': [this.item.timeEnds],
+      'dateStarts' : [this.dateStarts],
+      'dateEnds' : [this.dateEnds],
+      'timeStarts': [this.timeStarts],
+      'timeEnds': [this.timeEnds],
       'repeatFrequency' : [this.repeatFreq],
-      'repeatEndDate' : [],
-      'description': [],
+      'repeatEndDate' : [this.repeatEndDate],
+      'description': [this.description],
     });
   }
-
+  /* 
+   * Called when submitting the form.
+   * 
+   * Returns an object with this format Note: - YYYY-MM-DD
+   *                                          - 24hour timeformat
+   * 
+   * dateEnds: "2017-07-19"
+   * dateStarts: "2017-05-19"
+   * description: "Yeah mate should be good."
+   * label: "Assignment"
+   * repeatEndDate: "2018-05-19"
+   * repeatFrequency: "Monthly"
+   * timeEnds: "17:21"
+   * timeStarts: "18:21"
+   */
   add(){
-    console.log("called add()");
+    console.log("Form Submission");
     console.log(this.createForm.value);
-     
      
   }
   getLabels() {
@@ -82,11 +116,21 @@ export class CreatePage {
   }
 
   ionViewDidLoad() {
-    this.getLabels();
+    // check if we are editing the page or just making a new one. navaparams maybe?
+    //this.getLabels();
   }
 
+  /*
+   * Toggles if we display the repeatEndDate datepicker based on the value stored in repeatFreq  
+   */
+  repeatToggle() {
+    if (this.repeatFreq == "Never") {
+      this.repeat = false;
+    } else {
+      this.repeat = true;
+    }
+  }
   create() {
     this.navCtrl.popToRoot();
   }
-
 }

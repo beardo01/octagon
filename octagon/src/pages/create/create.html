@@ -29,12 +29,12 @@
   <ion-list>
     <ion-item>
       <ion-label>Start Date</ion-label>
-      <ion-datetime displayFormat="MMMM DD YYYY" min="{{minDate}}" max="{{maxDate}}" formControlName="dateStarts" [(ngModel)]="dateStarts"></ion-datetime>
+      <ion-datetime displayFormat="DD MMMM YYYY" min="{{minDate}}" max="{{maxDate}}" formControlName="dateStarts" [(ngModel)]="dateStarts"></ion-datetime>
     </ion-item>
 
      <ion-item>
       <ion-label>End Date</ion-label>
-      <ion-datetime displayFormat="MMMM DD YYYY"  min="{{minDate}}" max="{{maxDate}}" formControlName="dateEnds" [(ngModel)]="dateEnds"></ion-datetime>
+      <ion-datetime displayFormat="DD MMMM YYYY"  min="{{minDate}}" max="{{maxDate}}" formControlName="dateEnds" [(ngModel)]="dateEnds"></ion-datetime>
     </ion-item>
 
     <ion-item>
@@ -60,7 +60,7 @@
  
     <ion-item *ngIf="repeat">
       <ion-label>Repeat Till</ion-label>
-      <ion-datetime displayFormat="MMMM DD YYYY" max="{{maxDate}}" min="{{minDate}}" formControlName="repeatEndDate" [(ngModel)]="repeatEndDate" ></ion-datetime>
+      <ion-datetime displayFormat="DD MMMM YYYY" max="{{maxDate}}" min="{{minDate}}" formControlName="repeatEndDate" [(ngModel)]="repeatEndDate" ></ion-datetime>
     </ion-item>
 
   </ion-list>
@@ -68,7 +68,7 @@
 
 <ion-list>
     <ion-item>
-      <ion-textarea formControlName="description" [(ngModel)]="description" placeholder="Description"></ion-textarea>
+      <ion-textarea maxlength="50" formControlName="description" [(ngModel)]="description" placeholder="Description"></ion-textarea>
     </ion-item>
   </ion-list>
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from 'ionic-angular';
+import { CreateFormValidator } from '../../validators/createForm';
 
 @Component({
   selector: 'page-create',
@@ -70,7 +71,7 @@ export class CreatePage {
       'timeEnds': [this.timeEnds],
       'repeatFrequency' : [this.repeatFreq],
       'repeatEndDate' : [this.repeatEndDate],
-      'description': [this.description],
+      'description': [this.description] /* 'description': [this.description, CreateFormValidator.validDescription]*/
     });
   }
   /* 

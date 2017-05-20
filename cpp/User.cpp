@@ -1,4 +1,6 @@
 #include "User.hpp"
+#include "Timeline-odb.hxx"
+#include "User-odb.hxx"
 
 // User contrsuctor
 User::User(string name, string email, string password, string ip) {
@@ -100,16 +102,18 @@ void User::setThrees(unsigned int threes) {
 // Methods
 void User::createUser(string user, string email, string password, string rpassword, string ip) {
 	try {
-		// Create database connection
+
         auto_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
 			"postgres", "104.197.11.127", 5432));
+            
+        typedef odb::query<User> query;
+        typedef odb::result<User> result;
 
 		{
 			// Start the query
-			transaction t (db->begin());
+			transaction t (db->begin ());
 
-			auto_ptr<User> curr_user(db->query_one<User> (query::name_ == user || query::email_ == email));
-			//unique_pointer<User> user = db.query_one<User> (query::name_ == user || query::email_ == email))
+			auto_ptr<User> curr_user(db->query_one<User> (query::name == user || query::email == email));
 
 			// Check if a user already exists
 			if (curr_user.get() == 0) {
@@ -118,17 +122,22 @@ void User::createUser(string user, string email, string password, string rpasswo
 				if (password == rpassword) {
 
 					// Check that the username, email and password are valid.
-					regex username_regex("[a-ZA-Z]+[a-zA-Z0-9-_]*");
+					regex username_regex("[a-zA-Z]+[a-zA-Z0-9-_]*");
 					regex email_regex(".+@.+[.].+");
-					if (regex_match(user, username_regex) && user.length() > 3 && user.length() < 37) {
+					if (regex_match(user, username_regex) && (user.length() > 3 || user.length() < 37)) {
 						if (regex_match(email, email_regex)) {
 							if(password.length() > 5) {
+                                cout << "Got in here!";
 
 								// Create the user object
-								User * new_user = new User(user, email, password, ip);
+								User *new_user = new User(user, email, password, ip);
+								Timeline *new_timeline = new_user->getTimeline();
 
 								// Commit it to the database
+								db->persist(new_timeline);
 								db->persist(new_user);
+
+                                t.commit();
 							} else {
 								cerr << "Passwords must be at least 6 characters." << endl;
 							}

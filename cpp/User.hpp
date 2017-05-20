@@ -12,7 +12,6 @@
 
 #include <odb/database.hxx>
 #include <odb/transaction.hxx>
-
 #include <odb/pgsql/database.hxx>
 
 #include "bcrypt/BCrypt.hpp"
@@ -59,7 +58,7 @@ class User {
 		string getName();
 		string getEmail();
 		string getPassword();
-		Timeline * getTimeline();
+		Timeline *getTimeline();
 		time_t getCreate();
 		short int getActivated();
 		string getLastIP();

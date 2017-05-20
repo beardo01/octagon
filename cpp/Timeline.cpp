@@ -13,9 +13,9 @@ Timeline::Timeline(vector<TimelineItem*> timeline_items, string colour_one,
         label_three_ = label_three;
 }
 
-Timeline::~Timeline(void) {
-   //cout << "Timeline " << this->getID() << " is being deleted." << endl;
-}
+// Timeline::~Timeline(void) {
+//    //cout << "Timeline " << this->getID() << " is being deleted." << endl;
+// }
 
 // Getters
 unsigned long Timeline::getID(){

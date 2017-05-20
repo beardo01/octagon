@@ -41,7 +41,7 @@ class Timeline {
 
         // Constructor
         Timeline(vector<TimelineItem*>, string, string, string, string, string, string);
-        ~Timeline();
+        //~Timeline();
 
         // Getters
         unsigned long getID();

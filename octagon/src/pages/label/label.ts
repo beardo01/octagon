@@ -3,12 +3,6 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, NavParams } from 'ionic-angular';
 
 
-/*
-  Generated class for the Labels page.
-
-  See http://ionicframework.com/docs/v2/components/#navigation for more info on
-  Ionic pages and navigation.
-*/
 @Component({
   selector: 'page-label',
   templateUrl: 'label.html'
@@ -20,7 +14,7 @@ export class LabelPage {
   label2: string = "from a call";
   label3: string = "to the plugin";
 
-  labelForm: FormGroup
+  labelForm: FormGroup;
   submitAttempt: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public builder: FormBuilder) {
@@ -45,7 +39,7 @@ export class LabelPage {
     if(!this.labelForm.valid){
       console.log("tried to submit invalid form")
     } else {
-        console.log("success! Now do something usefull with the data (cordova plugin)")
+        console.log("success! Now do something useful with the data (cordova plugin)")
         console.log(this.labelForm.value);
     }
   }

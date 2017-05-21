@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header padding no-bounce>
   <ion-navbar>
     <ion-title>Timeline</ion-title>
     <ion-buttons end>
@@ -7,9 +7,7 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-</ion-header>
 
-<ion-content padding no-bounce>
   <div id="dayDateArea">
     <h2 id="dayDay"></h2>
     <span id="dayDates">
@@ -24,38 +22,23 @@
 
     <div id="timeBar">
       <div id="bubbles-container">
-        <ion-slides slider="swiper">
-          <ion-slide>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-          </ion-slide>
-          <ion-slide>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-            <div class="bubble"></div>
-          </ion-slide>
-        </ion-slides>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
       </div>
     </div>
-
   </div>
+  </ion-header>
 
-  <section id="tl" class="tl-container">
+ <!-- Old Section code-->
+ <ion-content padding>
+   <section id="tl" class="tl-container">
     <div ng-repeat="activity in timeline">
       <div class="tl-block">
         <div class="tl-colour tl-grey"></div>
@@ -83,5 +66,4 @@
       </div>
     </div>
   </section>
-
-</ion-content>
+ </ion-content>

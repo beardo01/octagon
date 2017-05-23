@@ -76,11 +76,6 @@ class User {
 		void setOnes(unsigned int);
 		void setTwos(unsigned int);
 		void setThrees(unsigned int);
-		
-		// Methods
-		void createUser(string, string, string, string);
-		void createUser(string, string, string, string, string);
-		User authenticateUser(string, string, string, string);
 };
 
 #endif

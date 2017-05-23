@@ -94,6 +94,8 @@ ion-select {
     background-color: transparent;
 }
 
+
+
 // Backdrop opactity
 ion-backdrop {
     opacity: 1 !important;
@@ -112,3 +114,13 @@ ion-backdrop {
     background: linear-gradient(to top, grey 30%, rgba(0, 0, 0, 0.1) 90%) !important;
     border-top: 0px !important;
 }
+
+.alert-wrapper {
+    background-color: rbga(162, 162, 162, .1) !important;
+}
+.picker-wrapper {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+// .picker-toolbar {
+//     background-color: rgba(255, 255, 255, 0.1);
+// }

@@ -9,8 +9,22 @@ import { CreatePage } from '../create/create';
 })
 
 export class HomePage {
+  days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  date : Date; 
+  display_days : string []= ["0","0","0","0","0"];
+  weekday_header: string;
 
   constructor(public navCtrl: NavController) {
+    this.date = new Date();
+    // set header
+    this.weekday_header =  this.days[this.date.getDay()];
+
+    // Display the next 5 days
+    for (var i = 0; i < 5; i++) {
+      this.display_days[i] = ((this.date.getDate() + i).toString() + " " + this.months[this.date.getMonth()].toString());
+    }
 
   }
 
@@ -27,21 +41,6 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-    var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',];
-    var now = new Date();
-    var day = days[now.getDay()];
-
-    var bubbleDates = [['0800','0900'],['2200','2230'],['1000','1130'],['1200','1230'],['1230','100'],['1400','14:30'],['1500','1600']];
-
-    // Adds the day text to the page.
-    document.getElementById('dayDay').innerHTML += day;
-
-    // Adds 5 dates to the page.
-    for (var i = 0; i < 5; i++) {
-      console.log(i);
-      document.getElementById("button" + i).innerHTML += (now.getDate() + i).toString() + " " + months[(now.getMonth())];
-    }
   }
 
 }

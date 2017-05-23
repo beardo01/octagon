@@ -9,20 +9,19 @@
   </ion-navbar>
 
   <div id="dayDateArea">
-    <h2 id="dayDay"></h2>
+    <h2 id="dayDay">{{weekday_header}}</h2>
     <span id="dayDates">
       <ion-buttons id="test">
-        <button id="button0" (click)="dateChange(0)" style="border-bottom:3px solid white;"></button>
-        <button id="button1" (click)="dateChange(1)"></button>
-        <button id="button2" (click)="dateChange(2)"></button>
-        <button id="button3" (click)="dateChange(3)"></button>
-        <button id="button4" (click)="dateChange(4)"></button>
+        <button id="button0" (click)="dateChange(0)" style="border-bottom:3px solid white;">{{display_days[0]}}</button>
+        <button id="button1" (click)="dateChange(1)">{{display_days[1]}}</button>
+        <button id="button2" (click)="dateChange(2)">{{display_days[2]}}</button>
+        <button id="button3" (click)="dateChange(3)">{{display_days[3]}}</button>
+        <button id="button4" (click)="dateChange(4)">{{display_days[4]}}</button>
     </ion-buttons>
     </span>
 
     <div id="timeBar">
       <div id="bubbles-container">
-        <div class="bubble"></div>
         <div class="bubble"></div>
         <div class="bubble"></div>
         <div class="bubble"></div>

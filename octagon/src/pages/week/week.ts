@@ -9,34 +9,45 @@ import { CreatePage } from '../create/create';
 })
 export class WeekPage {
 
+  months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 
+    'Oct', 'Nov', 'Dec',];
+
+  date: Date;
+  date_range: string;
+  in5Day: string;
+  in5Month: string;
+
+  display_days: string[] = ["0", "0", "0", "0", "0"];
+
   constructor(public navCtrl: NavController) {
+    this.date = new Date();
 
-  }
+    // Saves the day in 5 days
+    this.in5Day = this.addDays(new Date(), 4).getDate().toString();
+    // Saves the month in 5 days
+    this.in5Month = this.months[this.addDays(new Date(), 4).getMonth()].toString();
 
-  createPage() {
-    this.navCtrl.push(CreatePage);
-  }
-
-  ionViewDidLoad() {
-    var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec',];
-    var now = new Date();
-    var todaysDate = (now.getDate()).toString() + " " + months[(now.getMonth())];
-
-    function addDays(dateObj, numDays) {
-      dateObj.setDate(dateObj.getDate() + numDays);
-      return dateObj;
-    }
-
-    var in5Day = addDays(new Date(), 4).getDate().toString();
-    var in5Month = months[addDays(new Date(), 4).getMonth()].toString();
-
-    // Adds the day text to the page of a 5 day range.
-    document.getElementById('weekDay').innerHTML += todaysDate + " - " + in5Day + " " + in5Month;
+    // First part of the date range.
+    this.date_range = (this.date.getDate()).toString() + " " + 
+      this.months[(this.date.getMonth())];
+    // Second part of the date range.
+    this.date_range += " - " + this.in5Day + " " + this.in5Month;
 
     // Adds 5 dates to the page.
     for (var i = 0; i < 5; i++) {
-      document.getElementById("weekDates").innerHTML += "<h4>" + (now.getDate() + i).toString() + " " + months[(now.getMonth())] + "</h4>";
+      this.display_days[i] = ((this.date.getDate() + i).toString() + " " + 
+        this.months[this.date.getMonth()].toString());
     }
   }
 
+  // Works out the date in 5 days
+  addDays(dateObj, numDays) {
+    dateObj.setDate(dateObj.getDate() + numDays);
+    return dateObj;
+  }
+
+  // When the add button is clicked the create page is loaded.
+  createPage() {
+    this.navCtrl.push(CreatePage);
+  }
 }

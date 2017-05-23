@@ -5,6 +5,7 @@
 #include <string>
 #include <ctime>
 #include <vector>
+#include <algorithm>
 
 // ODB database include
 #include <odb/core.hxx>

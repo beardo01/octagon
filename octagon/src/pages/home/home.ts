@@ -32,6 +32,8 @@ export class HomePage {
     var now = new Date();
     var day = days[now.getDay()];
 
+    var bubbleDates = [['0800','0900'],['2200','2230'],['1000','1130'],['1200','1230'],['1230','100'],['1400','14:30'],['1500','1600']];
+
     // Adds the day text to the page.
     document.getElementById('dayDay').innerHTML += day;
 

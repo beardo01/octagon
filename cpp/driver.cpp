@@ -1,6 +1,7 @@
 #include <memory>   // std::auto_ptr
 #include <iostream>
 #include <string>
+#include <boost/regex.hpp>
 
 // ODB includes
 #include <odb/database.hxx>
@@ -47,8 +48,8 @@ void createUser(string user, string email, string password, string rpassword, st
 				if (password == rpassword) {
 
 					// Check that the username, email and password are valid.
-					regex username_regex("[a-zA-Z]+[a-zA-Z0-9-_]*");
-					regex email_regex(".+@.+[.].+");
+					boost::regex username_regex{"[a-zA-Z]+[a-zA-Z0-9_\\-]*"};
+					boost::regex email_regex{".+@.+[.].+"};
 					if (regex_match(user, username_regex) && (user.length() > 3 || user.length() < 37)) {
 						if (regex_match(email, email_regex)) {
 							if(password.length() > 5) {

@@ -17,6 +17,15 @@ export class HomePage {
   weekday_header: string;
   selected_date: number = 0;
 
+  // ((1+((1200/1000))-(1200/1000))*40)
+  // ((1+((start_time/1000)-(middle_time/1000)))*40)
+  
+  bubbles: any [] [] = [['80%','1230','meeting','blue','Lab A','345 Meeting','A meeting about cosc345'],
+                        ['60%','1200','meeting','red','Lab B','345 Meeting','A meeting about cosc345'],
+                        ['20%','0900','meeting','green','Lab C','345 Meeting','A meeting about cosc345']];
+  
+  bubbles_locations: number [] = [];
+
   // Sets up dates in the header of homepage.
   constructor(public navCtrl: NavController) {
     this.date = new Date();

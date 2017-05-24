@@ -22,23 +22,18 @@
 
     <div id="timeBar">
       <div id="bubbles-container">
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
-        <div class="bubble"></div>
+        <div *ngFor="let bubble of bubbles">
+          <div class="bubble"></div>
+          <div class="bubble" style="margin-left:42.5%; background-color: red;">{{bubble[0]}}</div>
+        </div>
       </div>
     </div>
   </div>
-  </ion-header>
+</ion-header>
 
- <!-- Old Section code-->
- <ion-content padding>
-   <section id="tl" class="tl-container">
+<!-- Old Section code-->
+<ion-content padding>
+  <section id="tl" class="tl-container">
     <div ng-repeat="activity in timeline">
       <div class="tl-block">
         <div class="tl-colour tl-grey"></div>
@@ -66,4 +61,4 @@
       </div>
     </div>
   </section>
- </ion-content>
+</ion-content>

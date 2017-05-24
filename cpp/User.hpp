@@ -1,6 +1,7 @@
 #ifndef USER_H
 #define USER_H
 
+#include <stddef.h>
 #include <iostream>
 #include <string>
 #include <ctime>
@@ -10,9 +11,9 @@
 // ODB database include
 #include <odb/core.hxx>
 
-#include <odb/database.hxx>
+/*#include <odb/database.hxx>
 #include <odb/transaction.hxx>
-#include <odb/pgsql/database.hxx>
+#include <odb/pgsql/database.hxx>*/
 
 #include "bcrypt/BCrypt.hpp"
 #include "Timeline.hpp"

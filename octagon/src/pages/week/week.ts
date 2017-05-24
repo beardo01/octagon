@@ -9,7 +9,7 @@ import { CreatePage } from '../create/create';
 })
 export class WeekPage {
 
-  months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 
+  months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
     'Oct', 'Nov', 'Dec',];
 
   date: Date;
@@ -18,6 +18,11 @@ export class WeekPage {
   in5Month: string;
 
   display_days: string[] = ["0", "0", "0", "0", "0"];
+
+  bubbles: any[][] = [['80%', 'blue'],
+                      ['60%', 'red'],
+                      ['20%', 'green']];
+
 
   constructor(public navCtrl: NavController) {
     this.date = new Date();
@@ -28,14 +33,14 @@ export class WeekPage {
     this.in5Month = this.months[this.addDays(new Date(), 4).getMonth()].toString();
 
     // First part of the date range.
-    this.date_range = (this.date.getDate()).toString() + " " + 
+    this.date_range = (this.date.getDate()).toString() + " " +
       this.months[(this.date.getMonth())];
     // Second part of the date range.
     this.date_range += " - " + this.in5Day + " " + this.in5Month;
 
     // Adds 5 dates to the page.
     for (var i = 0; i < 5; i++) {
-      this.display_days[i] = ((this.date.getDate() + i).toString() + " " + 
+      this.display_days[i] = ((this.date.getDate() + i).toString() + " " +
         this.months[this.date.getMonth()].toString());
     }
   }

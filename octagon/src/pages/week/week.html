@@ -11,10 +11,38 @@
   </div>
 
   <div id="tl-container">
-    <div class="tl-line"></div>
-    <div class="tl-line"></div>
-    <div class="tl-line"></div>
-    <div class="tl-line"></div>
-    <div class="tl-line"></div>
+    <!--Day_1-->
+    <div class="tl-line">
+      <div *ngFor="let bubble_week of bubbles">
+          <div class="bubble_week" style="margin-top:50%; background-color: rgba(255,0,0,0.4);"></div>
+          <div class="bubble_week" style="margin-top:0%; background-color: rgba(0,255,0,0.4);"></div>
+          <div class="bubble_week" style="margin-top:10%; background-color: rgba(0,0,255,0.4);"></div>
+          <div class="bubble_week" style="margin-top:40%; background-color: rgba(255,255,0,0.4);"></div>
+      </div>
+    </div>
+    <!--Day_2-->
+    <div class="tl-line">
+      <div *ngFor="let bubble of bubbles">
+        
+      </div>
+    </div>
+    <!--Day_3-->
+    <div class="tl-line">
+      <div *ngFor="let bubble of bubbles">
+
+      </div>
+    </div>
+    <!--Day_4-->
+    <div class="tl-line">
+      <div *ngFor="let bubble of bubbles">
+
+      </div>
+    </div>
+    <!--Day_5-->
+    <div class="tl-line">
+      <div *ngFor="let bubble of bubbles">
+
+      </div>
+    </div>
   </div>
 </ion-content>

@@ -39,7 +39,6 @@ Main components
 #tl {
   position: relative;
   margin-top: 2em;
-  margin-bottom: 2em;
   margin-left: 10px !important;
 }
 
@@ -111,29 +110,33 @@ Main components
   clear: both;
 }
 
+.scroll-content {
+  padding: 16px 16px 0px 16px;
+}
+
 // Timeline colours
 .tl-red {
-  background: color($colors, red);
+  background-color: color($colors, red);
 }
 
 .tl-green {
-  background: color($colors, green);
+  background-color: color($colors, green);
 }
 
 .tl-yellow {
-  background: color($colors, yellow);
+  background-color: color($colors, yellow);
 }
 
 .tl-blue {
-  background: color($colors, blue);
+  background-color: color($colors, blue);
 }
 
 .tl-purple {
-  background: color($colors, purple);
+  background-color: color($colors, purple);
 }
 
 .tl-grey {
-  background: color($colors, grey);
+  background-color: color($colors, grey);
 }
 
 /* --------------------------------
@@ -161,7 +164,7 @@ span button {
   margin: 30px auto 10px auto;
   background-color: rgba(255, 255, 255, 0.3);
   width: 95%;
-  height: 30px;
+  height: 10px;
   border-radius: 25px;
 }
 
@@ -171,10 +174,8 @@ span button {
   position: absolute;
   height: 25px;
   width: 25px;
-  margin-top: 3px;
-  //margin-left: 44.5%;
+  margin-top: -7px;
   border-radius: 25px;
-  background-color: whitesmoke;
 }
 
 ion-header h2 {

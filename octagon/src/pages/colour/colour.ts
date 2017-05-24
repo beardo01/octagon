@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Http } from '@angular/http';
+import { ColoursAndLabels } from '../../providers/colours-and-labels';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class ColourPage {
   toggle2 : boolean = false;
   toggle3 : boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, http: Http) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, http: Http, public coloursAndLabels: ColoursAndLabels) {
     // Call to api gts
 
   }
@@ -30,6 +31,7 @@ export class ColourPage {
  */
   ionViewDidLoad() {
     this.getAvailableColours();
+    this.coloursAndLabels.getColours();
   }
   /**
    * When a user clicks a colour button the value of the button stored in the availableColours array is swapped with
@@ -93,4 +95,10 @@ export class ColourPage {
       }
     }
   }  
+
+  save() {
+    // make a post request with data stored in inUseColours array
+    console.log("Save button clicked")
+    this.coloursAndLabels.setColours(this.inUseColours);
+  }
 } // end class

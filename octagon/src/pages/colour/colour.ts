@@ -11,18 +11,19 @@ import { ColoursAndLabels } from '../../providers/colours-and-labels';
 
 export class ColourPage {
   //Will be set by a call to the cordova plugin when implemented
-  inUseColours: string [] = ["red", "blue", "yellow"];
+  inUseColours: string [] = ["grey", "grey", "grey"];
   //array of available colours
   allColours: string [] = ["red", "blue", "yellow", "green", "grey", "purple"];
   //placeholder defaults  
-  availableColours: string [] = ["grey", "grey", "grey"];
+  availableColours: string [] = [];
+
+  labels:  string [] = [];
   // show/hide booleans attached to each event button
   toggle1 : boolean = false;
   toggle2 : boolean = false;
   toggle3 : boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, http: Http, public coloursAndLabels: ColoursAndLabels) {
-    // Call to api gts
 
   }
 
@@ -30,8 +31,10 @@ export class ColourPage {
  * When view is loaded we call helper function to set the class names of available colours.
  */
   ionViewDidLoad() {
-    this.getAvailableColours();
     this.coloursAndLabels.getColours();
+    this.inUseColours = this.coloursAndLabels.colours;
+    this.labels = this.coloursAndLabels.labels;
+    this.getAvailableColours();
   }
   /**
    * When a user clicks a colour button the value of the button stored in the availableColours array is swapped with

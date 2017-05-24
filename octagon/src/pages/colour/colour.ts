@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import { Http } from '@angular/http';
+
 
 @Component({
   selector: 'page-colour',
@@ -17,7 +19,11 @@ export class ColourPage {
   toggle1 : boolean = false;
   toggle2 : boolean = false;
   toggle3 : boolean = false;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {}
+
+  constructor(public navCtrl: NavController, public navParams: NavParams, http: Http) {
+    // Call to api gts
+
+  }
 
 /**
  * When view is loaded we call helper function to set the class names of available colours.

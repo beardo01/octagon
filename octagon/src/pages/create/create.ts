@@ -16,8 +16,10 @@ export class CreatePage {
   label: string;
 
   // list of label names
-  label_names: string [];
+  labelNames: string [];
 
+  // List of colours
+  //colours: string [];
   // date object
   date: Date;
 
@@ -44,8 +46,8 @@ export class CreatePage {
   constructor(public navCtrl: NavController, public builder: FormBuilder) {
     // initialise data fields
     this.date = new Date();
-    this.label_names = ["Assignment", "Meeting", "Event"]; // Recieve call from plugin and pass data
-
+    this.labelNames = ["Assignment", "Meeting", "Event"]; // Recieve call from plugin and pass data
+    //   this.colours = [];
     this.minDate = this.date.getFullYear();
     this.maxDate = this.date.getFullYear() + 2;
 

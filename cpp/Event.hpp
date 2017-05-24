@@ -1,6 +1,7 @@
 #ifndef EVENT_H
 #define EVENT_H
 
+#include <stddef.h>
 #include <iostream>
 #include <string>
 #include <ctime>

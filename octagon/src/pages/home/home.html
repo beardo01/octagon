@@ -23,8 +23,7 @@
     <div id="timeBar">
       <div id="bubbles-container">
         <div *ngFor="let bubble of bubbles">
-          <div class="bubble"></div>
-          <div class="bubble" style="margin-left:42.5%; background-color: red;">{{bubble[0]}}</div>
+          <div class="bubble" [ngStyle]="{'margin-left': bubble[0], 'background-color': bubble[4]}"></div>
         </div>
       </div>
     </div>

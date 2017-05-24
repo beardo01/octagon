@@ -19,24 +19,20 @@ export class HomePage {
 
   // ((1+((1200/1000))-(1200/1000))*40)
   // ((1+((start_time/1000)-(middle_time/1000)))*40)
-  
-  bubbles: any [] [] = [['80%','1230','meeting','blue','Lab A','345 Meeting','A meeting about cosc345'],
-                        ['60%','1200','meeting','red','Lab B','345 Meeting','A meeting about cosc345'],
-                        ['20%','0900','meeting','green','Lab C','345 Meeting','A meeting about cosc345']];
-  
-  bubbles_locations: number [] = [];
+  // bubble = [posistion,strart_time, end_time, type,color, location, title, description]
+
+  bubbles: any[][] = [
+    ['', '2359', '1230', 'meeting', 'blue', 'Lab A', '345 Meeting', 'A meeting about cosc345'],
+    ['', '1200', '1200', 'meeting', 'red', 'Lab B', '345 Meeting', 'A meeting about cosc345'],
+    ['', '2200', '0900', 'meeting', 'yellow', 'Lab C', '345 Meeting', 'A meeting about cosc345'],
+    ['', '0000', '0700', 'meeting', 'purple', 'Lab C', '345 Meeting', 'A meeting about cosc345']
+  ];
 
   // Sets up dates in the header of homepage.
   constructor(public navCtrl: NavController) {
     this.date = new Date();
     // set header to the current day name from days array.
     this.weekday_header = this.days[this.date.getDay()];
-
-    // Display the next 5 days
-    // Formatted: date_number month.
-    for (var i = 0; i < 5; i++) {
-      this.display_days[i] = ((this.date.getDate() + i).toString() + " " + this.months[this.date.getMonth()].toString());
-    }
 
   }
 
@@ -55,6 +51,20 @@ export class HomePage {
   createPage() {
     console.log("called");
     this.navCtrl.push(CreatePage);
+  }
+
+  ionViewDidLoad() {
+    // Display the next 5 days
+    // Formatted: date_number month.
+    for (var i = 0; i < 5; i++) {
+      this.display_days[i] = ((this.date.getDate() + i).toString() + " " + this.months[this.date.getMonth()].toString());
+    }
+
+    // Works out the position of each bubble and writes to their array.
+    for (var x = 0; x < this.bubbles.length; x++) {
+      var ml = (this.bubbles[x][1]/2359)*87;
+      this.bubbles[x][0] = ml + '%';
+    }
   }
 
 }

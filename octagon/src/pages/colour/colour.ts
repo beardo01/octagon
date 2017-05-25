@@ -11,7 +11,7 @@ import { ColoursAndLabels } from '../../providers/colours-and-labels';
 
 export class ColourPage {
   //Will be set by a call to the cordova plugin when implemented
-  inUseColours: string [] = ["grey", "grey", "grey"];
+  inUseColours: string [] = [];
   //array of available colours
   allColours: string [] = ["red", "blue", "yellow", "green", "grey", "purple"];
   //placeholder defaults  
@@ -31,10 +31,13 @@ export class ColourPage {
  * When view is loaded we call helper function to set the class names of available colours.
  */
   ionViewDidLoad() {
-    this.coloursAndLabels.getColours();
-    this.inUseColours = this.coloursAndLabels.colours;
-    this.labels = this.coloursAndLabels.labels;
+    // get colours from provider and inject into used colour array
+    this.inUseColours = this.coloursAndLabels.getColours();
+    // get labels from provider and overwrite labels array with values
+    this.labels = this.coloursAndLabels.getLabels();
+    // call function to push available colours to available colours datafield
     this.getAvailableColours();
+ 
   }
   /**
    * When a user clicks a colour button the value of the button stored in the availableColours array is swapped with
@@ -101,7 +104,7 @@ export class ColourPage {
 
   save() {
     // make a post request with data stored in inUseColours array
-    console.log("Save button clicked")
+    // console.log("Save button clicked")
     this.coloursAndLabels.setColours(this.inUseColours);
   }
 } // end class

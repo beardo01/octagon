@@ -14,32 +14,38 @@ export class ColoursAndLabels {
   
   }
 
-  getColours() {
-  let opt: RequestOptions
-  let myHeaders: Headers = new Headers();
-  myHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
-  myHeaders.append('Content-Type', 'application/json');
-  //  myHeaders.set('app-id', 'c2549df0');
-  //  myHeaders.append('app-key', 'a2d31ce2ecb3c46739b7b0ebb1b45a8b');
-  //  myHeaders.append('Content-type', 'application/json')
-   opt = new RequestOptions({
-     headers: myHeaders
+  requestColoursAndLabels() {
+    let opt: RequestOptions
+    let myHeaders: Headers = new Headers();
+    myHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
+    myHeaders.append('Content-Type', 'application/json');
+    opt = new RequestOptions({
+      headers: myHeaders
     })  
     // Make get request to API and get current values for colour strings
-    this.http.get('http://104.197.40.106/api/driver/get/colours', opt).map(res => res.json()).subscribe(
+    return this.http.get('http://104.197.40.106/api/driver/get/colours', opt).map(res => res.json().message).subscribe(
     data => {
-      this.colours.push(data.message.colours.colour_one);
-      this.colours.push(data.message.colours.colour_two);
-      this.colours.push(data.message.colours.colour_three);
-      this.labels.push(data.message.labels.label_one);
-      this.labels.push(data.message.labels.label_two);
-      this.labels.push(data.message.labels.label_three);
+      console.log("Data recieved from requestColours:")
+      console.log(data)
+      this.colours.push(data.colours.colour_one);
+      this.colours.push(data.colours.colour_two);
+      this.colours.push(data.colours.colour_three);
+      this.labels.push(data.labels.label_one);
+      this.labels.push(data.labels.label_two);
+      this.labels.push(data.labels.label_three);
     },
     err => {
       console.log("Error from getColours on colours-and-labels.ts")
     });
   }
-
+  // Get values stored in colour array
+  getColours() {
+    return this.colours;
+  }
+  // Get values stored in label array
+  getLabels() {
+    return this.labels;
+  }
 
   setColours(colourArr) {
     // post to server and set new colour strings

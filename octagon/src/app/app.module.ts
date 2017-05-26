@@ -10,6 +10,8 @@ import { LoginPage } from '../pages/login/login';
 import { JoinPage } from '../pages/join/join';
 import { ColourPage } from '../pages/colour/colour';
 import { LabelPage } from '../pages/label/label';
+import { ColoursAndLabels } from '../providers/colours-and-labels.ts';
+import { IonicStorageModule } from '@ionic/storage'
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { LabelPage } from '../pages/label/label';
     LabelPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -40,6 +43,6 @@ import { LabelPage } from '../pages/label/label';
     ColourPage,
     LabelPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, ColoursAndLabels ]
 })
 export class AppModule {}

@@ -19,13 +19,12 @@ export class HomePage {
 
   // This data will be filled by http.
   input_data: any[][] = [
-    [456, 2, 1495771027, 1495771027, 'Meeting Tom', 'Owheo Building'],
-    [876, 2, 1483264800, 1495771027, 'tgiutgtg', 'Outside RMT'],
-    [543, 1, 1483333200, 1495771027, 'rkgjbgibdig', 'Outside RMT'],
-    [234, 0, 1495771027, 1495771027, 'iufbeiurfbei', 'Outside RMT'],
+    [456, 0, 1495777978, 1495777978, 'Meeting Tom', 'Owheo Building'],
+    [876, 1, 1495828800, 1495828800, 'tgiutgtg', 'Outside RMT'],
+    [543, 2, 1495785600, 1495785600, 'rkgjbgibdig', 'Outside RMT']
   ];
-  colours: string [] = ['red','blue','green'];
-  labels: string [] = ['Meeting','Assignment','Event'];
+  colours: string[] = ['red', 'blue', 'green'];
+  labels: string[] = ['Meeting', 'Assignment', 'Event'];
 
   // bubbles = [[timebar_location,labels,start,end,description,location,colour]]
   //                  [0]           [1]   [2]   [3]   [4]         [5]
@@ -55,11 +54,11 @@ export class HomePage {
       var description = this.input_data[a][4];
       var location = this.input_data[a][5];
       var id = this.input_data[a][0];
-      
+
       // Writes the correct colour depending on type.
       if (type === 0) {
         colour = this.colours[0]
-      }else if (type === 1) {
+      } else if (type === 1) {
         colour = this.colours[1]
       } else if (type === 2) {
         colour = this.colours[2]
@@ -68,24 +67,40 @@ export class HomePage {
       // Writes the correct label depending on type.
       if (type === 0) {
         labels = this.labels[0]
-      }else if (type === 1) {
+      } else if (type === 1) {
         labels = this.labels[1]
       } else if (type === 2) {
         labels = this.labels[2]
       }
 
       // Writes a formatted time from UNIX to 24 hours.
-      var start_hours_24 = new Date(this.input_data[a][2]*1000).getHours();
-      var start_mins_24 = new Date(this.input_data[a][2]*1000).getMinutes();
-      time_start_24 = start_hours_24.toString() + start_mins_24.toString();
+      var start_hours_24 = new Date(this.input_data[a][2] * 1000).getHours().toString();
+      var start_mins_24 = new Date(this.input_data[a][2] * 1000).getMinutes().toString();
+      var end_hours_24 = new Date(this.input_data[a][3] * 1000).getHours().toString();
+      var end_mins_24 = new Date(this.input_data[a][3] * 1000).getMinutes().toString();
 
-      var end_hours = new Date(this.input_data[a][3]*1000).getHours();
-      var end_mins = new Date(this.input_data[a][3]*1000).getMinutes();
-      time_end_24 = end_hours.toString() + end_mins.toString();
+      if (start_hours_24.length <= 1) {
+        start_hours_24 = '0' + start_hours_24;
+      }
+
+      if (start_mins_24.length <= 1) {
+        start_mins_24 = '0' + start_mins_24;
+      }
+
+      if (end_hours_24.length <= 1) {
+        end_hours_24 = '0' + end_hours_24;
+      }
+
+      if (end_mins_24.length <= 1) {
+        end_mins_24 = '0' + end_mins_24;
+      }
+
+      time_start_24 = start_hours_24 + start_mins_24;
+      time_end_24 = end_hours_24.toString() + end_mins_24.toString();
 
       // Writes a formatted time from 24 hours to 12 hours.
-      
-      
+
+
       // Fill filtered array with data.
       filtered.push(timebar_location); // [0]
       filtered.push(labels);           // [1]

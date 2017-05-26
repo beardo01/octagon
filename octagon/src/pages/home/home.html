@@ -25,7 +25,7 @@
     <div id="timeBar">
       <div id="bubbles-container">
         <div *ngFor="let bubble of bubbles">
-          <div class="bubble tl-{{bubble[4]}}" [ngStyle]="{'margin-left': bubble[0]}"></div>
+          <div class="bubble tl-{{bubble[6]}}" [ngStyle]="{'margin-left': bubble[0]}"></div>
         </div>
       </div>
     </div>
@@ -37,14 +37,14 @@
 
     <div ng-repeat="activity in timeline" *ngFor="let bubble_deatil of bubbles">
       <div class="tl-block">
-        <div class="tl-colour tl-{{bubble_deatil[4]}}"></div>
+        <div class="tl-colour tl-{{bubble_deatil[6]}}"></div>
         <div class="tl-content">
-          <h5 class="tl-title">{{bubble_deatil[6]}}</h5>
-          <p class="tl-description">{{bubble_deatil[7]}}</p>
+          <h5 class="tl-title">{{bubble_deatil[1]}}</h5>
+          <p class="tl-description">{{bubble_deatil[4]}}</p>
           <p class="tl-location">
             <ion-icon name="pin"></ion-icon> {{bubble_deatil[5]}}</p>
           <p class="tl-time">
-            <ion-icon name="time"></ion-icon> {{bubble_deatil[1]}} to {{bubble_deatil[2]}}</p>
+            <ion-icon name="time"></ion-icon> {{bubble_deatil[2]}} to {{bubble_deatil[3]}}</p>
         </div>
       </div>
     </div>

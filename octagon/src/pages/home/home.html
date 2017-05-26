@@ -9,7 +9,9 @@
   </ion-navbar>
 
   <div id="dayDateArea">
+    
     <h2 id="dayDay">{{weekday_header}}</h2>
+
     <span id="dayDates">
       <ion-buttons id="test">
         <button id="button0" (click)="dateChange(0)" [ngClass]="{'highlight_date': selected_date === 0}">{{display_days[0]}}</button>
@@ -23,27 +25,26 @@
     <div id="timeBar">
       <div id="bubbles-container">
         <div *ngFor="let bubble of bubbles">
-          <div class="bubble tl-{{bubble[4]}}" [ngStyle]="{'margin-left': bubble[0]}"></div>
+          <a href="#{{bubble[9]}}"><div class="bubble tl-{{bubble[6]}} {{bubble[9]}}" [ngStyle]="{'margin-left': bubble[0]}"></div></a>
         </div>
       </div>
     </div>
   </div>
 </ion-header>
 
-<!-- Old Section code-->
 <ion-content>
   <section id="tl" class="tl-container">
 
     <div ng-repeat="activity in timeline" *ngFor="let bubble_deatil of bubbles">
-      <div class="tl-block">
-        <div class="tl-colour tl-{{bubble_deatil[4]}}"></div>
+      <div class="tl-block" id="{{bubble_deatil[9]}}">
+        <div class="tl-colour tl-{{bubble_deatil[6]}}"></div>
         <div class="tl-content">
-          <h5 class="tl-title">{{bubble_deatil[6]}}</h5>
-          <p class="tl-description">{{bubble_deatil[7]}}</p>
+          <h5 class="tl-title">{{bubble_deatil[1]}}</h5>
+          <p class="tl-description">{{bubble_deatil[4]}}</p>
           <p class="tl-location">
             <ion-icon name="pin"></ion-icon> {{bubble_deatil[5]}}</p>
           <p class="tl-time">
-            <ion-icon name="time"></ion-icon> {{bubble_deatil[1]}} to {{bubble_deatil[2]}}</p>
+            <ion-icon name="time"></ion-icon> {{bubble_deatil[7]}} to {{bubble_deatil[8]}}</p>
         </div>
       </div>
     </div>

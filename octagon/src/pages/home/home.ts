@@ -38,10 +38,7 @@ export class HomePage {
   // Changes where the style of underlines goes for each date.
   // Number is the button that has been clicked.
   dateChange(newValue: number) {
-    if (this.selected_date === newValue) {
-      this.selected_date = 0;
-    }
-    else {
+    if (this.selected_date !== newValue) {
       this.selected_date = newValue;
     }
   }

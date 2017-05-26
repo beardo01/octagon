@@ -1,7 +1,6 @@
 #ifndef TIMELINEITEM_H
 #define TIMELINEITEM_H
 
-#include <stddef.h>
 #include <iostream>
 #include <string>
 #include <ctime>

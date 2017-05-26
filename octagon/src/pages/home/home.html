@@ -9,7 +9,9 @@
   </ion-navbar>
 
   <div id="dayDateArea">
+    
     <h2 id="dayDay">{{weekday_header}}</h2>
+
     <span id="dayDates">
       <ion-buttons id="test">
         <button id="button0" (click)="dateChange(0)" [ngClass]="{'highlight_date': selected_date === 0}">{{display_days[0]}}</button>
@@ -30,7 +32,6 @@
   </div>
 </ion-header>
 
-<!-- Old Section code-->
 <ion-content>
   <section id="tl" class="tl-container">
 

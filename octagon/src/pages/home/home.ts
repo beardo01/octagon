@@ -16,9 +16,7 @@ export class HomePage {
   display_days: string[] = ["0", "0", "0", "0", "0"];
   weekday_header: string;
   selected_date: number = 0;
-
-  // ((1+((1200/1000))-(1200/1000))*40)
-  // ((1+((start_time/1000)-(middle_time/1000)))*40)
+  
   // bubble = [posistion,strart_time, end_time, type,color, location, title, description]
   //              [0]       [1]         [2]      [3]  [4]      [5]      [6]     [7]
 
@@ -67,7 +65,7 @@ export class HomePage {
       // 2359 is the heighest time on the bar.
       // 83 is where the heighest bubble can go.
       // +2 is the padding for start and end.
-      var margin_left = ((this.bubbles[x][1]/2359)*83) + 2;
+      var margin_left = ((this.bubbles[x][1]/2359)*78) + 2;
       this.bubbles[x][0] = margin_left + '%';
     }
   }

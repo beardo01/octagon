@@ -11,10 +11,12 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class EventData {
 
+  events: string [][] = [];
+
   constructor(public http: Http) {
     
   }
-  requestEventData(from, to) {
+  requestEventData() {
     let opt: RequestOptions
     let myHeaders: Headers = new Headers();
     myHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
@@ -23,16 +25,24 @@ export class EventData {
       headers: myHeaders
     })  
     // Make get request to API and get current values for colour strings
-    return this.http.get('http://api.simpalapps.com/driver/get/events', opt).map(res => 
+    return this.http.get('https://api.simpalapps.com/driver/get/events', opt).map(res => 
       {
       var data = res.json().message;
+      data.forEach(event => {
+        this.events.push(event);
+      });
       console.log("Data recieved from requestEventData:")
-      console.log(data);
+      
+      
       //this.colours.push(data.colours.colour_one);
       },
       error => {
         console.log(error)
       });
+    }
+
+    getEvents() {
+      return this.events;
     }
 
 }

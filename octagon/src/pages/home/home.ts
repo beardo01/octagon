@@ -1,7 +1,12 @@
 import { Component } from '@angular/core';
-
 import { NavController } from 'ionic-angular';
 import { CreatePage } from '../create/create';
+
+import { Http } from '@angular/http';
+import { ColoursAndLabels } from '../../providers/colours-and-labels';
+import { EventData } from '../../providers/event-data';
+import { Storage } from '@ionic/storage';
+
 
 @Component({
   selector: 'page-home',
@@ -31,11 +36,45 @@ export class HomePage {
   bubbles: any[][] = new Array();
 
   // Sets up dates in the header of homepage.
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, http: Http, public coloursAndLabels: ColoursAndLabels, 
+              public eventData: EventData, public storage: Storage) {
+
     this.date = new Date();
     // set header to the current day name from days array.
     this.weekday_header = this.days[this.date.getDay()];
+    
   }
+  requestEventData() {
+    this.eventData.requestEventData()
+    .subscribe(
+      response => {
+        //console.log(this.eventData.getEvents().length);
+        //console.log(this.eventData.getEvents());
+        this.parseEvents(this.eventData.getEvents());
+        this.filterData();
+        this.displayWeekDays();
+        this.displayBubbles();
+        
+      },
+      error => {
+        console.log(error);
+        // Can't connect to network, use what's in local storage
+      });
+  } 
+
+  parseEvents(eventArr) {
+    eventArr.forEach(element => {
+      console.log(element);
+      var arr = []
+      arr.push(element.id);
+      arr.push(element.type);
+      arr.push(element.start);
+      arr.push(element.end);
+      arr.push(element.description);
+      this.input_data.push(arr);
+    });
+  } 
+
 
   filterData() {
     //Setup bubbles array
@@ -134,14 +173,20 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-    this.filterData();
-    // Display the next 5 days
-    // Formatted: date_number month.
+    this.requestEventData();
+    //this.filterData();
+
+
+  }
+  // Display the next 5 days
+  // Formatted: date_number month.
+  displayWeekDays(){
     for (var i = 0; i < 5; i++) {
       this.display_days[i] = ((this.date.getDate() + i).toString() + " " + this.months[this.date.getMonth()].toString());
     }
+  }
 
-    // Works out the position of each bubble and writes to their array.
+  displayBubbles(){
     for (var x = 0; x < this.bubbles.length; x++) {
       // this.bubbles[x][1] is the first time.
       // 2359 is the heighest time on the bar.

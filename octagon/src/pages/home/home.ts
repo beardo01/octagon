@@ -19,8 +19,10 @@ export class HomePage {
 
   // This data will be filled by http.
   input_data: any[][] = [
-    [1, 2, 1200, 1300, 'Meeting Tom', 'Owheo Building'],
-    [1, 1, 800, 900, 'Lunch', 'Outside RMT']
+    [456, 2, 1495771027, 1495771027, 'Meeting Tom', 'Owheo Building'],
+    [876, 2, 1483264800, 1495771027, 'tgiutgtg', 'Outside RMT'],
+    [543, 1, 1483333200, 1495771027, 'rkgjbgibdig', 'Outside RMT'],
+    [234, 0, 1495771027, 1495771027, 'iufbeiurfbei', 'Outside RMT'],
   ];
   colours: string [] = ['red','blue','green'];
   labels: string [] = ['Meeting','Assignment','Event'];
@@ -52,6 +54,7 @@ export class HomePage {
       var end = this.input_data[a][3];
       var description = this.input_data[a][4];
       var location = this.input_data[a][5];
+      var id = this.input_data[a][0];
       
       // Writes the correct colour depending on type.
       if (type === 0) {
@@ -72,8 +75,16 @@ export class HomePage {
       }
 
       // Writes a formatted time from UNIX to 24 hours.
+      var start_hours_24 = new Date(this.input_data[a][2]*1000).getHours();
+      var start_mins_24 = new Date(this.input_data[a][2]*1000).getMinutes();
+      time_start_24 = start_hours_24.toString() + start_mins_24.toString();
+
+      var end_hours = new Date(this.input_data[a][3]*1000).getHours();
+      var end_mins = new Date(this.input_data[a][3]*1000).getMinutes();
+      time_end_24 = end_hours.toString() + end_mins.toString();
 
       // Writes a formatted time from 24 hours to 12 hours.
+      
       
       // Fill filtered array with data.
       filtered.push(timebar_location); // [0]
@@ -85,6 +96,7 @@ export class HomePage {
       filtered.push(colour);           // [6]
       filtered.push(time_start_24);    // [7]
       filtered.push(time_end_24);      // [8]
+      filtered.push(id);               // [9]
 
       // Push filtered bubble to bubbles.
       this.bubbles.push(filtered);
@@ -120,8 +132,7 @@ export class HomePage {
       // 2359 is the heighest time on the bar.
       // 78 is where the heighest bubble can go.
       // +2 is the padding for start and end.
-      var margin_left = ((this.bubbles[x][8] / 2359) * 78) + 2;
-      console.log(margin_left);
+      var margin_left = ((this.bubbles[x][7] / 2359) * 78) + 2;
       this.bubbles[x][0] = margin_left + '%';
     }
   }

@@ -18,8 +18,8 @@ export class MyApp {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      console.log("REQESTING DATA - app.component.ts")
-      this.coloursAndLabels.requestColoursAndLabels();
+      //console.log("REQESTING DATA - app.component.ts")
+      //this.coloursAndLabels.requestColoursAndLabels();
 
       Splashscreen.hide();
     });

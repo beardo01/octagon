@@ -11,6 +11,7 @@ import { JoinPage } from '../pages/join/join';
 import { ColourPage } from '../pages/colour/colour';
 import { LabelPage } from '../pages/label/label';
 import { ColoursAndLabels } from '../providers/colours-and-labels.ts';
+import { IonicStorageModule } from '@ionic/storage'
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ColoursAndLabels } from '../providers/colours-and-labels.ts';
     LabelPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

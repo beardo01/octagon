@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { ColoursAndLabels } from '../../providers/colours-and-labels';
+import { Storage } from '@ionic/storage';
 
 
 @Component({
@@ -23,7 +24,8 @@ export class ColourPage {
   toggle2 : boolean = false;
   toggle3 : boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, http: Http, public coloursAndLabels: ColoursAndLabels) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, http: Http, public coloursAndLabels: ColoursAndLabels, 
+              public storage: Storage) {
 
   }
 
@@ -31,14 +33,67 @@ export class ColourPage {
  * When view is loaded we call helper function to set the class names of available colours.
  */
   ionViewDidLoad() {
-    // get colours from provider and inject into used colour array
-    this.inUseColours = this.coloursAndLabels.getColours();
-    // get labels from provider and overwrite labels array with values
-    this.labels = this.coloursAndLabels.getLabels();
-    // call function to push available colours to available colours datafield
-    this.getAvailableColours();
- 
+    this.requestColoursAndLabels();
   }
+
+  /**
+   * Make a call to the coloursAndLabels provider
+   * 
+   */
+  requestColoursAndLabels() {
+    var response = this.coloursAndLabels.requestColoursAndLabels()
+    .subscribe(
+      response => {
+        this.inUseColours = this.coloursAndLabels.getColours();
+        this.labels = this.coloursAndLabels.getLabels();
+        this.getAvailableColours();
+        this.setLocalStorage();
+      },
+      error => {
+        console.log(error);
+        this.getLocalColours();
+        this.getLocalLabels();
+        this.getAvailableColours();
+      }
+      );
+  } 
+
+  /**
+   * Update colours in local storage
+   */
+  setLocalStorage() {
+    this.storage.set('colour1', this.inUseColours[0]);
+    this.storage.set('colour2', this.inUseColours[1]);
+    this.storage.set('colour3', this.inUseColours[2]);
+    this.storage.set('label1', this.labels[0]);
+    this.storage.set('label2', this.labels[1]);
+    this.storage.set('label3', this.labels[2]);
+  }
+
+  getLocalColours() {
+    console.log("getting them local colours m8");
+    this.storage.get('colour1').then((val) => {
+      this.inUseColours[0] = val;
+    });
+    this.storage.get('colour2').then((val) => {
+      this.inUseColours[1] = val;
+    });
+    this.storage.get('colour3').then((val) => {
+      this.inUseColours[2] = val;
+    });
+  }
+    getLocalLabels() {
+    this.storage.get('label1').then((val) => {
+      this.labels[0] = val;
+    });
+    this.storage.get('label2').then((val) => {
+      this.labels[1] = val;
+    });
+    this.storage.get('label3').then((val) => {
+      this.labels[2] = val;
+    });
+  }
+
   /**
    * When a user clicks a colour button the value of the button stored in the availableColours array is swapped with
    * the value in the inUseColours array. The ng model take care of displaying the correct values.

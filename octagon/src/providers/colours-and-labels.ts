@@ -23,21 +23,23 @@ export class ColoursAndLabels {
       headers: myHeaders
     })  
     // Make get request to API and get current values for colour strings
-    return this.http.get('http://104.197.40.106/api/driver/get/colours', opt).map(res => res.json().message).subscribe(
-    data => {
+    return this.http.get('http://api.simpalapps.com/driver/get/settings', opt).map(res => 
+      {
+        var data = res.json().message;
       console.log("Data recieved from requestColours:")
-      console.log(data)
+      console.log(data);
       this.colours.push(data.colours.colour_one);
       this.colours.push(data.colours.colour_two);
       this.colours.push(data.colours.colour_three);
       this.labels.push(data.labels.label_one);
       this.labels.push(data.labels.label_two);
       this.labels.push(data.labels.label_three);
-    },
-    err => {
-      console.log("Error from getColours on colours-and-labels.ts")
-    });
-  }
+      },
+      error => {
+        console.log(error)
+      });
+    }
+    
   // Get values stored in colour array
   getColours() {
     return this.colours;
@@ -59,7 +61,7 @@ export class ColoursAndLabels {
       "auth_key": "9C73815A3C9AA677B379EB69BDF19"
     };
     console.log(JSON.stringify(body));
-    this.http.post('http://104.197.40.106/api/driver/', JSON.stringify(body), {headers: headers})
+    this.http.post('http://api.simpalapps.com/driver/get/settings', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(data => {
         console.log(data);

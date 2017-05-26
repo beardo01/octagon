@@ -91,5 +91,5 @@ void createUser(string user, string email, string password, string rpassword, st
 int main(int argc, char *argv[]) {
 
     // Testing user create
-    createUser(argv[1], argv[2], argv[3], argv[3], "127.0.0.1");
+    createUser(argv[1], argv[2], argv[3], argv[3], argv[4]);
 }

@@ -76,9 +76,11 @@ export class LabelPage {
     this.storage.set('colour1', this.colours[0]);
     this.storage.set('colour2', this.colours[1]);
     this.storage.set('colour3', this.colours[2]);
-    this.storage.set('label1', this.label1);
-    this.storage.set('label2', this.label2);
-    this.storage.set('label3', this.label3);
+    this.storage.set('label1', this.labelForm.controls['label1'].value);
+    this.storage.set('label2', this.labelForm.controls['label2'].value);
+    this.storage.set('label3', this.labelForm.controls['label3'].value);
+    console.log("label1")
+    console.log(this.label1)
   }
   /**
    * Get colour values stored in local storage

@@ -26,7 +26,6 @@ export class ColourPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, http: Http, public coloursAndLabels: ColoursAndLabels, 
               public storage: Storage) {
-
   }
 
 /**
@@ -37,7 +36,8 @@ export class ColourPage {
   }
 
   /**
-   * Make a call to the coloursAndLabels provider
+   * Make a call to the coloursAndLabels provider that requests data from the api.
+   * If sucessfull set variables accordinly. If it fails get data from local storage.
    * 
    */
   requestColoursAndLabels() {
@@ -51,10 +51,10 @@ export class ColourPage {
       },
       error => {
         console.log(error);
+        // Can't connect to network, use what's in local storage
         this.getLocalColours();
         this.getLocalLabels();
-        this.getAvailableColours();
-      }
+        }
       );
   } 
 
@@ -69,9 +69,10 @@ export class ColourPage {
     this.storage.set('label2', this.labels[1]);
     this.storage.set('label3', this.labels[2]);
   }
-
+  /**
+   * Get variables from local DB
+   */
   getLocalColours() {
-    console.log("getting them local colours m8");
     this.storage.get('colour1').then((val) => {
       this.inUseColours[0] = val;
     });
@@ -80,9 +81,15 @@ export class ColourPage {
     });
     this.storage.get('colour3').then((val) => {
       this.inUseColours[2] = val;
+      // set availble colours here once all promises have been resolved.
+      this.getAvailableColours();
     });
   }
-    getLocalLabels() {
+
+  /**
+   * Get label variables from local DB
+   */
+  getLocalLabels() {
     this.storage.get('label1').then((val) => {
       this.labels[0] = val;
     });
@@ -106,7 +113,6 @@ export class ColourPage {
       var oldInUseColour = this.inUseColours[arrayPosition];
       this.inUseColours[arrayPosition] = colour;
       this.availableColours[availableArrayIndex] = oldInUseColour;
-      // Push data to plugin @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
     }
   }
 /**
@@ -161,5 +167,6 @@ export class ColourPage {
     // make a post request with data stored in inUseColours array
     // console.log("Save button clicked")
     this.coloursAndLabels.setColours(this.inUseColours);
+    this.setLocalStorage();
   }
 } // end class

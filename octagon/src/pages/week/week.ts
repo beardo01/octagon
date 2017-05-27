@@ -26,27 +26,27 @@ export class WeekPage {
   //Holds all input data of each day.
   input_data_days: any[][][] = [
     [
-      [456, 0, 1495828800, 1495777978, 'Meeting Tom', 'Owheo Building'],
-      [876, 1, 1495843200, 1495828800, 'tgiutgtg', 'Outside RMT'],          // Day 1
-      [543, 2, 1495879200, 1495785600, 'rkgjbgibdig', 'Outside RMT']
+      [456, 0, 1495828800, 1495836000, 'Meeting Tom', 'Owheo Building'],
+      [876, 1, 1495843200, 1495843200, 'tgiutgtg', 'Outside RMT'],          // Day 1
+      [543, 2, 1495879200, 1495879200, 'rkgjbgibdig', 'Outside RMT']
     ],
     [
-      [456, 0, 1495886400, 1495777978, 'Meeting Tom', 'Owheo Building'],
-      [876, 1, 1495922400, 1495828800, 'tgiutgtg', 'Outside RMT'],          // Day 2
-      [543, 2, 1495972740, 1495785600, 'rkgjbgibdig', 'Outside RMT']
+      [456, 0, 1495886400, 1495886400, 'Meeting Tom', 'Owheo Building'],
+      [876, 1, 1495922400, 1495922400, 'tgiutgtg', 'Outside RMT'],          // Day 2
+      [543, 2, 1495972740, 1495972740, 'rkgjbgibdig', 'Outside RMT']
     ],
     [
-      [456, 0, 1496001600, 1495777978, 'Meeting Tom', 'Owheo Building'],
-      [876, 1, 1496005200, 1495828800, 'tgiutgtg', 'Outside RMT'],
-      [876, 1, 1496030400, 1495828800, 'tgiutgtg', 'Outside RMT'],        // Day 3
-      [543, 2, 1496052000, 1495785600, 'rkgjbgibdig', 'Outside RMT']
+      [456, 0, 1496001600, 1496001600, 'Meeting Tom', 'Owheo Building'],
+      [876, 1, 1496005200, 1496005200, 'tgiutgtg', 'Outside RMT'],
+      [876, 1, 1496030400, 1496030400, 'tgiutgtg', 'Outside RMT'],        // Day 3
+      [543, 2, 1496052000, 1496052000, 'rkgjbgibdig', 'Outside RMT']
     ],
     [
 
     ],
     [
-      [456, 0, 1496170800, 1495777978, 'Meeting Tom', 'Owheo Building'],       // Day 5
-      [543, 2, 1496188800, 1495785600, 'rkgjbgibdig', 'Outside RMT']
+      [456, 0, 1496170800, 1496170800, 'Meeting Tom', 'Owheo Building'],       // Day 5
+      [543, 2, 1496188800, 1496231940, 'rkgjbgibdig', 'Outside RMT']
     ]
   ];
   colours: string[] = ['red', 'blue', 'green'];
@@ -81,6 +81,9 @@ export class WeekPage {
         var time_end_24 = this.input_data_days[z][a][3];
 
         var timebar_location = '';
+        var timebar_start = 0;
+        var timebar_end = 0;
+        var height = 0;
         var colour = '';
 
         // Writes the correct colour depending on type.
@@ -117,17 +120,26 @@ export class WeekPage {
         time_start_24 = start_hours_24 + start_mins_24;
         time_end_24 = end_hours_24 + end_mins_24;
 
-        // this.bubbles[x][1] is the first time.
+        // time_start_24 is the first time.
         // 2359 is the heighest time on the bar.
         // 107 is where the heighest bubble can go.
         // +2 is the padding for start and end.
-        timebar_location = (((time_start_24 / 2359) * 107) + 2) + '%';
-
+        
+        timebar_start = ((time_start_24 / 2359) * 107) + 2;
+        timebar_end = ((time_end_24 / 2359) * 107) + 2;
+        timebar_location = timebar_start + '%';
+        height = (timebar_end-timebar_start)-14;
+        if (height === 0) {
+          height = 7;
+        }
+        console.log(timebar_start,timebar_end,height);
         // Fill filtered array with data.
         filtered.push(timebar_location); // [0]
         filtered.push(colour);           // [1]
         filtered.push(time_start_24);    // [2]
         filtered.push(time_end_24);      // [3]
+        filtered.push(height + '%');     // [4]
+
         // Push filtered bubble to bubbles.
         this.bubbles_week[z].push(filtered);
       }

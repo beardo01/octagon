@@ -19,18 +19,15 @@ export class FormatDate {
       hour = hour - 12;
     }
 
-    dateString += this.pad(hour);
+    dateString += hour;
     dateString += (":" + min);
 
     if (pm) {
-      dateString += "pm";
+      dateString += " pm";
     } else {
-      dateString += "am";
+      dateString += " am";
     }
     return dateString;
+  }
 
-  }
-  pad(d) {
-    return (d < 10) ? '0' + d.toString() : d.toString();
-  }
 }

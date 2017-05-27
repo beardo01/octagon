@@ -21,7 +21,7 @@ export class EventData {
     let opt: RequestOptions
     let myHeaders: Headers = new Headers();
     myHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
-    //myHeaders.append('client_key', 'XxZyHGKt6ORDNMJeNthz');
+    myHeaders.append('client_key', 'XxZyHGKt6ORDNMJeNthz');
     myHeaders.append('Content-Type', 'application/json');
     opt = new RequestOptions({
       headers: myHeaders
@@ -36,12 +36,10 @@ export class EventData {
         var data = res.json().data;
         // Loop through each event array in JSON object and add to an array
         data.forEach(day => {
-          day.forEach(event => {
-            console.log("EVENT", data);
-            this.events.push(event);
-          });
+            this.events.push(day);
         });
       } else {
+        // set failed flag
         this.success = false;
       }
       },

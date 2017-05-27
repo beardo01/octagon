@@ -23,7 +23,7 @@ export class MyApp {
       this.localColoursAndLabels.requestLocalColours();
       this.localColoursAndLabels.requestLocalLabels().then(() =>
         // do some usefull shit here
-        console.log(this.localColoursAndLabels.getProviderColours())
+        console.log("called from app.component", this.localColoursAndLabels.getProviderColours())
       );
 
       Splashscreen.hide();

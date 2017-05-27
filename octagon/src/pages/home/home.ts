@@ -44,9 +44,12 @@ export class HomePage {
     this.colours = this.getProviderColours();
     // set labels data field from values stored in provider
     this.labels = this.getProviderLabels();
-
-    for (var z = 0; z != 5; z++) {
-      this.bubbles.push([]);
+    this.initaliseBubbles();
+    
+  }
+  initaliseBubbles() {
+   for (var z = 0; z != 5; z++) {
+      this.bubbles.push([]); 
     }
   }
 
@@ -63,8 +66,9 @@ export class HomePage {
 
     // reload events
     this.input_data = new Array();
-    this.bubbles = [];
 
+    this.bubbles = new Array();
+    this.initaliseBubbles(); 
     this.parseEvents(this.eventData.getEvents());
   }
   ionViewWillEnter() {
@@ -140,29 +144,34 @@ export class HomePage {
    * @param eventArr Array containing events from provider
    */
   parseEvents(eventArr) {
-    eventArr.forEach(element => {
-      var arr = []
-      arr.push(element.id);
-      arr.push(element.type);
-      arr.push(element.start);
-      arr.push(element.end);
-      arr.push(element.description);
-      this.input_data.push(arr);
+    var outerArr = [];
+    eventArr.forEach( event => {
+      event.forEach(element => {
+        var arr = [];
+        arr.push(element.id);
+        arr.push(element.type);
+        arr.push(element.start);
+        arr.push(element.end);
+        arr.push(element.description);
+        arr.push(element.location);
+        outerArr.push(arr);
+      });
+      this.input_data.push(outerArr);
+      outerArr = [];
     });
   }
 
 
   filterData() {
     //Setup bubbles array
-    for (var z = 0; z < 5; z++) {
+    for (var z = 0; z < this.input_data.length; z++) {
       for (var a = 0; a < this.input_data[z].length; a++) {
-
         var filtered = new Array();
 
         var timebar_location;
         var labels = '';
         var colour = '';
-        var time_start_24 = this.input_data[z][z][a][2];
+        var time_start_24 = this.input_data[z][a][2];
         var time_end_24 = this.input_data[z][a][3];
         var type = this.input_data[z][a][1];
         var start = this.input_data[z][a][2];
@@ -231,10 +240,9 @@ export class HomePage {
         filtered.push(time_start_24);    // [7]
         filtered.push(time_end_24);      // [8]
         filtered.push(id);               // [9]
-
         // Push filtered bubble to bubbles.
         this.bubbles[z].push(filtered);
-        console.log(this.bubbles[z]);
+        
       }
     }
   }

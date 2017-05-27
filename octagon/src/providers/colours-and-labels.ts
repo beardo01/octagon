@@ -20,7 +20,7 @@ export class ColoursAndLabels {
     let opt: RequestOptions
     let myHeaders: Headers = new Headers();
     myHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
-    myHeaders.append('client_key', 'XxZyHGKt6ORDNMJeNthz');
+    myHeaders.append('client_key', 'Ym2fv0ZxMyJrnCiwmNDi');
     myHeaders.append('Content-Type', 'application/json');
     opt = new RequestOptions({
       headers: myHeaders
@@ -62,7 +62,7 @@ export class ColoursAndLabels {
       "colour3": colourArr[2],
       "auth_key": "9C73815A3C9AA677B379EB69BDF19"
     };
-    console.log(JSON.stringify(body));
+    //console.log(JSON.stringify(body));
     this.http.post('https://api.simpalapps.com/driver/get/settings', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(data => {

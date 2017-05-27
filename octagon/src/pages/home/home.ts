@@ -23,16 +23,12 @@ export class HomePage {
   selected_date: number = 0;
 
   // This data will be filled by http.
-  input_data: any[][] = [
-    [456, 0, 1495777978, 1495777978, 'Meeting Tom', 'Owheo Building'],
-    [876, 1, 1495828800, 1495828800, 'tgiutgtg', 'Outside RMT'],
-    [543, 2, 1495785600, 1495785600, 'rkgjbgibdig', 'Outside RMT']
-  ];
+  input_data: any[][] = new Array();
   colours: string[] = ['red', 'blue', 'green'];
   labels: string[] = ['Meeting', 'Assignment', 'Event'];
 
   // bubbles = [[timebar_location,labels,start,end,description,location,colour]]
-  //                  [0]           [1]   [2]   [3]   [4]         [5]
+  //                  [0]           [1]   [2]   [3]   [4]         [5]     [6]
   bubbles: any[][] = new Array();
 
   // Sets up dates in the header of homepage.
@@ -53,8 +49,6 @@ export class HomePage {
         this.parseEvents(this.eventData.getEvents());
         this.filterData();
         this.displayWeekDays();
-        this.displayBubbles();
-        
       },
       error => {
         console.log(error);
@@ -82,7 +76,7 @@ export class HomePage {
 
       var filtered = new Array();
 
-      var timebar_location = '';
+      var timebar_location;
       var labels = '';
       var colour = '';
       var time_start_24 = this.input_data[a][2];
@@ -135,13 +129,16 @@ export class HomePage {
       }
 
       time_start_24 = start_hours_24 + start_mins_24;
-      time_end_24 = end_hours_24.toString() + end_mins_24.toString();
+      time_end_24 = end_hours_24 + end_mins_24;
 
-      // Writes a formatted time from 24 hours to 12 hours.
-
+      // this.bubbles[x][1] is the first time.
+      // 2359 is the heighest time on the bar.
+      // 78 is where the heighest bubble can go.
+      // +2 is the padding for start and end.
+      timebar_location = ((time_start_24 / 2359) * 78) + 2;
 
       // Fill filtered array with data.
-      filtered.push(timebar_location); // [0]
+      filtered.push(timebar_location + '%'); // [0]
       filtered.push(labels);           // [1]
       filtered.push(start);            // [2]
       filtered.push(end);              // [3]
@@ -155,7 +152,6 @@ export class HomePage {
       // Push filtered bubble to bubbles.
       this.bubbles.push(filtered);
     }
-
     this.bubbles.sort();
   }
 
@@ -174,26 +170,12 @@ export class HomePage {
 
   ionViewDidLoad() {
     this.requestEventData();
-    //this.filterData();
-
-
   }
   // Display the next 5 days
   // Formatted: date_number month.
   displayWeekDays(){
     for (var i = 0; i < 5; i++) {
       this.display_days[i] = ((this.date.getDate() + i).toString() + " " + this.months[this.date.getMonth()].toString());
-    }
-  }
-
-  displayBubbles(){
-    for (var x = 0; x < this.bubbles.length; x++) {
-      // this.bubbles[x][1] is the first time.
-      // 2359 is the heighest time on the bar.
-      // 78 is where the heighest bubble can go.
-      // +2 is the padding for start and end.
-      var margin_left = ((this.bubbles[x][7] / 2359) * 78) + 2;
-      this.bubbles[x][0] = margin_left + '%';
     }
   }
 

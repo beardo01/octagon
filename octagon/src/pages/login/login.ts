@@ -1,9 +1,13 @@
 import { Component } from '@angular/core';
 import { NavController} from 'ionic-angular';
 import { JoinPage } from '../join/join';
+<<<<<<< HEAD
+import { ValidateUser } from '../../providers/validate-user';
+=======
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreateFormValidator } from '../../validators/createForm';
 
+>>>>>>> abfe4360221add2faeb1dc579e2b501cba617560
 
 @Component({
   selector: 'page-login',
@@ -15,10 +19,14 @@ export class LoginPage {
 
   tabBarElement: any;
 
+<<<<<<< HEAD
+  constructor(public navCtrl: NavController, public navParams: NavParams, public user: ValidateUser) {
+=======
   email: string;
   password: string;
 
   constructor(public navCtrl: NavController, public builder: FormBuilder) {
+>>>>>>> abfe4360221add2faeb1dc579e2b501cba617560
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     }

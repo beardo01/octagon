@@ -63,8 +63,6 @@ json createUser(string user, string email, string password, string rpassword, st
 								User *new_user = new User(user, email, password, ip);
 								Timeline *new_timeline = new_user->getTimeline();
 
-								cout << new_user->getClientKey() << endl;
-
 								// Commit it to the database
 								db->persist(new_timeline);
 								db->persist(new_user);

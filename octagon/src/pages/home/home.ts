@@ -6,6 +6,7 @@ import { Http } from '@angular/http';
 import { ColoursAndLabels } from '../../providers/colours-and-labels';
 import { EventData } from '../../providers/event-data';
 import { Storage } from '@ionic/storage';
+import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
 
 
 @Component({
@@ -23,48 +24,123 @@ export class HomePage {
   selected_date: number = 0;
 
   // This data will be filled by http.
+
   input_data: any[][] = [
     [456, 0, 1495777978, 1495777978, 'Meeting Tom', 'Owheo Building'],
     [876, 1, 1495828800, 1495828800, 'tgiutgtg', 'Outside RMT'],
     [543, 2, 1495785600, 1495785600, 'rkgjbgibdig', 'Outside RMT']
   ];
-  colours: string[] = ['red', 'blue', 'green'];
-  labels: string[] = ['Meeting', 'Assignment', 'Event'];
+  colours: string[];
+  labels: string[];
 
   // bubbles = [[timebar_location,labels,start,end,description,location,colour]]
-  //                  [0]           [1]   [2]   [3]   [4]         [5]
+  //                  [0]           [1]   [2]   [3]   [4]         [5]     [6]
   bubbles: any[][] = new Array();
 
   // Sets up dates in the header of homepage.
   constructor(public navCtrl: NavController, http: Http, public coloursAndLabels: ColoursAndLabels, 
-              public eventData: EventData, public storage: Storage) {
-
+              public eventData: EventData, public storage: LocalColoursAndLabels) {
+  
     this.date = new Date();
     // set header to the current day name from days array.
     this.weekday_header = this.days[this.date.getDay()];
-    
+    // Set colour data field from values stored in provider
+    this.colours = this.getProviderColours();
+    // set labels data field from values stored in provider
+    this.labels = this.getProviderLabels();
   }
+
+  reinitalizeView() {
+    var localColours = this.getProviderColours();
+    var localLabels = this.getProviderLabels();
+    this.colours = localColours;
+    this.labels = localLabels;
+    // set labels data field from values stored in provider
+
+    // Make call to WEB API
+    this.requestColoursAndLabels();
+    this.requestEventData();
+
+    // reload events
+    this.input_data = [];
+    this.bubbles = [];
+
+    this.parseEvents(this.eventData.getEvents());
+  }
+  ionViewWillEnter() {
+    this.reinitalizeView();
+  }
+
+  getProviderColours(){
+    return this.storage.getProviderColours();
+  }
+
+  getProviderLabels() {
+    return this.storage.getProviderLabels();
+  }
+
+    /**
+   * Make a call to the coloursAndLabels provider that requests data from the api.
+   * If sucessfull set variables accordinly. If it fails get data from local storage.
+   * 
+   */
+  requestColoursAndLabels() {
+    this.coloursAndLabels.requestColoursAndLabels()
+    .subscribe(
+      response => {
+        this.colours = this.coloursAndLabels.getColours();
+        this.labels = this.coloursAndLabels.getLabels();
+
+        // Update Local storage
+        if (this.storage.colours != this.colours || this.storage.labels != this.labels) {
+            this.setLocalStorage();
+        }
+      },
+      error => {
+        console.log(error);
+        }
+      );
+  }
+    /**
+   * Update colours and labels in local storage and provider
+   */
+  setLocalStorage() {
+    this.storage.setProviderColours(this.colours);
+    this.storage.setStorageColours(this.colours);
+    this.storage.setProviderLabels(this.labels);
+    this.storage.setStorageLabels(this.labels);
+  } 
+  /**
+   * Request data from provider.
+   */
   requestEventData() {
     this.eventData.requestEventData()
     .subscribe(
       response => {
         //console.log(this.eventData.getEvents().length);
         //console.log(this.eventData.getEvents());
+        
+        // Executes when we have recieved data from the web API
+        this.input_data = [];
         this.parseEvents(this.eventData.getEvents());
         this.filterData();
         this.displayWeekDays();
-        this.displayBubbles();
-        
       },
       error => {
         console.log(error);
+        this.filterData();
+        this.displayWeekDays();
         // Can't connect to network, use what's in local storage
       });
   } 
 
+  /**
+   * Process data requested from the provider and push to array
+   * 
+   * @param eventArr Array containing events from provider
+   */
   parseEvents(eventArr) {
     eventArr.forEach(element => {
-      console.log(element);
       var arr = []
       arr.push(element.id);
       arr.push(element.type);
@@ -82,7 +158,7 @@ export class HomePage {
 
       var filtered = new Array();
 
-      var timebar_location = '';
+      var timebar_location;
       var labels = '';
       var colour = '';
       var time_start_24 = this.input_data[a][2];
@@ -135,13 +211,16 @@ export class HomePage {
       }
 
       time_start_24 = start_hours_24 + start_mins_24;
-      time_end_24 = end_hours_24.toString() + end_mins_24.toString();
+      time_end_24 = end_hours_24 + end_mins_24;
 
-      // Writes a formatted time from 24 hours to 12 hours.
-
+      // this.bubbles[x][1] is the first time.
+      // 2359 is the heighest time on the bar.
+      // 78 is where the heighest bubble can go.
+      // +2 is the padding for start and end.
+      timebar_location = ((time_start_24 / 2359) * 78) + 2;
 
       // Fill filtered array with data.
-      filtered.push(timebar_location); // [0]
+      filtered.push(timebar_location + '%'); // [0]
       filtered.push(labels);           // [1]
       filtered.push(start);            // [2]
       filtered.push(end);              // [3]
@@ -155,7 +234,6 @@ export class HomePage {
       // Push filtered bubble to bubbles.
       this.bubbles.push(filtered);
     }
-
     this.bubbles.sort();
   }
 
@@ -173,27 +251,12 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-    this.requestEventData();
-    //this.filterData();
-
-
   }
   // Display the next 5 days
   // Formatted: date_number month.
   displayWeekDays(){
     for (var i = 0; i < 5; i++) {
       this.display_days[i] = ((this.date.getDate() + i).toString() + " " + this.months[this.date.getMonth()].toString());
-    }
-  }
-
-  displayBubbles(){
-    for (var x = 0; x < this.bubbles.length; x++) {
-      // this.bubbles[x][1] is the first time.
-      // 2359 is the heighest time on the bar.
-      // 78 is where the heighest bubble can go.
-      // +2 is the padding for start and end.
-      var margin_left = ((this.bubbles[x][7] / 2359) * 78) + 2;
-      this.bubbles[x][0] = margin_left + '%';
     }
   }
 

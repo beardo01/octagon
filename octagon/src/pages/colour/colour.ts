@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { ColoursAndLabels } from '../../providers/colours-and-labels';
 import { Storage } from '@ionic/storage';
+import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
 
 
 @Component({
@@ -25,14 +26,18 @@ export class ColourPage {
   toggle3 : boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, http: Http, public coloursAndLabels: ColoursAndLabels, 
-              public storage: Storage) {
-  }
+              public storage: LocalColoursAndLabels) {
 
+    this.inUseColours = this.getProviderColours();
+    this.labels = this.getProviderLabels();
+    this.getAvailableColours();
+    // Call Web API
+    this.requestColoursAndLabels();
+  }
 /**
  * When view is loaded we call helper function to set the class names of available colours.
  */
   ionViewDidLoad() {
-    this.requestColoursAndLabels();
   }
 
   /**
@@ -45,60 +50,40 @@ export class ColourPage {
     .subscribe(
       response => {
         this.inUseColours = this.coloursAndLabels.getColours();
+        console.log("getCOlours from WEBAPI");
+        console.log(this.coloursAndLabels.getColours());
         this.labels = this.coloursAndLabels.getLabels();
         this.getAvailableColours();
-        this.setLocalStorage();
+
+        // Check if we need to update local storage
+        if (this.storage.colours != this.inUseColours) {
+          this.setLocalStorage();
+        }
       },
       error => {
         console.log(error);
-        // Can't connect to network, use what's in local storage
-        this.getLocalColours();
-        this.getLocalLabels();
-        }
-      );
+      });
   } 
 
   /**
    * Update colours in local storage
    */
   setLocalStorage() {
-    this.storage.set('colour1', this.inUseColours[0]);
-    this.storage.set('colour2', this.inUseColours[1]);
-    this.storage.set('colour3', this.inUseColours[2]);
-    this.storage.set('label1', this.labels[0]);
-    this.storage.set('label2', this.labels[1]);
-    this.storage.set('label3', this.labels[2]);
+    this.storage.setProviderColours(this.inUseColours);
+    this.storage.setStorageColours(this.inUseColours);
   }
   /**
-   * Get variables from local DB
+   * Get variables from provider
    */
-  getLocalColours() {
-    this.storage.get('colour1').then((val) => {
-      this.inUseColours[0] = val;
-    });
-    this.storage.get('colour2').then((val) => {
-      this.inUseColours[1] = val;
-    });
-    this.storage.get('colour3').then((val) => {
-      this.inUseColours[2] = val;
-      // set availble colours here once all promises have been resolved.
-      this.getAvailableColours();
-    });
+  getProviderColours() {
+    return this.storage.getProviderColours();
   }
 
   /**
-   * Get label variables from local DB
+   * Get label variables from provider
    */
-  getLocalLabels() {
-    this.storage.get('label1').then((val) => {
-      this.labels[0] = val;
-    });
-    this.storage.get('label2').then((val) => {
-      this.labels[1] = val;
-    });
-    this.storage.get('label3').then((val) => {
-      this.labels[2] = val;
-    });
+  getProviderLabels() {
+    return this.storage.getProviderLabels();
   }
 
   /**

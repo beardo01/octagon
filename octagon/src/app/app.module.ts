@@ -13,6 +13,7 @@ import { LabelPage } from '../pages/label/label';
 import { ColoursAndLabels } from '../providers/colours-and-labels';
 import { EventData } from '../providers/event-data';
 import { IonicStorageModule } from '@ionic/storage';
+import { LocalColoursAndLabels } from '../providers/local-colours-and-labels';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,6 @@ import { IonicStorageModule } from '@ionic/storage';
     ColourPage,
     LabelPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, ColoursAndLabels, EventData ]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, ColoursAndLabels, EventData, LocalColoursAndLabels ]
 })
 export class AppModule {}

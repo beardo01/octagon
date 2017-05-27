@@ -70,27 +70,27 @@ json createUser(string user, string email, string password, string rpassword, st
                                 t.commit();
 
 								response["success"] = true;
-								response["message"] = "Successfully created user " + user + ".";
+								response["data"] = "Successfully created user " + user + ".";
 
 								return response;
 							} else {
-								response["message"] = "Passwords must be at least 6 characters.";
+								response["data"] = "Passwords must be at least 6 characters.";
 							}
 						} else {
-							response["message"] = "Please enter a valid email.";
+							response["data"] = "Please enter a valid email.";
 						}
 					} else {
-						response["message"] = "Username's may only contain letters, numbers, hyphens and underscores.";
+						response["data"] = "Username's may only contain letters, numbers, hyphens and underscores.";
 					}
 				} else {
-					 response["message"] = "Passwords do not match.";
+					 response["data"] = "Passwords do not match.";
 				}
 			} else {
-				response["message"] = "A user with that username or email already exists.";
+				response["data"] = "A user with that username or email already exists.";
 			}
 		}
 	} catch (const odb::exception& e) {
-		response["message"] = e.what();
+		response["data"] = e.what();
 	}
 	response["success"] = false;
 	return response;
@@ -136,17 +136,16 @@ json authenticateUser(string user, string password, string ip) {
 					response["data"]["client_key"] = key;
 
 					response["success"] = true;
-					response["message"] = "Successful login.";
 					return response;
 				} else {
-					response["message"] = "Username or password incorrect.";
+					response["data"] = "Username or password incorrect.";
 				}
 			} else {
-				response["message"] = "Username doesn't exist.";
+				response["data"] = "Username doesn't exist.";
 			}
 		}
 	} catch (const odb::exception& e) {
-		response["message"] = e.what();
+		response["data"] = e.what();
 	}
 	response["success"] = false;
 	return response;
@@ -179,6 +178,11 @@ int main(int argc, char *argv[]) {
 				cout << authenticateUser(argv[3], argv[4], argv[5]) << endl;
 			}
 
+			// Settings
+			if(subtype == "settings") {
+				//cout << getSettings(argv[3]) << endl;
+			}
+
 			return 0;
 		} else if (type == "set") {
 			return 0;
@@ -186,7 +190,7 @@ int main(int argc, char *argv[]) {
 	} else {
 		json response;
 		response["success"] = false;
-		response["message"] = "Incorrect driver call.";
+		response["data"] = "Incorrect driver call.";
 		cerr << response << endl;
 		return 1;
 	}

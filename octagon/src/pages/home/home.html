@@ -24,7 +24,7 @@
 
     <div id="timeBar">
       <div id="bubbles-container">
-        <div *ngFor="let bubble of bubbles">
+        <div *ngFor="let bubble of bubbles[0]">
           <a href="#{{bubble[9]}}"><div class="bubble tl-{{bubble[6]}} {{bubble[9]}}" [ngStyle]="{'margin-left': bubble[0]}"></div></a>
         </div>
       </div>
@@ -34,7 +34,7 @@
 
 <ion-content>
   <section id="tl" class="tl-container">
-    <div *ngFor="let bubble_detail of bubbles">
+    <div *ngFor="let bubble_detail of bubbles[0]">
       <div class="tl-block" id="{{bubble_detail[9]}}">
         <div class="tl-colour tl-{{bubble_detail[6]}}"></div>
         <div class="tl-content">

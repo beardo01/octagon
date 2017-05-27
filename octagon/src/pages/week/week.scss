@@ -44,7 +44,32 @@ Timeline Bars
   content: '';
   height: 100%;
   width: 15%;
-  margin: 1.8%;
+  margin: 2.4%;
   background-color: rgba(255,255,255,0.2);
   display: inline-block;
+}
+
+// Timeline colours
+.tl-red {
+  background-color: color($colors, red);
+}
+
+.tl-green {
+  background-color: color($colors, green);
+}
+
+.tl-yellow {
+  background-color: color($colors, yellow);
+}
+
+.tl-blue {
+  background-color: color($colors, blue);
+}
+
+.tl-purple {
+  background-color: color($colors, purple);
+}
+
+.tl-grey {
+  background-color: color($colors, grey);
 }

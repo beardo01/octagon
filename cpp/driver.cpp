@@ -117,9 +117,9 @@ json authenticateUser(string identifier, string password, string ip) {
 				// Check that password is correct
 				if(BCrypt::validatePassword(password, curr_user->getPassword())) {
 					// New client key
-					string key = curr_user->generateKey(20);
-					curr_user->setClientKey(key);
-					curr_user->setLastIP(ip);
+					// string key = curr_user->generateKey(20);
+					// curr_user->setClientKey(key);
+					// curr_user->setLastIP(ip);
 
 					// Update user
 					db->update(*curr_user);
@@ -136,7 +136,8 @@ json authenticateUser(string identifier, string password, string ip) {
 					response["data"]["ones"] = curr_user->getOnes();
 					response["data"]["twos"] = curr_user->getTwos();
 					response["data"]["threes"] = curr_user->getThrees();
-					response["data"]["client_key"] = key;
+					//response["data"]["client_key"] = key;
+					response["data"]["client_key"] = curr_user->getClientKey();
 
 					response["success"] = true;
 					return response;

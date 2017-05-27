@@ -95,25 +95,22 @@ json createUser(string user, string email, string password, string rpassword, st
 }
 
 int main(int argc, char *argv[]) {
-
-	string type = argv[1];
-	string subtype = argv[2];
-
-	if(type == "create") {
+	
+	if(argv[1] == "create") {
 		
 		// User
-		if(subtype == "user") {
+		if(argv[2] == "user") {
 			return createUser(argv[3], argv[4], argv[5], argv[5], argv[6]);
 		}
 
 		// Event
-		if(subtype == "event") {
-
+		if(argv[2] == "event") {
+			return 0;
 		}
 
-	} else if (type == "get") {
+	} else if (argv[1] == "get") {
 		return 0;
-	} else if (type == "set") {
+	} else if (argv[1] == "set") {
 		return 0;
 	}
 

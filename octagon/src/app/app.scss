@@ -40,10 +40,13 @@
 }
 
 // Login and join pages
-
 .accountLogo {
+    background-image: url('../assets/Test.png');
+    background-size: 100%;
+    background-repeat: no-repeat;
     display: block;
     width: 50%;
+    height: 25%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 40px;

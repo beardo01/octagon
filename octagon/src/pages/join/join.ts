@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController} from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CreateFormValidator } from '../../validators/createForm';
 
 @Component({
   selector: 'page-join',
@@ -9,11 +11,25 @@ export class JoinPage {
   tabBarElement: any;
   scrollContent: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  createForm: FormGroup;
+
+  name: string;
+  email: string;
+  password: string;
+  rpassword: string;
+
+  constructor(public navCtrl: NavController, public builder: FormBuilder) {
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     }
     this.scrollContent = document.querySelector('.scroll-content');
+
+    this.createForm = this.builder.group({
+      'name' : [this.name],
+      'email' : [this.email],
+      'password' : [this.password],
+      'rpassword' : [this.rpassword]
+    });
   }
 
   /** This will stop the nav bar from showing when entering this page. */
@@ -39,6 +55,11 @@ export class JoinPage {
   homePage() {
     this.navCtrl.popToRoot();
     this.navCtrl.parent.select(0);
+  }
+
+  add(){
+    console.log("Form Submission");
+    console.log(this.createForm.value);
   }
 
 }

@@ -42,14 +42,14 @@
 // Login and join pages
 .accountLogo {
     background-image: url('../assets/Test.png');
-    background-size: 100%;
+    background-size: contain;
     background-repeat: no-repeat;
     display: block;
-    width: 50%;
     height: 25%;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 20px;
+    margin-top: 10px;
+    width: 50%;
 }
 
 .accountInput {
@@ -68,7 +68,7 @@
 }
 
 .loginSocial {
-    margin: 20px 10px 0px 10px;
+    margin: 10px 10px 0px 10px;
     font-size: 50px;
     text-align: center;
 }

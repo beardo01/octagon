@@ -6,25 +6,29 @@
     <a href="www.google.com"><ion-icon name="logo-google" class="loginSocial"></ion-icon></a>
   </ion-list>
 
+  <form id="createForm" [formGroup]="createForm" (ngSubmit)="add(createForm.value)">
   <ion-list>
-
     <ion-item class="accountInput">
-      <ion-input type="text" placeholder="Name"></ion-input>
+      <ion-input type="text" maxlength="20" formControlName="name" [(ngModel)]="name" placeholder="Name"></ion-input>
     </ion-item>
 
     <ion-item class="accountInput">
-      <ion-input type="text" placeholder="Email"></ion-input>
+      <ion-input type="text" maxlength="35" formControlName="email" [(ngModel)]="email" placeholder="Email"></ion-input>
     </ion-item>
 
     <ion-item class="accountInput">
-      <ion-input type="password" placeholder="Password"></ion-input>
+      <ion-input type="password" formControlName="password" [(ngModel)]="password" placeholder="Password"></ion-input>
     </ion-item>
 
+    <ion-item class="accountInput">
+      <ion-input type="password" formControlName="rpassword" [(ngModel)]="rpassword" placeholder="Re-enter Password"></ion-input>
+    </ion-item>
   </ion-list>
+  </form>
 
   <div class="row">
     <div class="col actionButton">
-      <button (click)="homePage()" ion-button class="accountActionButton">Join</button>
+      <button (click)="homePage()" ion-button class="accountActionButton" type="submit" form="createForm">Join</button>
     </div>
   </div>
 

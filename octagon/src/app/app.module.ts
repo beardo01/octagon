@@ -14,6 +14,7 @@ import { ColoursAndLabels } from '../providers/colours-and-labels';
 import { EventData } from '../providers/event-data';
 import { IonicStorageModule } from '@ionic/storage';
 import { LocalColoursAndLabels } from '../providers/local-colours-and-labels';
+import { ValidateUser } from '../providers/validate-user';
 import { FormatDate } from '../pipes/format-date';
 
 @NgModule({
@@ -47,6 +48,6 @@ import { FormatDate } from '../pipes/format-date';
     ColourPage,
     LabelPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, ColoursAndLabels, EventData, LocalColoursAndLabels ]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, ColoursAndLabels, EventData, LocalColoursAndLabels, ValidateUser ]
 })
 export class AppModule {}

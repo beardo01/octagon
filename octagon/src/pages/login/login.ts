@@ -24,8 +24,8 @@ export class LoginPage {
     }
 
     this.createForm = this.builder.group({
-      'email' : [this.email],
-      'password' : [this.password]
+      'email' : [this.email,Validators.compose([Validators.pattern('.+@.+[.].+'), Validators.minLength(3),Validators.required])],
+      'password' : [this.password,Validators.compose([Validators.maxLength(15), Validators.pattern('[a-zA-Z0-9]'), Validators.minLength(6),Validators.required])]
     });
   }
 

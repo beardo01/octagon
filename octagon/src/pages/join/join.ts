@@ -12,11 +12,11 @@ export class JoinPage {
   scrollContent: any;
 
   createForm: FormGroup;
-  
+
   name: string;
   email: string;
   password: string;
-  reenter_password: string;
+  rpassword: string;
 
   constructor(public navCtrl: NavController, public builder: FormBuilder) {
     if (document.querySelector('.tabbar')) {
@@ -28,7 +28,7 @@ export class JoinPage {
       'name' : [this.name],
       'email' : [this.email],
       'password' : [this.password],
-      'reenterpassword' : [this.reenter_password]
+      'rpassword' : [this.rpassword]
     });
   }
 

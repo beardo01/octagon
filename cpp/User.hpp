@@ -61,6 +61,7 @@ class User {
 		string getEmail();
 		string getPassword();
 		Timeline *getTimeline();
+		unsigned long getTimelineID();
 		time_t getCreate();
 		short int getActivated();
 		string getLastIP();

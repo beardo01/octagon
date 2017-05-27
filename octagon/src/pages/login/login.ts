@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { JoinPage } from '../join/join';
+import { ValidateUser } from '../../providers/validate-user';
 
 @Component({
   selector: 'page-login',
@@ -9,7 +10,7 @@ import { JoinPage } from '../join/join';
 export class LoginPage {
   tabBarElement: any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public user: ValidateUser) {
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     }

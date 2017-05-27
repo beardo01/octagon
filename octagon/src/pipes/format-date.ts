@@ -9,7 +9,6 @@ export class FormatDate {
   transform(value, args) {
     var dateString = '';
     var pm: boolean = false;
-    
     var hour = value.slice(0, 2);
     var min = value.slice(2, value.length);
 

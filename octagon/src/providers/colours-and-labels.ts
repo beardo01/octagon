@@ -20,6 +20,7 @@ export class ColoursAndLabels {
     let opt: RequestOptions
     let myHeaders: Headers = new Headers();
     myHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
+    myHeaders.append('client_key', 'XxZyHGKt6ORDNMJeNthz');
     myHeaders.append('Content-Type', 'application/json');
     opt = new RequestOptions({
       headers: myHeaders
@@ -27,7 +28,7 @@ export class ColoursAndLabels {
     // Make get request to API and get current values for colour strings
     return this.http.get('https://api.simpalapps.com/driver/get/settings', opt).map(res => 
       {
-        var data = res.json().message;
+      var data = res.json().data;
       this.colours[0] = data.colours.colour_one;
       this.colours[1] = data.colours.colour_two;
       this.colours[2] = data.colours.colour_three;

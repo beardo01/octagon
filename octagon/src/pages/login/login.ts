@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
 import { NavController} from 'ionic-angular';
 import { JoinPage } from '../join/join';
-<<<<<<< HEAD
-import { ValidateUser } from '../../providers/validate-user';
-=======
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreateFormValidator } from '../../validators/createForm';
+import { ValidateUser } from '../../providers/validate-user';
+//import { CreateFormValidator } from '../../validators/createForm';
 
->>>>>>> abfe4360221add2faeb1dc579e2b501cba617560
 
 @Component({
   selector: 'page-login',
@@ -18,25 +15,25 @@ export class LoginPage {
   createForm: FormGroup;
 
   tabBarElement: any;
-
-<<<<<<< HEAD
-  constructor(public navCtrl: NavController, public navParams: NavParams, public user: ValidateUser) {
-=======
-  email: string;
+  id: string;
   password: string;
-
-  constructor(public navCtrl: NavController, public builder: FormBuilder) {
->>>>>>> abfe4360221add2faeb1dc579e2b501cba617560
+  ip: string;
+  constructor(public navCtrl: NavController, public builder: FormBuilder, public user: ValidateUser) {
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     }
 
     this.createForm = this.builder.group({
-      'email' : [this.email,Validators.compose([Validators.pattern('.+@.+[.].+'), Validators.minLength(3),Validators.required])],
-      'password' : [this.password,Validators.compose([Validators.maxLength(15), Validators.pattern('[a-zA-Z0-9]'), Validators.minLength(6),Validators.required])]
+      'id' : [this.id],
+      'password' : [this.password]
     });
+
+    this.getIP;
   }
 
+  getIP(){
+    this.ip = "192.168.1.254";
+  }
   /** This will stop the nav bar from showing when entering this page. */
   ionViewWillEnter() {
     if (this.tabBarElement) {
@@ -59,6 +56,7 @@ export class LoginPage {
   add(){
     console.log("Form Submission");
     console.log(this.createForm.value);
+    this.user.loginUser(this.createForm.value);
   }
 
   /** This method pops to the root of the tab then switches to the home tab. */

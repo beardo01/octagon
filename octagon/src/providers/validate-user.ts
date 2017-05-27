@@ -58,13 +58,16 @@ export class ValidateUser {
 */
 
   loginUser(userObject) {
+    console.log(userObject);
+    console.log('userObject');
+    console.log(userObject.username);
     // post to server and set new colour strings
     let headers: Headers =  new Headers();
     headers.append('Content-Type', 'application/x-www-form-urlencoded');
     let userData = {
       'username': userObject.username,
       'password': userObject.password,
-      'ip': userObject.ip
+      'ip': '192.255.255.255'/*userObject.ip*/
     };
     console.log(JSON.stringify(userData));
     this.http.post('https://api.simpalapps.com/driver/get/user', JSON.stringify(userData), {headers: headers})

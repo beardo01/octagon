@@ -24,7 +24,7 @@ export class HomePage {
   selected_date: number = 0;
 
   // This data will be filled by http.
-<<<<<<< HEAD
+
   input_data: any[][] = [
     [456, 0, 1495777978, 1495777978, 'Meeting Tom', 'Owheo Building'],
     [876, 1, 1495828800, 1495828800, 'tgiutgtg', 'Outside RMT'],
@@ -32,11 +32,6 @@ export class HomePage {
   ];
   colours: string[];
   labels: string[];
-=======
-  input_data: any[][] = new Array();
-  colours: string[] = ['red', 'blue', 'green'];
-  labels: string[] = ['Meeting', 'Assignment', 'Event'];
->>>>>>> f9d91a293e7a7bad82f0ce39d2403c5255fb4883
 
   // bubbles = [[timebar_location,labels,start,end,description,location,colour]]
   //                  [0]           [1]   [2]   [3]   [4]         [5]     [6]
@@ -135,7 +130,6 @@ export class HomePage {
         console.log(error);
         this.filterData();
         this.displayWeekDays();
-        this.displayBubbles();
         // Can't connect to network, use what's in local storage
       });
   } 
@@ -257,12 +251,6 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-<<<<<<< HEAD
-    
-    //this.filterData();
-=======
-    this.requestEventData();
->>>>>>> f9d91a293e7a7bad82f0ce39d2403c5255fb4883
   }
   // Display the next 5 days
   // Formatted: date_number month.

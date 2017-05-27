@@ -15,7 +15,8 @@ CREATE TABLE "User" (
   "last_ip" VARCHAR(128) NOT NULL,
   "ones" INTEGER NOT NULL,
   "twos" INTEGER NOT NULL,
-  "threes" INTEGER NOT NULL);
+  "threes" INTEGER NOT NULL,
+  "client_key" VARCHAR(128) NOT NULL);
 
 ALTER TABLE "User"
   ADD CONSTRAINT "timeline_fk"

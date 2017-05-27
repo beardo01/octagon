@@ -146,22 +146,26 @@ export class WeekPage {
     }
   }
 
-  ionViewDidLoad() {
-    // Saves the day in 5 days
-    this.in5Day = this.addDays(new Date(), 4).getDate().toString();
-    // Saves the month in 5 days
-    this.in5Month = this.months[this.addDays(new Date(), 4).getMonth()].toString();
+  giveDay(numberOfDays) {
+    var day: number = this.addDays(new Date(), numberOfDays).getDate();
+    return day;
+  }
 
-    // First part of the date range.
+  giveMonth(numberOfDays) {
+    var month: number = this.addDays(new Date(), numberOfDays).getMonth();
+    return month;
+  }
+
+  ionViewDidLoad() {
+    // First date of the date range.
     this.date_range = (this.date.getDate()).toString() + " " +
       this.months[(this.date.getMonth())];
-    // Second part of the date range.
-    this.date_range += " - " + this.in5Day + " " + this.in5Month;
+    // Second date of the date range.
+    this.date_range += " - " + this.giveDay(4) + " " + this.months[this.giveMonth(4)];
 
     // Adds 5 dates to the page.
     for (var i = 0; i < 5; i++) {
-      this.display_days[i] = ((this.date.getDate() + i).toString() + " " +
-        this.months[this.date.getMonth()].toString());
+      this.display_days[i] = this.giveDay(i) + " " + this.months[this.giveMonth(i)];
     }
 
     this.filterData();

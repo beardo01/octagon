@@ -122,11 +122,11 @@ export class WeekPage {
 
         // time_start_24 is the first time.
         // 2359 is the heighest time on the bar.
-        // 107 is where the heighest bubble can go.
+        // 104 is where the heighest bubble can go.
         // +2 is the padding for start and end.
         
-        timebar_start = ((time_start_24 / 2359) * 107) + 2;
-        timebar_end = ((time_end_24 / 2359) * 107) + 2;
+        timebar_start = ((time_start_24 / 2359) * 104) + 2;
+        timebar_end = ((time_end_24 / 2359) * 104) + 2;
         timebar_location = timebar_start + '%';
         height = (timebar_end-timebar_start)-14;
         if (height === 0) {

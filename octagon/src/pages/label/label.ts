@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, NavParams } from 'ionic-angular';
 import { ColoursAndLabels } from '../../providers/colours-and-labels';
-import { Storage } from '@ionic/storage';
+import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
 
 
 @Component({
@@ -20,22 +20,28 @@ export class LabelPage {
   submitAttempt: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public builder: FormBuilder, public coloursAndLabels: ColoursAndLabels,
-              public storage: Storage) {
-    // Set the label and colour data fields to data we read in from the provider ColoursAndLabels
-    this.label1 = "Failed";
-    this.label2 = "To";
-    this.label3 = "Load";
+              public storage: LocalColoursAndLabels) {
+    // Set the label and colour data fields to data we read in from the provider localColoursAndLabels
 
-    this.colours = ["grey", "grey", "grey"];
+    var labelArr: string[] = this.getProviderLabels();
+    this.label1 = labelArr[0];
+    this.label2 = labelArr[1];
+    this.label3 = labelArr[2];
+
+    this.colours = this.getLocalColours();
+
+
     this.labelForm = this.builder.group({
       'label1': [this.label1, Validators.compose([Validators.maxLength(15), Validators.pattern('[a-zA-Z ]*'), Validators.minLength(3),Validators.required])],
       'label2': [this.label2, Validators.compose([Validators.maxLength(15), Validators.pattern('[a-zA-Z ]*'), Validators.minLength(3),Validators.required])],
       'label3': [this.label3, Validators.compose([Validators.maxLength(15), Validators.pattern('[a-zA-Z ]*'), Validators.minLength(3),Validators.required])]
     })
+    // Call Web API
+    this.requestColoursAndLabels();
 }
 
   ionViewDidLoad() {
-    this.requestColoursAndLabels();
+    
   }
 
   /**
@@ -48,7 +54,7 @@ export class LabelPage {
       response => {
         this.colours = this.coloursAndLabels.getColours();
         var labels = this.coloursAndLabels.getLabels();
-        
+
         this.label1 = labels[0];
         this.labelForm.controls['label1'].setValue(this.label1);
         
@@ -62,55 +68,33 @@ export class LabelPage {
       },
       error => {
         console.log(error);
-        // Can't connect to network, use what's in local storage
-        this.getLocalColours();
-        this.getLocalLabels();
         }
       );
   } 
 
   /**
-   * Update colours and labels in local storage
+   * Update colours and labels in local storage and provider
    */
   setLocalStorage() {
-    this.storage.set('colour1', this.colours[0]);
-    this.storage.set('colour2', this.colours[1]);
-    this.storage.set('colour3', this.colours[2]);
-    this.storage.set('label1', this.labelForm.controls['label1'].value);
-    this.storage.set('label2', this.labelForm.controls['label2'].value);
-    this.storage.set('label3', this.labelForm.controls['label3'].value);
+    var labelArr: string[] = [];
+    labelArr.push(this.labelForm.controls['label1'].value);
+    labelArr.push(this.labelForm.controls['label2'].value);
+    labelArr.push(this.labelForm.controls['label3'].value);
+
+    this.storage.setProviderLabels(labelArr);
+    this.storage.setStorageLabels(labelArr);
   }
   /**
    * Get colour values stored in local storage
    */
   getLocalColours() {
-    this.storage.get('colour1').then((val) => {
-      this.colours[0] = val;
-    });
-    this.storage.get('colour2').then((val) => {
-      this.colours[1] = val;
-    });
-    this.storage.get('colour3').then((val) => {
-      this.colours[2] = val;
-    });
+    return this.storage.getProviderColours();
   }
   /**
    * Get label values stored in local storage and set the formbuilder values accordingly
    */
-    getLocalLabels() {
-    this.storage.get('label1').then((val) => {
-
-      this.label1 = val;
-      this.labelForm.controls['label1'].setValue(this.label1);
-    });
-    this.storage.get('label2').then((val) => {
-      this.label2 = val;
-      this.labelForm.controls['label2'].setValue(this.label2);
-    });
-    this.storage.get('label3').then((val) => {
-      this.label3 = val;
-      this.labelForm.controls['label3'].setValue(this.label3);
-    });
+  getProviderLabels() {
+    return this.storage.getProviderLabels();
   }
 
 /**

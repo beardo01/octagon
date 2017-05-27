@@ -6,6 +6,7 @@ import { Http } from '@angular/http';
 import { ColoursAndLabels } from '../../providers/colours-and-labels';
 import { EventData } from '../../providers/event-data';
 import { Storage } from '@ionic/storage';
+import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
 
 
 @Component({
@@ -28,8 +29,8 @@ export class HomePage {
     [876, 1, 1495828800, 1495828800, 'tgiutgtg', 'Outside RMT'],
     [543, 2, 1495785600, 1495785600, 'rkgjbgibdig', 'Outside RMT']
   ];
-  colours: string[] = ['red', 'blue', 'green'];
-  labels: string[] = ['Meeting', 'Assignment', 'Event'];
+  colours: string[];
+  labels: string[];
 
   // bubbles = [[timebar_location,labels,start,end,description,location,colour]]
   //                  [0]           [1]   [2]   [3]   [4]         [5]
@@ -37,19 +38,89 @@ export class HomePage {
 
   // Sets up dates in the header of homepage.
   constructor(public navCtrl: NavController, http: Http, public coloursAndLabels: ColoursAndLabels, 
-              public eventData: EventData, public storage: Storage) {
-
+              public eventData: EventData, public storage: LocalColoursAndLabels) {
+  
     this.date = new Date();
     // set header to the current day name from days array.
     this.weekday_header = this.days[this.date.getDay()];
-    
+    // Set colour data field from values stored in provider
+    this.colours = this.getProviderColours();
+    // set labels data field from values stored in provider
+    this.labels = this.getProviderLabels();
   }
+
+  reinitalizeView() {
+    var localColours = this.getProviderColours();
+    var localLabels = this.getProviderLabels();
+    this.colours = localColours;
+    this.labels = localLabels;
+    // set labels data field from values stored in provider
+
+    // Make call to WEB API
+    this.requestColoursAndLabels();
+    this.requestEventData();
+
+    // reload events
+    this.input_data = [];
+    this.bubbles = [];
+
+    this.parseEvents(this.eventData.getEvents());
+  }
+  ionViewWillEnter() {
+    this.reinitalizeView();
+  }
+
+  getProviderColours(){
+    return this.storage.getProviderColours();
+  }
+
+  getProviderLabels() {
+    return this.storage.getProviderLabels();
+  }
+
+    /**
+   * Make a call to the coloursAndLabels provider that requests data from the api.
+   * If sucessfull set variables accordinly. If it fails get data from local storage.
+   * 
+   */
+  requestColoursAndLabels() {
+    this.coloursAndLabels.requestColoursAndLabels()
+    .subscribe(
+      response => {
+        this.colours = this.coloursAndLabels.getColours();
+        this.labels = this.coloursAndLabels.getLabels();
+
+        // Update Local storage
+        if (this.storage.colours != this.colours || this.storage.labels != this.labels) {
+            this.setLocalStorage();
+        }
+      },
+      error => {
+        console.log(error);
+        }
+      );
+  }
+    /**
+   * Update colours and labels in local storage and provider
+   */
+  setLocalStorage() {
+    this.storage.setProviderColours(this.colours);
+    this.storage.setStorageColours(this.colours);
+    this.storage.setProviderLabels(this.labels);
+    this.storage.setStorageLabels(this.labels);
+  } 
+  /**
+   * Request data from provider.
+   */
   requestEventData() {
     this.eventData.requestEventData()
     .subscribe(
       response => {
         //console.log(this.eventData.getEvents().length);
         //console.log(this.eventData.getEvents());
+        
+        // Executes when we have recieved data from the web API
+        this.input_data = [];
         this.parseEvents(this.eventData.getEvents());
         this.filterData();
         this.displayWeekDays();
@@ -58,13 +129,20 @@ export class HomePage {
       },
       error => {
         console.log(error);
+        this.filterData();
+        this.displayWeekDays();
+        this.displayBubbles();
         // Can't connect to network, use what's in local storage
       });
   } 
 
+  /**
+   * Process data requested from the provider and push to array
+   * 
+   * @param eventArr Array containing events from provider
+   */
   parseEvents(eventArr) {
     eventArr.forEach(element => {
-      console.log(element);
       var arr = []
       arr.push(element.id);
       arr.push(element.type);
@@ -173,10 +251,8 @@ export class HomePage {
   }
 
   ionViewDidLoad() {
-    this.requestEventData();
+    
     //this.filterData();
-
-
   }
   // Display the next 5 days
   // Formatted: date_number month.

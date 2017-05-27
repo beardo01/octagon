@@ -17,6 +17,7 @@ export class EventData {
     
   }
   requestEventData() {
+
     let opt: RequestOptions
     let myHeaders: Headers = new Headers();
     myHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
@@ -28,12 +29,13 @@ export class EventData {
     return this.http.get('https://api.simpalapps.com/driver/get/events', opt).map(res => 
       {
       var data = res.json().message;
+      // Loop through each event array in JSON object and add to an array
+      this.events = [];
       data.forEach(event => {
         this.events.push(event);
       });
-      console.log("Data recieved from requestEventData:")
-      
-      
+      //console.log("CALLED REQUEST EVENT DATA. DUMPING DATA")
+      //console.log(this.events)
       //this.colours.push(data.colours.colour_one);
       },
       error => {

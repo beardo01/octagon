@@ -3,7 +3,7 @@ import { Platform } from 'ionic-angular';
 import { Splashscreen } from 'ionic-native';
 import { StatusBar } from '@ionic-native/status-bar';
 
-import { ColoursAndLabels } from '../providers/colours-and-labels';
+import { LocalColoursAndLabels } from '../providers/local-colours-and-labels';
 import { TabsPage } from '../pages/tabs/tabs';
 
 
@@ -14,12 +14,17 @@ import { TabsPage } from '../pages/tabs/tabs';
 export class MyApp {
   rootPage = TabsPage;
 
-  constructor(platform: Platform, statusBar: StatusBar, public coloursAndLabels: ColoursAndLabels) {
+  constructor(platform: Platform, statusBar: StatusBar, public localColoursAndLabels: LocalColoursAndLabels) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       //console.log("REQESTING DATA - app.component.ts")
       //this.coloursAndLabels.requestColoursAndLabels();
+      this.localColoursAndLabels.requestLocalColours();
+      this.localColoursAndLabels.requestLocalLabels().then(() =>
+        // do some usefull shit here
+        console.log(this.localColoursAndLabels.getProviderColours())
+      );
 
       Splashscreen.hide();
     });

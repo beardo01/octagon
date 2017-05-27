@@ -5,20 +5,22 @@
     <a href="www.facebook.com"><ion-icon name="logo-facebook" class="loginSocial"></ion-icon></a>
     <a href="www.google.com"><ion-icon name="logo-google" class="loginSocial"></ion-icon></a>
   </ion-list>
-
+  
+  <form id="createForm" [formGroup]="createForm" (ngSubmit)="add(createForm.value)">
   <ion-list>
     <ion-item class="accountInput">
-      <ion-input type="text" placeholder="Email"></ion-input>
+      <ion-input type="text" maxlength="35" formControlName="email" [(ngModel)]="email" placeholder="Email"></ion-input>
     </ion-item>
 
     <ion-item class="accountInput">
-      <ion-input type="password" placeholder="Password"></ion-input>
+      <ion-input type="password" formControlName="password" [(ngModel)]="password" placeholder="Password"></ion-input>
     </ion-item>
   </ion-list>
+  </form>
 
   <div class="row">
     <div class="col actionButton">
-      <button (click)="homePage()" ion-button class="accountActionButton">Sign In</button>
+      <button (click)="homePage()" ion-button class="accountActionButton" type="submit" form="createForm">Sign In</button>
     </div>
   </div>
 

@@ -1,19 +1,40 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController} from 'ionic-angular';
 import { JoinPage } from '../join/join';
+<<<<<<< HEAD
 import { ValidateUser } from '../../providers/validate-user';
+=======
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { CreateFormValidator } from '../../validators/createForm';
+
+>>>>>>> abfe4360221add2faeb1dc579e2b501cba617560
 
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
 })
 export class LoginPage {
+
+  createForm: FormGroup;
+
   tabBarElement: any;
 
+<<<<<<< HEAD
   constructor(public navCtrl: NavController, public navParams: NavParams, public user: ValidateUser) {
+=======
+  email: string;
+  password: string;
+
+  constructor(public navCtrl: NavController, public builder: FormBuilder) {
+>>>>>>> abfe4360221add2faeb1dc579e2b501cba617560
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     }
+
+    this.createForm = this.builder.group({
+      'email' : [this.email],
+      'password' : [this.password]
+    });
   }
 
   /** This will stop the nav bar from showing when entering this page. */
@@ -33,6 +54,11 @@ export class LoginPage {
   /** Moves to the join page. */
   joinPage() {
     this.navCtrl.push(JoinPage);
+  }
+
+  add(){
+    console.log("Form Submission");
+    console.log(this.createForm.value);
   }
 
   /** This method pops to the root of the tab then switches to the home tab. */

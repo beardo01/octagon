@@ -10,7 +10,7 @@ User::User(string name, string email, string password, string ip) {
 	password_ = bcrypt.generateHash(password);
 	last_ip_ = ip;
 	create_date_ = time(0);
-	timeline_ = new Timeline(vector<TimelineItem*> (), "#3498DB", "#2ECC71", "#F1C40F", "Meeting", "Assignment", "Event");
+	timeline_ = new Timeline(vector<TimelineItem*> (), "red", "green", "blue", "Meeting", "Assignment", "Event");
 	activated_ = 0;
 	ones_ = 0;
 	twos_ = 0;

@@ -97,7 +97,7 @@ json createUser(string user, string email, string password, string rpassword, st
 }
 
 // Get
-json authenticateUser(string user, string password, string ip) {
+json authenticateUser(string identifier, string password, string ip) {
 	json response;
 	try {
 
@@ -110,19 +110,22 @@ json authenticateUser(string user, string password, string ip) {
 			// Start the query
 			transaction t (db->begin ());
 
-			auto_ptr<User> curr_user(db->query_one<User> (query::name == user));
+			auto_ptr<User> curr_user(db->query_one<User> (query::name == identifier || query::email == identifier));
 
 			// Check if a user already exists
 			if (curr_user.get() != 0) {
 				// Check that password is correct
 				if(BCrypt::validatePassword(password, curr_user->getPassword())) {
 					// New client key
-					string key = curr_user->generateKey(20);
-					curr_user->setClientKey(key);
-					curr_user->setLastIP(ip);
+					// string key = curr_user->generateKey(20);
+					// curr_user->setClientKey(key);
+					// curr_user->setLastIP(ip);
 
 					// Update user
 					db->update(*curr_user);
+
+					// Commit update
+					//t.commit();
 
 					// Build JSON
 					response["data"]["id"] = curr_user->getID();
@@ -133,7 +136,8 @@ json authenticateUser(string user, string password, string ip) {
 					response["data"]["ones"] = curr_user->getOnes();
 					response["data"]["twos"] = curr_user->getTwos();
 					response["data"]["threes"] = curr_user->getThrees();
-					response["data"]["client_key"] = key;
+					//response["data"]["client_key"] = key;
+					response["data"]["client_key"] = curr_user->getClientKey();
 
 					response["success"] = true;
 					return response;
@@ -142,6 +146,45 @@ json authenticateUser(string user, string password, string ip) {
 				}
 			} else {
 				response["data"] = "Username doesn't exist.";
+			}
+		}
+	} catch (const odb::exception& e) {
+		response["data"] = e.what();
+	}
+	response["success"] = false;
+	return response;
+}
+
+json getSettings(string client_key) {
+	json response;
+	try {
+
+        auto_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
+			"postgres", "104.197.11.127", 5432));
+            
+        typedef odb::query<User> query;
+
+		{
+			// Start the query
+			transaction t (db->begin ());
+
+			auto_ptr<User> curr_user(db->query_one<User> (query::client_key == client_key));
+
+			// Check if a user already exists
+			if (curr_user.get() != 0) {
+
+				// Build JSON
+				response["data"]["colours"]["colour_one"] = curr_user->getTimeline()->getColourOne();
+				response["data"]["colours"]["colour_two"] = curr_user->getTimeline()->getColourTwo();
+				response["data"]["colours"]["colour_three"] = curr_user->getTimeline()->getColourThree();
+				response["data"]["labels"]["label_one"] = curr_user->getTimeline()->getLabelOne();
+				response["data"]["labels"]["label_two"] = curr_user->getTimeline()->getLabelTwo();
+				response["data"]["labels"]["label_three"] = curr_user->getTimeline()->getLabelThree();
+
+				response["success"] = true;
+				return response;
+			} else {
+				response["data"] = "Client authentication error. Client ID invalid.";
 			}
 		}
 	} catch (const odb::exception& e) {
@@ -180,7 +223,7 @@ int main(int argc, char *argv[]) {
 
 			// Settings
 			if(subtype == "settings") {
-				//cout << getSettings(argv[3]) << endl;
+				cout << getSettings(argv[3]) << endl;
 			}
 
 			return 0;

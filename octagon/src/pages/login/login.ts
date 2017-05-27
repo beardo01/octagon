@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { NavController} from 'ionic-angular';
 import { JoinPage } from '../join/join';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreateFormValidator } from '../../validators/createForm';

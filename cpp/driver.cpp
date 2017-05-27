@@ -95,25 +95,35 @@ json createUser(string user, string email, string password, string rpassword, st
 }
 
 int main(int argc, char *argv[]) {
-	
-	if(argv[1] == "create") {
-		
-		// User
-		if(argv[2] == "user") {
-			return createUser(argv[3], argv[4], argv[5], argv[5], argv[6]);
-		}
 
-		// Event
-		if(argv[2] == "event") {
+	string type = argv[1];
+	string subtype = argv[2];
+
+	if(argc > 2) {
+		if(type == "create") {
+		
+			// User
+			if(subtype == "user") {
+				cout << createUser(argv[3], argv[4], argv[5], argv[5], argv[6]) << endl;
+			}
+
+			// Event
+			if(subtype == "event") {
+				return 0;
+			}
+
+		} else if (type == "get") {
+			return 0;
+		} else if (type == "set") {
 			return 0;
 		}
-
-	} else if (argv[1] == "get") {
-		return 0;
-	} else if (argv[1] == "set") {
-		return 0;
+	} else {
+		json response;
+		response["success"] = false;
+		response["message"] = "Incorrect driver call.";
+		cerr << response << endl;
+		return 1;
 	}
 
-    // Testing user create
-    //createUser(argv[1], argv[2], argv[3], argv[3], argv[4]);
+	return 0;
 }

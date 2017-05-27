@@ -15,6 +15,7 @@ User::User(string name, string email, string password, string ip) {
 	ones_ = 0;
 	twos_ = 0;
 	threes_ = 0;
+	client_key_ = this->generateKey(20);
 }
 
 // Getters
@@ -62,6 +63,10 @@ unsigned int User::getThrees() {
 	return threes_;
 }
 
+string User::getClientKey() {
+	return client_key_;
+}
+
 // Setters
 void User::setName(string name) {
 	this->name_ = name;
@@ -97,4 +102,24 @@ void User::setTwos(unsigned int twos) {
 
 void User::setThrees(unsigned int threes) {
 	this->threes_ = threes;
+}
+
+void User::setClientKey(string key) {
+	this->client_key_ = key;
+}
+
+// Methods
+string User::generateKey(int len) {
+	string key;
+
+	char alphanum[] = 
+		"0123456789"
+		"abcdefghijklmnopqrstuvwxyz"
+		"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+	for(int i = 0; i < len; i++) {
+		key += (alphanum[rand() % (sizeof(alphanum) - 1)]);
+	}
+
+	return key;
 }

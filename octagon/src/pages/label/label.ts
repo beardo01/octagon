@@ -108,6 +108,7 @@ export class LabelPage {
         console.log("success! Now do something useful with the data (cordova plugin)")
         console.log(this.labelForm.value);
         this.setLocalStorage();
+        this.navCtrl.pop();
     }
   }
 }

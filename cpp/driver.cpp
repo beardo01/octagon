@@ -164,7 +164,7 @@ int main(int argc, char *argv[]) {
 		
 			// User
 			if(subtype == "user") {
-				cout << createUser(argv[3], argv[4], argv[5], argv[5], argv[6]) << endl;
+				cout << createUser(argv[3], argv[4], argv[5], argv[6], argv[7]) << endl;
 			}
 
 			// Event

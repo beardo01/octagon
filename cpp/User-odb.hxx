@@ -227,6 +227,18 @@ namespace odb
     threes_type_;
 
     static const threes_type_ threes;
+
+    // client_key
+    //
+    typedef
+    pgsql::query_column<
+      pgsql::value_traits<
+        ::std::string,
+        pgsql::id_string >::query_type,
+      pgsql::id_string >
+    client_key_type_;
+
+    static const client_key_type_ client_key;
   };
 
   template <typename A>
@@ -283,6 +295,11 @@ namespace odb
   const typename pointer_query_columns< ::User, id_pgsql, A >::threes_type_
   pointer_query_columns< ::User, id_pgsql, A >::
   threes (A::table_name, "\"threes\"", 0);
+
+  template <typename A>
+  const typename pointer_query_columns< ::User, id_pgsql, A >::client_key_type_
+  pointer_query_columns< ::User, id_pgsql, A >::
+  client_key (A::table_name, "\"client_key\"", 0);
 
   template <>
   class access::object_traits_impl< ::User, id_pgsql >:
@@ -358,6 +375,12 @@ namespace odb
       int threes_value;
       bool threes_null;
 
+      // client_key_
+      //
+      details::buffer client_key_value;
+      std::size_t client_key_size;
+      bool client_key_null;
+
       std::size_t version;
     };
 
@@ -402,7 +425,7 @@ namespace odb
 
     typedef pgsql::query_base query_base_type;
 
-    static const std::size_t column_count = 11UL;
+    static const std::size_t column_count = 12UL;
     static const std::size_t id_column_count = 1UL;
     static const std::size_t inverse_column_count = 0UL;
     static const std::size_t readonly_column_count = 0UL;
@@ -652,6 +675,18 @@ namespace odb
     threes_type_;
 
     static const threes_type_ threes;
+
+    // client_key
+    //
+    typedef
+    pgsql::query_column<
+      pgsql::value_traits<
+        ::std::string,
+        pgsql::id_string >::query_type,
+      pgsql::id_string >
+    client_key_type_;
+
+    static const client_key_type_ client_key;
   };
 
   template <typename A>
@@ -708,6 +743,11 @@ namespace odb
   const typename query_columns< ::User, id_pgsql, A >::threes_type_
   query_columns< ::User, id_pgsql, A >::
   threes (A::table_name, "\"threes\"", 0);
+
+  template <typename A>
+  const typename query_columns< ::User, id_pgsql, A >::client_key_type_
+  query_columns< ::User, id_pgsql, A >::
+  client_key (A::table_name, "\"client_key\"", 0);
 }
 
 #include "User-odb.ixx"

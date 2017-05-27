@@ -19,7 +19,7 @@ export class HomePage {
   months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
   date: Date;
-  display_days: string[] = ["0", "0", "0", "0", "0"];
+  display_days: string[] = [];
   weekday_header: string;
   selected_date: number = 0;
 

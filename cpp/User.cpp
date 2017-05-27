@@ -110,6 +110,7 @@ void User::setClientKey(string key) {
 
 // Methods
 string User::generateKey(int len) {
+	srand(time(0));
 	string key;
 
 	char alphanum[] = 

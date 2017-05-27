@@ -63,6 +63,8 @@ json createUser(string user, string email, string password, string rpassword, st
 								User *new_user = new User(user, email, password, ip);
 								Timeline *new_timeline = new_user->getTimeline();
 
+								cout << new_user->getClientKey() << endl;
+
 								// Commit it to the database
 								db->persist(new_timeline);
 								db->persist(new_user);
@@ -164,7 +166,7 @@ int main(int argc, char *argv[]) {
 		
 			// User
 			if(subtype == "user") {
-				cout << createUser(argv[3], argv[4], argv[5], argv[5], argv[6]) << endl;
+				cout << createUser(argv[3], argv[4], argv[5], argv[6], argv[7]) << endl;
 			}
 
 			// Event

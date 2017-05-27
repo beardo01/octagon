@@ -14,6 +14,7 @@ import { ColoursAndLabels } from '../providers/colours-and-labels';
 import { EventData } from '../providers/event-data';
 import { IonicStorageModule } from '@ionic/storage';
 import { LocalColoursAndLabels } from '../providers/local-colours-and-labels';
+import { FormatDate } from '../pipes/format-date';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { LocalColoursAndLabels } from '../providers/local-colours-and-labels';
     LoginPage,
     JoinPage,
     ColourPage,
-    LabelPage
+    LabelPage,
+    FormatDate
   ],
   imports: [
     IonicModule.forRoot(MyApp),

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { ColoursAndLabels } from '../../providers/colours-and-labels';
-import { Storage } from '@ionic/storage';
 import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
 
 
@@ -153,5 +152,6 @@ export class ColourPage {
     // console.log("Save button clicked")
     this.coloursAndLabels.setColours(this.inUseColours);
     this.setLocalStorage();
+    this.navCtrl.pop();
   }
 } // end class

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
-import { CreatePage } from '../create/create';
+//import { CreatePage } from '../create/create';
 
 @Component({
   selector: 'page-week',

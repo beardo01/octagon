@@ -26,6 +26,8 @@ using namespace std;
 using namespace odb::core;
 using json = nlohmann::json;
 
+// Create
+
 json createUser(string user, string email, string password, string rpassword, string ip) {
 	json response;
 	try {
@@ -94,6 +96,64 @@ json createUser(string user, string email, string password, string rpassword, st
 	return response;
 }
 
+// Get
+json authenticateUser(string user, string password, string ip) {
+	json response;
+	try {
+
+        auto_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
+			"postgres", "104.197.11.127", 5432));
+            
+        typedef odb::query<User> query;
+
+		{
+			// Start the query
+			transaction t (db->begin ());
+
+			auto_ptr<User> curr_user(db->query_one<User> (query::name == user));
+
+			// Check if a user already exists
+			if (curr_user.get() != 0) {
+				// Check that password is correct
+				if(BCrypt::validatePassword(password, curr_user->getPassword())) {
+					// New client key
+					string key = curr_user->generateKey(20);
+					curr_user->setClientKey(key);
+					curr_user->setLastIP(ip);
+
+					// Update user
+					db->update(*curr_user);
+
+					// Build JSON
+					response["data"]["id"] = curr_user->getID();
+					response["data"]["username"] = curr_user->getName();
+					response["data"]["email"] = curr_user->getEmail();
+					response["data"]["activated"] = curr_user->getActivated();
+					response["data"]["last_ip"] = curr_user->getLastIP();
+					response["data"]["ones"] = curr_user->getOnes();
+					response["data"]["twos"] = curr_user->getTwos();
+					response["data"]["threes"] = curr_user->getThrees();
+					response["data"]["client_key"] = key;
+
+					response["success"] = true;
+					response["message"] = "Successful login.";
+					return response;
+				} else {
+					response["message"] = "Username or password incorrect.";
+				}
+			} else {
+				response["message"] = "Username doesn't exist.";
+			}
+		}
+	} catch (const odb::exception& e) {
+		response["message"] = e.what();
+	}
+	response["success"] = false;
+	return response;
+}
+
+// Set
+
 int main(int argc, char *argv[]) {
 
 	string type = argv[1];
@@ -113,6 +173,12 @@ int main(int argc, char *argv[]) {
 			}
 
 		} else if (type == "get") {
+			
+			// User
+			if(subtype == "user") {
+				cout << authenticateUser(argv[3], argv[4], argv[5]) << endl;
+			}
+
 			return 0;
 		} else if (type == "set") {
 			return 0;

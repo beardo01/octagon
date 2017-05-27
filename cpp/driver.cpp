@@ -125,7 +125,7 @@ json authenticateUser(string identifier, string password, string ip) {
 					db->update(*curr_user);
 
 					// Commit update
-					t.commit();
+					//t.commit();
 
 					// Build JSON
 					response["data"]["id"] = curr_user->getID();

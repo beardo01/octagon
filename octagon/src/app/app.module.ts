@@ -10,8 +10,9 @@ import { LoginPage } from '../pages/login/login';
 import { JoinPage } from '../pages/join/join';
 import { ColourPage } from '../pages/colour/colour';
 import { LabelPage } from '../pages/label/label';
-import { ColoursAndLabels } from '../providers/colours-and-labels.ts';
-import { IonicStorageModule } from '@ionic/storage'
+import { ColoursAndLabels } from '../providers/colours-and-labels';
+import { EventData } from '../providers/event-data';
+import { IonicStorageModule } from '@ionic/storage';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,6 @@ import { IonicStorageModule } from '@ionic/storage'
     ColourPage,
     LabelPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, ColoursAndLabels ]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, ColoursAndLabels, EventData ]
 })
 export class AppModule {}

@@ -1,12 +1,12 @@
 #ifndef USER_H
 #define USER_H
 
-#include <stddef.h>
 #include <iostream>
 #include <string>
 #include <ctime>
 #include <limits>
 #include <regex>
+#include <random>
 
 // ODB database include
 #include <odb/core.hxx>
@@ -48,6 +48,7 @@ class User {
 		unsigned int ones_;
 		unsigned int twos_;
 		unsigned int threes_;
+		string client_key_;
 
 	// User methods
 	public:
@@ -66,6 +67,7 @@ class User {
 		unsigned int getOnes();
 		unsigned int getTwos();
 		unsigned int getThrees();
+		string getClientKey();
 
 		// Setters
 		void setName(string);
@@ -77,6 +79,10 @@ class User {
 		void setOnes(unsigned int);
 		void setTwos(unsigned int);
 		void setThrees(unsigned int);
+		void setClientKey(string);
+
+		// Methods
+		string generateKey(int);
 };
 
 #endif

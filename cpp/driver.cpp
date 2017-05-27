@@ -97,7 +97,7 @@ json createUser(string user, string email, string password, string rpassword, st
 }
 
 // Get
-json authenticateUser(string user, string password, string ip) {
+json authenticateUser(string identifier, string password, string ip) {
 	json response;
 	try {
 
@@ -110,7 +110,7 @@ json authenticateUser(string user, string password, string ip) {
 			// Start the query
 			transaction t (db->begin ());
 
-			auto_ptr<User> curr_user(db->query_one<User> (query::name == user));
+			auto_ptr<User> curr_user(db->query_one<User> (query::name == identifier || query::email == identifier));
 
 			// Check if a user already exists
 			if (curr_user.get() != 0) {
@@ -123,6 +123,9 @@ json authenticateUser(string user, string password, string ip) {
 
 					// Update user
 					db->update(*curr_user);
+
+					// Commit update
+					t.commit();
 
 					// Build JSON
 					response["data"]["id"] = curr_user->getID();

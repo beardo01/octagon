@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from 'ionic-angular';
-import { CreateFormValidator } from '../../validators/createForm';
+//import { CreateFormValidator } from '../../validators/createForm';
 
 @Component({
   selector: 'page-create',

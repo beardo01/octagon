@@ -43,7 +43,7 @@ export class LabelPage {
    * 
    */
   requestColoursAndLabels() {
-    var response = this.coloursAndLabels.requestColoursAndLabels()
+    this.coloursAndLabels.requestColoursAndLabels()
     .subscribe(
       response => {
         this.colours = this.coloursAndLabels.getColours();
@@ -79,8 +79,6 @@ export class LabelPage {
     this.storage.set('label1', this.labelForm.controls['label1'].value);
     this.storage.set('label2', this.labelForm.controls['label2'].value);
     this.storage.set('label3', this.labelForm.controls['label3'].value);
-    console.log("label1")
-    console.log(this.label1)
   }
   /**
    * Get colour values stored in local storage

@@ -41,7 +41,7 @@ export class ColourPage {
    * 
    */
   requestColoursAndLabels() {
-    var response = this.coloursAndLabels.requestColoursAndLabels()
+    this.coloursAndLabels.requestColoursAndLabels()
     .subscribe(
       response => {
         this.inUseColours = this.coloursAndLabels.getColours();

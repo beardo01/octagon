@@ -108,16 +108,18 @@ export class WeekPage {
   //   }
   /*
 
-    /**
+  /**
    * Process data requested from the provider and push to array
    * 
    * @param eventArr Array containing events from provider
    */
   parseEvents(eventArr) {
-    if (eventArr != '') {
-      var outerArr = [];
-      eventArr.forEach(event => {
-        event.forEach(element => {
+    // if object has length then we have data in it
+    if (eventArr != null) {
+      if (eventArr.length) {
+        var outerArr = [];
+        eventArr.forEach( event => {
+          event.forEach(element => {
           var arr = [];
           arr.push(element.id);
           arr.push(element.type);
@@ -130,6 +132,7 @@ export class WeekPage {
         this.input_data_days.push(outerArr);
         outerArr = [];
       });
+      }
     }
   }
   //   /**

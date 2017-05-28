@@ -66,6 +66,7 @@ export class LocalColoursAndLabels {
    * Get Colour names from local DB
    */
   requestLocalColours() {
+    console.log("requesting colours mother fuckerrrr")
    return this.storage.get('colour1').then((val) => {
       this.colours[0] = val;
     }),

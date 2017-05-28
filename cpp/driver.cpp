@@ -68,7 +68,7 @@ json createUser(string user, string email, string password, string rpassword, st
                                 t.commit();
 
 								response["success"] = true;
-								response["data"] = "Successfully created user " + user + ".";
+								response["data"]["client_key"] = new_user->getClientKey();
 
 								return response;
 							} else {
@@ -107,6 +107,7 @@ json createEvent(string client_key, short int type, string description, string l
             
         typedef odb::query<User> user_query;
 		typedef odb::query<Timeline> timeline_query;
+		typedef odb::query<TimelineItem> timeline_item_query;
 
 		{
 			// Start the query
@@ -160,34 +161,27 @@ json createEvent(string client_key, short int type, string description, string l
 							repeats += 1;
 						}
 
-						// Declare repeated items
-						vector<TimelineItem*> repeat_items;
-
 						// Create intial event
 						Event *new_event = new Event(type, description, location);
-						TimelineItem *new_item = new TimelineItem(new_event, start, end, repeat_items);
-
-						// Persist TimelineItem
-						//db->persist(new_event);
-						//db->persist(new_item);
-						
-						cout << "here" << endl;
-
-						// Create repeats (repeats - 1 because we make one less repeat because of new_item)
-						for(int i = 0; i < (repeats - 1); i++) {
-							TimelineItem *item = new TimelineItem(new_event, start, end, new_item);
-							repeat_items.push_back(item);
-							//db->persist(item);
-						}
-
-						// Update initial item
-						new_item->setLinkedItems(repeat_items);
+						TimelineItem *new_item = new TimelineItem(new_event, start, end);
 
 						// Add the new item to the timeline
 						timeline->addTimelineItem(new_item);
 
-						//db->update(*new_item);
-						//db->update(*timeline);
+						// Persist TimelineItem
+						db->persist(new_event);
+						db->persist(new_item);
+						db->update(*timeline);
+
+						// Declare repeated items
+						vector<TimelineItem*> repeat_items;
+						
+						// Create repeats (repeats - 1 because we make one less repeat because of new_item)
+						for(int i = 0; i < (repeats - 1); i++) {
+							TimelineItem *item = new TimelineItem(new_event, start, end, new_item);
+							repeat_items.push_back(item);
+							db->persist(item);
+						}
 					}
 					
 					t.commit();

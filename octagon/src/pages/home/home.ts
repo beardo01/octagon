@@ -39,7 +39,7 @@ export class HomePage {
   constructor(public navCtrl: NavController, http: Http, public coloursAndLabels: ColoursAndLabels,
     public eventData: EventData, public localCLStorage: LocalColoursAndLabels, public localEventStorage: LocalEvents,
     private navParams: NavParams) {
-    
+
     this.parameter1 = navParams.get('param1');
     console.log(this.parameter1);
 
@@ -161,22 +161,25 @@ export class HomePage {
    * @param eventArr Array containing events from provider
    */
   parseEvents(eventArr) {
-    if (eventArr != '') {
-      var outerArr = [];
-      eventArr.forEach(event => {
-        event.forEach(element => {
-          var arr = [];
-          arr.push(element.id);
-          arr.push(element.type);
-          arr.push(element.start);
-          arr.push(element.end);
-          arr.push(element.description);
-          arr.push(element.location);
-          outerArr.push(arr);
+    // if object has length then we have data in it
+    if (eventArr != null) {
+      if (eventArr.length) {
+        var outerArr = [];
+        eventArr.forEach(event => {
+          event.forEach(element => {
+            var arr = [];
+            arr.push(element.id);
+            arr.push(element.type);
+            arr.push(element.start);
+            arr.push(element.end);
+            arr.push(element.description);
+            arr.push(element.location);
+            outerArr.push(arr);
+          });
+          this.input_data.push(outerArr);
+          outerArr = [];
         });
-        this.input_data.push(outerArr);
-        outerArr = [];
-      });
+      }
     }
   }
 

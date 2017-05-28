@@ -17,6 +17,8 @@ import { LocalColoursAndLabels } from '../providers/local-colours-and-labels';
 import { LocalEvents } from '../providers/local-events';
 import { ValidateUser } from '../providers/validate-user';
 import { FormatDate } from '../pipes/format-date';
+import { ClearLocalStorage } from '../providers/clear-local-storage';
+import { RegisterUser } from '../providers/register-user';
 
 
 @NgModule({
@@ -50,6 +52,7 @@ import { FormatDate } from '../pipes/format-date';
     ColourPage,
     LabelPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, ColoursAndLabels, EventData, LocalColoursAndLabels, ValidateUser, LocalEvents ]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, ColoursAndLabels, EventData, LocalColoursAndLabels,
+              ValidateUser, LocalEvents, ClearLocalStorage, RegisterUser ]
 })
 export class AppModule {}

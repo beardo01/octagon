@@ -6,7 +6,7 @@ import { Storage } from '@ionic/storage';
 @Injectable()
 export class LocalEvents {
 
-  events = "";
+  events = {};
   
   //current: number = moment().unix();
 

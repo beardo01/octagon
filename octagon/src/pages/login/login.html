@@ -6,21 +6,24 @@
     <a href="www.google.com"><ion-icon name="logo-google" class="loginSocial"></ion-icon></a>
   </ion-list>
   
-  <form id="createForm" [formGroup]="createForm" (ngSubmit)="add(createForm.value)">
+  <form id="loginForm" [formGroup]="loginForm" (ngSubmit)="authenticate(loginForm.value)">
+
+  <ion-item class="accountInput" style="color: red" [hidden]="!invalid">Incorrect username or password</ion-item>  
+  
   <ion-list>
     <ion-item class="accountInput">
-      <ion-input type="text" maxlength="35" formControlName="id" [(ngModel)]="id" placeholder="Email/Username"></ion-input>
+      <ion-input type="text" maxlength="35" formControlName="id" [(ngModel)]="id" clearOnEdit="true" placeholder="Email/Username"></ion-input>
     </ion-item>
 
     <ion-item class="accountInput">
-      <ion-input type="password" formControlName="password" [(ngModel)]="password" placeholder="Password"></ion-input>
+      <ion-input type="password" formControlName="password" [(ngModel)]="password" clearOnEdit="true" placeholder="Password"></ion-input>
     </ion-item>
   </ion-list>
   </form>
 
   <div class="row">
     <div class="col actionButton">
-      <button (click)="homePage()" ion-button class="accountActionButton" type="submit" form="createForm">Sign In</button>
+      <button ion-button class="accountActionButton" type="submit" form="loginForm">Sign In</button>
     </div>
   </div>
 

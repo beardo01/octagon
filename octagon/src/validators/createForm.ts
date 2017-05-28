@@ -6,7 +6,13 @@ export class CreateFormValidator {
     static validDescription(control: FormControl): any {
 
     }
-
+    isValid(control: FormControl) {
+        if (control.value) {
+            return null;
+        } else {
+            return "Could not authenticate user";
+        }
+    }
     
     // static isValid(control: FormControl): any {
         

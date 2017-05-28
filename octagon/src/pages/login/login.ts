@@ -12,18 +12,20 @@ import { ValidateUser } from '../../providers/validate-user';
 })
 export class LoginPage {
 
-  createForm: FormGroup;
+  loginForm: FormGroup;
 
   tabBarElement: any;
   id: string;
   password: string;
   ip: string;
+  invalid: boolean;
+
   constructor(public navCtrl: NavController, public builder: FormBuilder, public user: ValidateUser) {
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     }
 
-    this.createForm = this.builder.group({
+    this.loginForm = this.builder.group({
       'id' : [this.id],
       'password' : [this.password]
     });
@@ -53,10 +55,16 @@ export class LoginPage {
     this.navCtrl.push(JoinPage);
   }
 
-  add(){
-    console.log("Form Submission");
-    console.log(this.createForm.value);
-    this.user.loginUser(this.createForm.value);
+  authenticate(){
+    this.user.loginUser(this.loginForm.value).subscribe( result => {
+      if (!this.user.getValid()) {
+        this.invalid = true;
+      } else {
+        this.invalid = false;
+        // successfully logged in go to homepage.
+        this.homePage()
+      }
+    })
   }
 
   /** This method pops to the root of the tab then switches to the home tab. */

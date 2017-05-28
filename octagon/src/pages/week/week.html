@@ -11,10 +11,10 @@
   </div>
 
   <div id="tl-container">
-    <div class="tl-line" *ngFor="let bubble of bubbles_week">
+    <button class="tl-line" (click)="select_day(0)" *ngFor="let bubble of bubbles_week">
       <div *ngFor="let bubble_day of bubble">
         <div class="bubble_week tl-{{bubble_day[1]}}" [ngStyle]="{'margin-top': bubble_day[0]}"></div>
       </div>
-    </div>
+    </button>
   </div>
 </ion-content>

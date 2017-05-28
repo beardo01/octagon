@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Http } from '@angular/http';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { ColoursAndLabels } from '../../providers/colours-and-labels';
 import { EventData } from '../../providers/event-data';
 import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
 import { LocalEvents } from '../../providers/local-events';
-//import { CreatePage } from '../create/create';
+import { HomePage } from '../home/home';
 
 @Component({
   selector: 'page-week',
@@ -33,17 +33,17 @@ export class WeekPage {
   labels: string[];
 
   constructor(public navCtrl: NavController, http: Http, public coloursAndLabels: ColoursAndLabels,
-    public eventData: EventData, public storage: LocalColoursAndLabels,  public localEventStorage: LocalEvents) {
+    public eventData: EventData, public storage: LocalColoursAndLabels, public localEventStorage: LocalEvents) {
     this.date = new Date();
     this.display_days = new Array();
-    
+
     // Set colour data field from values stored in provider
     this.colours = this.getProviderColours();
     // set labels data field from values stored in provider
     this.labels = this.getProviderLabels();
     this.initaliseBubbles();
   }
-  
+
   ionViewWillEnter() {
     this.reinitalizeView();
   }
@@ -56,11 +56,11 @@ export class WeekPage {
     this.input_data_days = new Array();
     this.bubbles_week = new Array();
 
-    this.initaliseBubbles(); 
+    this.initaliseBubbles();
     this.parseEvents(this.localEventStorage.getProviderEvents());
     this.filterData();
-}
-  
+  }
+
   // Values from local storage
   getProviderColours() {
     return this.storage.getProviderColours();
@@ -71,41 +71,41 @@ export class WeekPage {
   }
   // Set up bubbles array to hold spaces for inner arrays
   initaliseBubbles() {
-  for (var day = 0; day != 5; day++) {
+    for (var day = 0; day != 5; day++) {
       this.bubbles_week.push([]);
     }
   }
-//     /**
-//  * Make a call to the coloursAndLabels provider that requests data from the api.
-//  * If sucessfull set variables accordinly. If it fails get data from local storage.
-//  * 
-//  */
-//   requestColoursAndLabels() {
-//     this.coloursAndLabels.requestColoursAndLabels()
-//       .subscribe(
-//       response => {
-//         this.colours = this.coloursAndLabels.getColours();
-//         this.labels = this.coloursAndLabels.getLabels();
+  //     /**
+  //  * Make a call to the coloursAndLabels provider that requests data from the api.
+  //  * If sucessfull set variables accordinly. If it fails get data from local storage.
+  //  * 
+  //  */
+  //   requestColoursAndLabels() {
+  //     this.coloursAndLabels.requestColoursAndLabels()
+  //       .subscribe(
+  //       response => {
+  //         this.colours = this.coloursAndLabels.getColours();
+  //         this.labels = this.coloursAndLabels.getLabels();
 
-//         // Update Local storage
-//         if (this.storage.colours != this.colours || this.storage.labels != this.labels) {
-//           this.setLocalStorage();
-//         }
-//       },
-//       error => {
-//         console.log(error);
-//       }
-//       );
-//   }
-//     /**
-//  * Update colours and labels in local storage and provider
-//  */
-//   setLocalStorage() {
-//     this.storage.setProviderColours(this.colours);
-//     this.storage.setStorageColours(this.colours);
-//     this.storage.setProviderLabels(this.labels);
-//     this.storage.setStorageLabels(this.labels);
-//   }
+  //         // Update Local storage
+  //         if (this.storage.colours != this.colours || this.storage.labels != this.labels) {
+  //           this.setLocalStorage();
+  //         }
+  //       },
+  //       error => {
+  //         console.log(error);
+  //       }
+  //       );
+  //   }
+  //     /**
+  //  * Update colours and labels in local storage and provider
+  //  */
+  //   setLocalStorage() {
+  //     this.storage.setProviderColours(this.colours);
+  //     this.storage.setStorageColours(this.colours);
+  //     this.storage.setProviderLabels(this.labels);
+  //     this.storage.setStorageLabels(this.labels);
+  //   }
   /*
 
     /**
@@ -116,7 +116,7 @@ export class WeekPage {
   parseEvents(eventArr) {
     if (eventArr != '') {
       var outerArr = [];
-      eventArr.forEach( event => {
+      eventArr.forEach(event => {
         event.forEach(element => {
           var arr = [];
           arr.push(element.id);
@@ -214,11 +214,11 @@ export class WeekPage {
         // 2359 is the heighest time on the bar.
         // 104 is where the heighest bubble can go.
         // +2 is the padding for start and end.
-        
+
         timebar_start = ((time_start_24 / 2359) * 104) + 2;
         timebar_end = ((time_end_24 / 2359) * 104) + 2;
         timebar_location = timebar_start + '%';
-        height = (timebar_end-timebar_start)-14;
+        height = (timebar_end - timebar_start) - 14;
         if (height === 0) {
           height = 7;
         }
@@ -257,5 +257,13 @@ export class WeekPage {
     }
 
     this.filterData();
+  }
+
+  select_day(number: Number) {
+    this.navCtrl.parent.select(0);
+    this.navCtrl.push(HomePage, {
+      param1: number,
+    });
+    this.navCtrl.popToRoot();
   }
 }

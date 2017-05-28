@@ -12,6 +12,9 @@ export class CreatePage {
   // form group
   createForm: FormGroup;
 
+  submitAttempt: boolean = false;
+  valid: boolean;
+
   // selected label
   label: string;
   location: string;
@@ -95,12 +98,15 @@ export class CreatePage {
    * location: "The Sky"
    */
   add() {
+    this.submitAttempt = true;
     console.log("Form Submission");
     console.log(this.createForm.value);
     if (this.createForm.valid) {
+      this.valid = true;
       console.log("WIN!!!");
       this.navCtrl.popToRoot();
     } else {
+      this.valid = false;
       console.log("FAILED");
     }
 

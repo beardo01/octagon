@@ -184,13 +184,12 @@ json createEvent(string client_key, short int type, string description, string l
 						}
 						
 						// Update the new_item
-						unique_ptr<TimelineItem> update_item(db->query_one<TimelineItem> 
-							(timeline_item_query::id == new_item_id));
+						//unique_ptr<TimelineItem> update_item(db->query_one<TimelineItem> (timeline_item_query::id == new_item_id));
 
 						// Update initial item
-						update_item->setLinkedItems(repeat_items);
+						//update_item->setLinkedItems(repeat_items);
 
-						db->update(*update_item);
+						//db->update(*update_item);
 					}
 					
 					t.commit();

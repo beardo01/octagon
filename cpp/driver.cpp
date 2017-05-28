@@ -129,7 +129,7 @@ json createEvent(string client_key, short int type, string description, string l
 
 						// Create new TimelineItem
 						Event *new_event = new Event(type, description, location);
-						TimelineItem *new_item = new TimelineItem(new_event, start, end, NULL);
+						TimelineItem *new_item = new TimelineItem(new_event, start, end);
 
 						// Add the new item to the timeline
 						timeline->addTimelineItem(new_item);

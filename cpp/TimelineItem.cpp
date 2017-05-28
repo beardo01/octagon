@@ -4,7 +4,8 @@
 TimelineItem::TimelineItem(Event *event, time_t start, time_t end):
     event_(event),
     start_(start),
-    end_(end)
+    end_(end),
+    linked_(NULL)
     {}
 
 TimelineItem::TimelineItem(Event *event, time_t start, time_t end, TimelineItem *linked):
@@ -19,6 +20,7 @@ TimelineItem::TimelineItem(Event *event, time_t start, time_t end,
         event_(event),
         start_(start),
         end_(end),
+        linked_(NULL),
         linked_items_(linked_items) 
         {}
 

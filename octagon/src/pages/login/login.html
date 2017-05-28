@@ -8,17 +8,17 @@
   
   <form id="loginForm" [formGroup]="loginForm" (ngSubmit)="authenticate(loginForm.value)">
   <ion-list>
-    <ion-item class="accountInput">
+    <ion-item class="accountInput" [class.invalid]="!loginForm.controls.id.valid && (submitAttempt)">
       <ion-input type="text" maxlength="35" formControlName="id" [(ngModel)]="id" clearOnEdit="true" placeholder="Email/Username"></ion-input>
     </ion-item>
 
-    <ion-item class="accountInput">
+    <ion-item class="accountInput" [class.invalid]="!loginForm.controls.password.valid && (submitAttempt)">
       <ion-input type="password" formControlName="password" [(ngModel)]="password" clearOnEdit="true" placeholder="Password"></ion-input>
     </ion-item>
   </ion-list>
   </form>
 
-  <ion-item class="accountInput" style="color: red" [hidden]="!invalid"><i>Incorrect username or password</i></ion-item>  
+  <ion-item class="accountInput" style="color: red" [hidden]="!invalid"><i>Incorrect username or password</i></ion-item>
 
   <div class="row">
     <div class="col actionButton">

@@ -12,6 +12,8 @@ export class CreatePage {
   // form group
   createForm: FormGroup;
 
+  submitAttempt: boolean = false;
+
   // selected label
   label: string;
   location: string;
@@ -95,6 +97,7 @@ export class CreatePage {
    * location: "The Sky"
    */
   add() {
+    this.submitAttempt = true;
     console.log("Form Submission");
     console.log(this.createForm.value);
     if (this.createForm.valid) {

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from 'ionic-angular';
-//import { CreateFormValidator } from '../../validators/createForm';
+import { CreateFormValidator } from '../../validators/createForm';
 
 @Component({
   selector: 'page-create',
@@ -14,9 +14,10 @@ export class CreatePage {
 
   // selected label
   label: string;
+  location: string;
 
   // list of label names
-  labelNames: string [];
+  labelNames: string[];
 
   // List of colours
   //colours: string [];
@@ -34,13 +35,13 @@ export class CreatePage {
   timeEnds: string;
   repeatEndDate: string;
 
-   // If item repeats or not
+  // If item repeats or not
   repeat: boolean;
 
   // Frequency item repeats
   repeatFreq: string;
 
- // Events description
+  // Events description
   description: string;
 
   constructor(public navCtrl: NavController, public builder: FormBuilder) {
@@ -51,10 +52,10 @@ export class CreatePage {
     this.minDate = this.date.getFullYear();
     this.maxDate = this.date.getFullYear() + 2;
 
-    this.dateStarts =  this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-' + ('0' + this.date.getDate()).slice(-2);
-    this.dateEnds =  this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-' + ('0' + this.date.getDate()).slice(-2);
-    this.timeStarts =  this.getTimes()[0];
-    this.timeEnds =  this.getTimes()[1];
+    this.dateStarts = this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-' + ('0' + this.date.getDate()).slice(-2);
+    this.dateEnds = this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-' + ('0' + this.date.getDate()).slice(-2);
+    this.timeStarts = this.getTimes()[0];
+    this.timeEnds = this.getTimes()[1];
 
     this.repeat = false;
     this.repeatFreq = "Never";
@@ -66,14 +67,15 @@ export class CreatePage {
     this.getTimes();
 
     this.createForm = this.builder.group({
-      'label' : [this.label],
-      'dateStarts' : [this.dateStarts],
-      'dateEnds' : [this.dateEnds],
-      'timeStarts': [this.timeStarts],
-      'timeEnds': [this.timeEnds],
-      'repeatFrequency' : [this.repeatFreq],
-      'repeatEndDate' : [this.repeatEndDate],
-      'description': [this.description] /* 'description': [this.description, CreateFormValidator.validDescription]*/
+      'label': [this.label, Validators.compose([Validators.required, CreateFormValidator.validLabel])],
+      'location': [this.location, Validators.compose([Validators.required])],
+      'dateStarts': [this.dateStarts, Validators.compose([Validators.required])],
+      'dateEnds': [this.dateEnds, Validators.compose([Validators.required])],
+      'timeStarts': [this.timeStarts, Validators.compose([Validators.required])],
+      'timeEnds': [this.timeEnds, Validators.compose([Validators.required])],
+      'repeatFrequency': [this.repeatFreq, Validators.compose([Validators.required])],
+      'repeatEndDate': [this.repeatEndDate, Validators.compose([Validators.required])],
+      'description': [this.description, Validators.compose([Validators.minLength(3),Validators.required])]
     });
   }
   /* 
@@ -90,11 +92,18 @@ export class CreatePage {
    * repeatFrequency: "Monthly"
    * timeEnds: "17:21"
    * timeStarts: "18:21"
+   * location: "The Sky"
    */
-  add(){
+  add() {
     console.log("Form Submission");
     console.log(this.createForm.value);
-     
+    if (this.createForm.valid) {
+      console.log("WIN!!!");
+      this.navCtrl.popToRoot();
+    } else {
+      console.log("FAILED");
+    }
+
   }
   getLabels() {
     // Make a call to plugin to set the labels
@@ -102,16 +111,16 @@ export class CreatePage {
 
   getTimes() {
     var timeStarts = this.date.getHours() + ':';
-    if(this.date.getHours() < 10) { timeStarts = '0' + timeStarts; }
-    if(this.date.getMinutes() < 10) { 
-      timeStarts = timeStarts + '0' + this.date.getMinutes(); 
+    if (this.date.getHours() < 10) { timeStarts = '0' + timeStarts; }
+    if (this.date.getMinutes() < 10) {
+      timeStarts = timeStarts + '0' + this.date.getMinutes();
     } else {
       timeStarts = timeStarts + this.date.getMinutes();
     }
     var timeEnds = (this.date.getHours() + 1) + ':';
-    if(this.date.getHours() < 10) { timeEnds = '0' + timeEnds; }
-    if(this.date.getMinutes() < 10) { 
-      timeEnds = timeEnds + '0' + this.date.getMinutes(); 
+    if (this.date.getHours() < 10) { timeEnds = '0' + timeEnds; }
+    if (this.date.getMinutes() < 10) {
+      timeEnds = timeEnds + '0' + this.date.getMinutes();
     } else {
       timeEnds = timeEnds + this.date.getMinutes();
     }
@@ -132,8 +141,5 @@ export class CreatePage {
     } else {
       this.repeat = true;
     }
-  }
-  create() {
-    this.navCtrl.popToRoot();
   }
 }

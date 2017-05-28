@@ -39,6 +39,10 @@ Timeline* User::getTimeline() {
 	return this->timeline_;
 }
 
+unsigned long User::getTimelineID() {
+	return this->timeline_->getID();
+}
+
 time_t User::getCreate() {
 	return create_date_;
 }

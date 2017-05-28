@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 #include <boost/regex.hpp>
+#include <vector>
+#include <algorithm>
 #include "json.hpp"
 
 // ODB includes
@@ -27,7 +29,6 @@ using namespace odb::core;
 using json = nlohmann::json;
 
 // Create
-
 json createUser(string user, string email, string password, string rpassword, string ip) {
 	json response;
 	try {
@@ -41,10 +42,8 @@ json createUser(string user, string email, string password, string rpassword, st
 		{
 			// Start the query
 			transaction t (db->begin ());
-			//auto_ptr<User> curr_user(db->query_one<User> (query::name_ == user));
 
 			auto_ptr<User> curr_user(db->query_one<User> (query::name == user || query::email == email));
-			//unique_pointer<User> user = db.query_one<User> (query::name_ == user || query::email_ == email))
 
 			// Check if a user already exists
 			if (curr_user.get() == 0) {
@@ -195,6 +194,130 @@ json getSettings(string client_key) {
 }
 
 // Set
+json setColours(string client_key, string colour_one, string colour_two, string colour_three) {
+	json response;
+	try {
+
+        auto_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
+			"postgres", "104.197.11.127", 5432));
+            
+        typedef odb::query<User> user_query;
+		typedef odb::query<Timeline> timeline_query;
+
+		{
+			// Start the query
+			transaction t (db->begin ());
+
+			auto_ptr<User> curr_user(db->query_one<User> (user_query::client_key == client_key));
+
+			// Check if a user already exists
+			if (curr_user.get() != 0) {
+
+				// Timeline to update
+				unsigned long tl_id = curr_user->getTimelineID();
+
+				auto_ptr<Timeline> curr_timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
+
+				if(curr_timeline.get() != 0) {
+					// Basic validation
+					vector<string> colours = {"red", "green", "yellow", "purple", "blue", "grey"};
+					if(colour_one == colour_two || colour_one == colour_three || colour_two == colour_three) {
+						response["data"] = "Colours cannot be the same.";
+					} else if(find(colours.begin(), colours.end(), colour_one) != colours.end() == false) {
+						response["data"] = "Colour one is invalid.";
+					} else if(find(colours.begin(), colours.end(), colour_two) != colours.end() == false) {
+						response["data"] = "Colour two is invalid.";
+					} else if(find(colours.begin(), colours.end(), colour_three) != colours.end() == false) {
+						response["data"] = "Colour three is invalid.";
+					} else {
+						// Data fine, update
+						curr_timeline->setColourOne(colour_one);
+						curr_timeline->setColourTwo(colour_two);
+						curr_timeline->setColourThree(colour_three);
+
+						db->update(*curr_timeline);
+						
+						t.commit();
+
+						// Build JSON
+						response["success"] = true;
+						response["data"] = "Colours successfully updated.";
+						return response;
+					}
+				} else {
+					response["data"] = "Couldn't find timeline for user.";
+				}
+			} else {
+				response["data"] = "Client authentication error. Client ID invalid.";
+			}
+		}
+	} catch (const odb::exception& e) {
+		response["data"] = e.what();
+	}
+	response["success"] = false;
+	return response;
+}
+
+json setLabels(string client_key, string label_one, string label_two, string label_three) {
+	json response;
+	try {
+
+        auto_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
+			"postgres", "104.197.11.127", 5432));
+            
+        typedef odb::query<User> user_query;
+		typedef odb::query<Timeline> timeline_query;
+
+		{
+			// Start the query
+			transaction t (db->begin ());
+
+			auto_ptr<User> curr_user(db->query_one<User> (user_query::client_key == client_key));
+
+			// Check if a user already exists
+			if (curr_user.get() != 0) {
+
+				// Timeline to update
+				unsigned long tl_id = curr_user->getTimelineID();
+
+				auto_ptr<Timeline> curr_timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
+
+				if(curr_timeline.get() != 0) {
+					// Basic validation
+					if(label_one.length() > 15 || label_one.length() < 4) {
+						response["data"] = "Label one is invalid.";
+					} else if(label_two.length() > 15 || label_two.length() < 4) {
+						response["data"] = "Label two is invalid.";
+					} else if(label_three.length() > 15 || label_three.length() < 4) {
+						response["data"] = "Label three is invalid.";
+					} else {
+						// Data fine, update
+						curr_timeline->setLabelOne(label_one);
+						curr_timeline->setLabelTwo(label_two);
+						curr_timeline->setLabelThree(label_three);
+
+						db->update(*curr_timeline);
+						
+						t.commit();
+
+						// Build JSON
+						response["success"] = true;
+						response["data"] = "Labels successfully updated.";
+						return response;
+					}
+				} else {
+					response["data"] = "Couldn't find timeline for user.";
+				}
+			} else {
+				response["data"] = "Client authentication error. Client ID invalid.";
+			}
+		}
+	} catch (const odb::exception& e) {
+		response["data"] = e.what();
+	}
+	response["success"] = false;
+	return response;
+}
 
 int main(int argc, char *argv[]) {
 
@@ -228,6 +351,16 @@ int main(int argc, char *argv[]) {
 
 			return 0;
 		} else if (type == "set") {
+
+			// Colours
+			if(subtype == "colours") {
+				cout << setColours(argv[3], argv[4], argv[5], argv[6]) << endl;
+			}
+			
+			if(subtype == "labels" ) {
+				cout << setLabels(argv[3], argv[4], argv[5], argv[6]) << endl;
+			}
+			
 			return 0;
 		}
 	} else {

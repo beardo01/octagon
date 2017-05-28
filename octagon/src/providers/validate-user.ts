@@ -18,7 +18,8 @@ export class ValidateUser {
   loginUser(userObject) {
     // post to server and set new colour strings
     let headers: Headers =  new Headers();
-    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
+    headers.append('Content-Type', 'application/json');
     let userData = {
       'id': userObject.id,
       'password': userObject.password,

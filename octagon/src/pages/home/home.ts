@@ -48,7 +48,7 @@ export class HomePage {
     
   }
   initaliseBubbles() {
-   for (var z = 0; z != 5; z++) {
+   for (var day = 0; day != 5; day++) {
       this.bubbles.push([]); 
     }
   }
@@ -164,21 +164,21 @@ export class HomePage {
 
   filterData() {
     //Setup bubbles array
-    for (var z = 0; z < this.input_data.length; z++) {
-      for (var a = 0; a < this.input_data[z].length; a++) {
+    for (var day = 0; day < this.input_data.length; day++) {
+      for (var bubble_selected = 0; bubble_selected < this.input_data[day].length; bubble_selected++) {
         var filtered = new Array();
 
         var timebar_location;
         var labels = '';
         var colour = '';
-        var time_start_24 = this.input_data[z][a][2];
-        var time_end_24 = this.input_data[z][a][3];
-        var type = this.input_data[z][a][1];
-        var start = this.input_data[z][a][2];
-        var end = this.input_data[z][a][3];
-        var description = this.input_data[z][a][4];
-        var location = this.input_data[z][a][5];
-        var id = this.input_data[z][a][0];
+        var time_start_24 = this.input_data[day][bubble_selected][2];
+        var time_end_24 = this.input_data[day][bubble_selected][3];
+        var type = this.input_data[day][bubble_selected][1];
+        var start = this.input_data[day][bubble_selected][2];
+        var end = this.input_data[day][bubble_selected][3];
+        var description = this.input_data[day][bubble_selected][4];
+        var location = this.input_data[day][bubble_selected][5];
+        var id = this.input_data[day][bubble_selected][0];
 
         // Writes the correct colour depending on type.
         if (type === 0) {
@@ -199,10 +199,10 @@ export class HomePage {
         }
 
         // Writes a formatted time from UNIX to 24 hours.
-        var start_hours_24 = new Date(this.input_data[z][a][2] * 1000).getHours().toString();
-        var start_mins_24 = new Date(this.input_data[z][a][2] * 1000).getMinutes().toString();
-        var end_hours_24 = new Date(this.input_data[z][a][3] * 1000).getHours().toString();
-        var end_mins_24 = new Date(this.input_data[z][a][3] * 1000).getMinutes().toString();
+        var start_hours_24 = new Date(this.input_data[day][bubble_selected][2] * 1000).getHours().toString();
+        var start_mins_24 = new Date(this.input_data[day][bubble_selected][2] * 1000).getMinutes().toString();
+        var end_hours_24 = new Date(this.input_data[day][bubble_selected][3] * 1000).getHours().toString();
+        var end_mins_24 = new Date(this.input_data[day][bubble_selected][3] * 1000).getMinutes().toString();
 
         if (start_hours_24.length <= 1) {
           start_hours_24 = '0' + start_hours_24;
@@ -241,7 +241,7 @@ export class HomePage {
         filtered.push(time_end_24);      // [8]
         filtered.push(id);               // [9]
         // Push filtered bubble to bubbles.
-        this.bubbles[z].push(filtered);
+        this.bubbles[day].push(filtered);
         
       }
     }
@@ -253,6 +253,7 @@ export class HomePage {
     if (this.selected_date !== newValue) {
       this.selected_date = newValue;
       this.weekday_header = this.days[this.addDays(new Date(),this.selected_date).getDay()];
+      //this.reinitalizeView();
     }
   }
 
@@ -284,8 +285,8 @@ export class HomePage {
   // Formatted: date_number month.
   displayWeekDays() {
     // Adds 5 dates to the page.
-    for (var i = 0; i < 5; i++) {
-      this.display_days[i] = this.giveDay(i) + " " + this.months[this.giveMonth(i)];
+    for (var date = 0; date < 5; date++) {
+      this.display_days[date] = this.giveDay(date) + " " + this.months[this.giveMonth(date)];
     }
   }
 

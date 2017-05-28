@@ -34,7 +34,7 @@ json createUser(string user, string email, string password, string rpassword, st
 	try {
 
         unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
-			"postgres", "104.197.11.127", 5432));
+			"postgres", "db.simpalapps.com", 5432));
             
         typedef odb::query<User> query;
 
@@ -103,7 +103,7 @@ json createEvent(string client_key, short int type, string description, string l
 	try {
 
         unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
-			"postgres", "104.197.11.127", 5432));
+			"postgres", "db.simpalapps.com", 5432));
             
         typedef odb::query<User> user_query;
 		typedef odb::query<Timeline> timeline_query;
@@ -171,6 +171,8 @@ json createEvent(string client_key, short int type, string description, string l
 						// Persist TimelineItem
 						db->persist(new_event);
 						db->persist(new_item);
+						
+						cout << "here" << endl;
 
 						// Create repeats (repeats - 1 because we make one less repeat because of new_item)
 						for(int i = 0; i < (repeats - 1); i++) {
@@ -181,11 +183,9 @@ json createEvent(string client_key, short int type, string description, string l
 
 						// Update initial item
 						new_item->setLinkedItems(repeat_items);
-						cout << "here" << endl;
 
 						// Add the new item to the timeline
 						timeline->addTimelineItem(new_item);
-
 
 						db->update(*new_item);
 						db->update(*timeline);
@@ -217,7 +217,7 @@ json authenticateUser(string identifier, string password, string ip) {
 	try {
 
         unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
-			"postgres", "104.197.11.127", 5432));
+			"postgres", "db.simpalapps.com", 5432));
             
         typedef odb::query<User> query;
 
@@ -275,7 +275,7 @@ json getSettings(string client_key) {
 	try {
 
         unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
-			"postgres", "104.197.11.127", 5432));
+			"postgres", "db.simpalapps.com", 5432));
             
         typedef odb::query<User> query;
 
@@ -315,7 +315,7 @@ json setColours(string client_key, string colour_one, string colour_two, string 
 	try {
 
         unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
-			"postgres", "104.197.11.127", 5432));
+			"postgres", "db.simpalapps.com", 5432));
             
         typedef odb::query<User> user_query;
 		typedef odb::query<Timeline> timeline_query;
@@ -379,7 +379,7 @@ json setLabels(string client_key, string label_one, string label_two, string lab
 	try {
 
         unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
-			"postgres", "104.197.11.127", 5432));
+			"postgres", "db.simpalapps.com", 5432));
             
         typedef odb::query<User> user_query;
 		typedef odb::query<Timeline> timeline_query;

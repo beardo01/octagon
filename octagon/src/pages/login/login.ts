@@ -12,27 +12,29 @@ import { ValidateUser } from '../../providers/validate-user';
 })
 export class LoginPage {
 
-  createForm: FormGroup;
+  loginForm: FormGroup;
 
   tabBarElement: any;
   id: string;
   password: string;
   ip: string;
+  invalid: boolean;
+
   constructor(public navCtrl: NavController, public builder: FormBuilder, public user: ValidateUser) {
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     }
 
-    this.createForm = this.builder.group({
+    this.loginForm = this.builder.group({
       'id' : [this.id],
       'password' : [this.password]
     });
 
-    this.getIP;
+    this.getIP();
   }
 
   getIP(){
-    this.ip = "192.168.1.254";
+    this.ip = "127.0.0.1";
   }
   /** This will stop the nav bar from showing when entering this page. */
   ionViewWillEnter() {
@@ -53,10 +55,20 @@ export class LoginPage {
     this.navCtrl.push(JoinPage);
   }
 
-  add(){
-    console.log("Form Submission");
-    console.log(this.createForm.value);
-    this.user.loginUser(this.createForm.value);
+  authenticate(){
+    // add ip address - To implement!@!#R@#URGIO#UFVOUYEVH J
+    var sendValue = this.loginForm.value;
+    sendValue.ip = this.ip;
+
+    this.user.loginUser(sendValue).subscribe( result => {
+      if (!this.user.getValid()) {
+        this.invalid = true;
+      } else {
+        this.invalid = false;
+        // successfully logged in go to homepage.
+        this.homePage()
+      }
+    })
   }
 
   /** This method pops to the root of the tab then switches to the home tab. */

@@ -33,17 +33,16 @@ json createUser(string user, string email, string password, string rpassword, st
 	json response;
 	try {
 
-        auto_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
+        unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
 			"postgres", "104.197.11.127", 5432));
             
         typedef odb::query<User> query;
-        typedef odb::result<User> result;
 
 		{
 			// Start the query
 			transaction t (db->begin ());
 
-			auto_ptr<User> curr_user(db->query_one<User> (query::name == user || query::email == email));
+			unique_ptr<User> curr_user(db->query_one<User> (query::name == user || query::email == email));
 
 			// Check if a user already exists
 			if (curr_user.get() == 0) {
@@ -95,12 +94,68 @@ json createUser(string user, string email, string password, string rpassword, st
 	return response;
 }
 
+// void Timeline::addItem(short int type, string description, string location, time_t start, 
+//     time_t end, short int frequency, time_t ends) {
+
+json createEvent(string client_key, short int type, string description, string location, 
+	time_t start, time_t end, short int frequency, time_t ends) {
+	
+	json response;
+	try {
+
+        unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
+			"postgres", "104.197.11.127", 5432));
+            
+        typedef odb::query<User> user_query;
+		typedef odb::query<Timeline> timeline_query;
+
+		{
+			// Start the query
+			transaction t (db->begin ());
+
+			unique_ptr<User> curr_user(db->query_one<User> (user_query::client_key == client_key));
+
+			// Check if a user already exists
+			if (curr_user.get() != 0) {
+
+				// Timeline to update
+				unsigned long tl_id = curr_user->getTimelineID();
+
+				unique_ptr<Timeline> curr_timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
+
+				if(curr_timeline.get() != 0) {
+					// Basic validation
+					// Data fine, update
+					curr_timeline->addItem(type, description, location, start, end, frequency, ends);
+
+					db->update(*curr_timeline);
+					
+					t.commit();
+
+					// Build JSON
+					response["success"] = true;
+					response["data"] = "Timeline item(s) successfully added.";
+					return response;
+				} else {
+					response["data"] = "Couldn't find timeline for user.";
+				}
+			} else {
+				response["data"] = "Client authentication error. Client ID invalid.";
+			}
+		}
+	} catch (const odb::exception& e) {
+		response["data"] = e.what();
+	}
+	response["success"] = false;
+	return response;
+}
+
 // Get
 json authenticateUser(string identifier, string password, string ip) {
 	json response;
 	try {
 
-        auto_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
+        unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
 			"postgres", "104.197.11.127", 5432));
             
         typedef odb::query<User> query;
@@ -109,7 +164,7 @@ json authenticateUser(string identifier, string password, string ip) {
 			// Start the query
 			transaction t (db->begin ());
 
-			auto_ptr<User> curr_user(db->query_one<User> (query::name == identifier || query::email == identifier));
+			unique_ptr<User> curr_user(db->query_one<User> (query::name == identifier || query::email == identifier));
 
 			// Check if a user already exists
 			if (curr_user.get() != 0) {
@@ -158,7 +213,7 @@ json getSettings(string client_key) {
 	json response;
 	try {
 
-        auto_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
+        unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
 			"postgres", "104.197.11.127", 5432));
             
         typedef odb::query<User> query;
@@ -167,7 +222,7 @@ json getSettings(string client_key) {
 			// Start the query
 			transaction t (db->begin ());
 
-			auto_ptr<User> curr_user(db->query_one<User> (query::client_key == client_key));
+			unique_ptr<User> curr_user(db->query_one<User> (query::client_key == client_key));
 
 			// Check if a user already exists
 			if (curr_user.get() != 0) {
@@ -198,7 +253,7 @@ json setColours(string client_key, string colour_one, string colour_two, string 
 	json response;
 	try {
 
-        auto_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
+        unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
 			"postgres", "104.197.11.127", 5432));
             
         typedef odb::query<User> user_query;
@@ -208,7 +263,7 @@ json setColours(string client_key, string colour_one, string colour_two, string 
 			// Start the query
 			transaction t (db->begin ());
 
-			auto_ptr<User> curr_user(db->query_one<User> (user_query::client_key == client_key));
+			unique_ptr<User> curr_user(db->query_one<User> (user_query::client_key == client_key));
 
 			// Check if a user already exists
 			if (curr_user.get() != 0) {
@@ -216,7 +271,7 @@ json setColours(string client_key, string colour_one, string colour_two, string 
 				// Timeline to update
 				unsigned long tl_id = curr_user->getTimelineID();
 
-				auto_ptr<Timeline> curr_timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
+				unique_ptr<Timeline> curr_timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
 
 				if(curr_timeline.get() != 0) {
 					// Basic validation
@@ -262,7 +317,7 @@ json setLabels(string client_key, string label_one, string label_two, string lab
 	json response;
 	try {
 
-        auto_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
+        unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
 			"postgres", "104.197.11.127", 5432));
             
         typedef odb::query<User> user_query;
@@ -272,7 +327,7 @@ json setLabels(string client_key, string label_one, string label_two, string lab
 			// Start the query
 			transaction t (db->begin ());
 
-			auto_ptr<User> curr_user(db->query_one<User> (user_query::client_key == client_key));
+			unique_ptr<User> curr_user(db->query_one<User> (user_query::client_key == client_key));
 
 			// Check if a user already exists
 			if (curr_user.get() != 0) {
@@ -280,7 +335,7 @@ json setLabels(string client_key, string label_one, string label_two, string lab
 				// Timeline to update
 				unsigned long tl_id = curr_user->getTimelineID();
 
-				auto_ptr<Timeline> curr_timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
+				unique_ptr<Timeline> curr_timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
 
 				if(curr_timeline.get() != 0) {
 					// Basic validation
@@ -334,7 +389,9 @@ int main(int argc, char *argv[]) {
 
 			// Event
 			if(subtype == "event") {
-				return 0;
+				// addItem(1, "Meeting on Tuesday", "Owheo Building", 123, 1234, 0, 0)
+				cout << createEvent(argv[3], stoi(argv[4]), argv[5], argv[6], stol(argv[7]), 
+					stol(argv[8]), stoi(argv[9]), stol(argv[10])) << endl;
 			}
 
 		} else if (type == "get") {

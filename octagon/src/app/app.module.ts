@@ -17,6 +17,7 @@ import { LocalColoursAndLabels } from '../providers/local-colours-and-labels';
 import { ValidateUser } from '../providers/validate-user';
 import { FormatDate } from '../pipes/format-date';
 
+
 @NgModule({
   declarations: [
     MyApp,

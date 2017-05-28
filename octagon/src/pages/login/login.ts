@@ -14,6 +14,8 @@ export class LoginPage {
 
   loginForm: FormGroup;
 
+  submitAttempt: boolean = false;
+
   tabBarElement: any;
   id: string;
   password: string;
@@ -26,8 +28,8 @@ export class LoginPage {
     }
 
     this.loginForm = this.builder.group({
-      'id' : [this.id],
-      'password' : [this.password]
+      'id' : [this.id,Validators.compose([Validators.required])],
+      'password' : [this.password, Validators.compose([Validators.minLength(6), Validators.required])]
     });
 
     this.getIP();
@@ -56,6 +58,7 @@ export class LoginPage {
   }
 
   authenticate(){
+    this.submitAttempt = true;
     // add ip address - To implement!@!#R@#URGIO#UFVOUYEVH J
     var sendValue = this.loginForm.value;
     sendValue.ip = this.ip;

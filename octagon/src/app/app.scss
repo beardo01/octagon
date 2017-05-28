@@ -44,12 +44,12 @@
     background-image: url('../assets/Test.png');
     background-size: contain;
     background-repeat: no-repeat;
+    background-position: center; 
     display: block;
-    height: 25%;
+    height: 130px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 10px;
-    width: 50%;
 }
 
 .accountInput {
@@ -60,11 +60,6 @@
 .accountInput:first-child {
     border-top: 0;
     margin-top: 20px;
-    background: transparent;
-}
-
-.accountInput:last-child {
-    background: transparent;
 }
 
 .loginSocial {
@@ -96,8 +91,6 @@
 ion-select {
     background-color: transparent;
 }
-
-
 
 // Backdrop opactity
 ion-backdrop {

@@ -6,5 +6,9 @@ page-create {
         margin: 5px!important;
         background-color: red;
     }
-    
+
+    .invalid {
+        background-color: rgba(255,0,0,.5)
+    }
+
 }

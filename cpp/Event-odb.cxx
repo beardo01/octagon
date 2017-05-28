@@ -27,22 +27,22 @@ namespace odb
   //
 
   const char access::object_traits_impl< ::Event, id_pgsql >::
-  persist_statement_name[] = "persist_Event";
+  persist_statement_name[] = "persist_event";
 
   const char access::object_traits_impl< ::Event, id_pgsql >::
-  find_statement_name[] = "find_Event";
+  find_statement_name[] = "find_event";
 
   const char access::object_traits_impl< ::Event, id_pgsql >::
-  update_statement_name[] = "update_Event";
+  update_statement_name[] = "update_event";
 
   const char access::object_traits_impl< ::Event, id_pgsql >::
-  erase_statement_name[] = "erase_Event";
+  erase_statement_name[] = "erase_event";
 
   const char access::object_traits_impl< ::Event, id_pgsql >::
-  query_statement_name[] = "query_Event";
+  query_statement_name[] = "query_event";
 
   const char access::object_traits_impl< ::Event, id_pgsql >::
-  erase_query_statement_name[] = "erase_query_Event";
+  erase_query_statement_name[] = "erase_query_event";
 
   const unsigned int access::object_traits_impl< ::Event, id_pgsql >::
   persist_statement_types[] =
@@ -367,7 +367,7 @@ namespace odb
   }
 
   const char access::object_traits_impl< ::Event, id_pgsql >::persist_statement[] =
-  "INSERT INTO \"Event\" "
+  "INSERT INTO \"event\" "
   "(\"id\", "
   "\"type\", "
   "\"description\", "
@@ -378,15 +378,15 @@ namespace odb
 
   const char access::object_traits_impl< ::Event, id_pgsql >::find_statement[] =
   "SELECT "
-  "\"Event\".\"id\", "
-  "\"Event\".\"type\", "
-  "\"Event\".\"description\", "
-  "\"Event\".\"location\" "
-  "FROM \"Event\" "
-  "WHERE \"Event\".\"id\"=$1";
+  "\"event\".\"id\", "
+  "\"event\".\"type\", "
+  "\"event\".\"description\", "
+  "\"event\".\"location\" "
+  "FROM \"event\" "
+  "WHERE \"event\".\"id\"=$1";
 
   const char access::object_traits_impl< ::Event, id_pgsql >::update_statement[] =
-  "UPDATE \"Event\" "
+  "UPDATE \"event\" "
   "SET "
   "\"type\"=$1, "
   "\"description\"=$2, "
@@ -394,22 +394,22 @@ namespace odb
   "WHERE \"id\"=$4";
 
   const char access::object_traits_impl< ::Event, id_pgsql >::erase_statement[] =
-  "DELETE FROM \"Event\" "
+  "DELETE FROM \"event\" "
   "WHERE \"id\"=$1";
 
   const char access::object_traits_impl< ::Event, id_pgsql >::query_statement[] =
   "SELECT "
-  "\"Event\".\"id\", "
-  "\"Event\".\"type\", "
-  "\"Event\".\"description\", "
-  "\"Event\".\"location\" "
-  "FROM \"Event\"";
+  "\"event\".\"id\", "
+  "\"event\".\"type\", "
+  "\"event\".\"description\", "
+  "\"event\".\"location\" "
+  "FROM \"event\"";
 
   const char access::object_traits_impl< ::Event, id_pgsql >::erase_query_statement[] =
-  "DELETE FROM \"Event\"";
+  "DELETE FROM \"event\"";
 
   const char access::object_traits_impl< ::Event, id_pgsql >::table_name[] =
-  "\"Event\"";
+  "\"event\"";
 
   void access::object_traits_impl< ::Event, id_pgsql >::
   persist (database& db, object_type& obj)

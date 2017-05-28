@@ -27,22 +27,22 @@ namespace odb
   //
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::
-  persist_statement_name[] = "persist_TimelineItem";
+  persist_statement_name[] = "persist_timelineitem";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::
-  find_statement_name[] = "find_TimelineItem";
+  find_statement_name[] = "find_timelineitem";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::
-  update_statement_name[] = "update_TimelineItem";
+  update_statement_name[] = "update_timelineitem";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::
-  erase_statement_name[] = "erase_TimelineItem";
+  erase_statement_name[] = "erase_timelineitem";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::
-  query_statement_name[] = "query_TimelineItem";
+  query_statement_name[] = "query_timelineitem";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::
-  erase_query_statement_name[] = "erase_query_TimelineItem";
+  erase_query_statement_name[] = "erase_query_timelineitem";
 
   const unsigned int access::object_traits_impl< ::TimelineItem, id_pgsql >::
   persist_statement_types[] =
@@ -100,13 +100,13 @@ namespace odb
   //
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_items_traits::
-  select_name[] = "select_TimelineItem_linked_items";
+  select_name[] = "select_timelineitem_linked_items";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_items_traits::
-  insert_name[] = "insert_TimelineItem_linked_items";
+  insert_name[] = "insert_timelineitem_linked_items";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_items_traits::
-  delete_name[] = "delete_TimelineItem_linked_items";
+  delete_name[] = "delete_timelineitem_linked_items";
 
   const unsigned int access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_items_traits::
   insert_types[] =
@@ -119,14 +119,14 @@ namespace odb
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_items_traits::
   select_statement[] =
   "SELECT "
-  "\"TimelineItem_linked_items\".\"index\", "
-  "\"TimelineItem_linked_items\".\"value\" "
-  "FROM \"TimelineItem_linked_items\" "
-  "WHERE \"TimelineItem_linked_items\".\"object_id\"=$1 ORDER BY \"TimelineItem_linked_items\".\"index\"";
+  "\"timelineitem_linked_items\".\"index\", "
+  "\"timelineitem_linked_items\".\"value\" "
+  "FROM \"timelineitem_linked_items\" "
+  "WHERE \"timelineitem_linked_items\".\"object_id\"=$1 ORDER BY \"timelineitem_linked_items\".\"index\"";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_items_traits::
   insert_statement[] =
-  "INSERT INTO \"TimelineItem_linked_items\" "
+  "INSERT INTO \"timelineitem_linked_items\" "
   "(\"object_id\", "
   "\"index\", "
   "\"value\") "
@@ -135,7 +135,7 @@ namespace odb
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_items_traits::
   delete_statement[] =
-  "DELETE FROM \"TimelineItem_linked_items\" "
+  "DELETE FROM \"timelineitem_linked_items\" "
   "WHERE \"object_id\"=$1";
 
   void access::object_traits_impl< ::TimelineItem, id_pgsql >::linked_items_traits::
@@ -752,7 +752,7 @@ namespace odb
   }
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::persist_statement[] =
-  "INSERT INTO \"TimelineItem\" "
+  "INSERT INTO \"timelineitem\" "
   "(\"id\", "
   "\"event\", "
   "\"start\", "
@@ -764,16 +764,16 @@ namespace odb
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::find_statement[] =
   "SELECT "
-  "\"TimelineItem\".\"id\", "
-  "\"TimelineItem\".\"event\", "
-  "\"TimelineItem\".\"start\", "
-  "\"TimelineItem\".\"end\", "
-  "\"TimelineItem\".\"linked\" "
-  "FROM \"TimelineItem\" "
-  "WHERE \"TimelineItem\".\"id\"=$1";
+  "\"timelineitem\".\"id\", "
+  "\"timelineitem\".\"event\", "
+  "\"timelineitem\".\"start\", "
+  "\"timelineitem\".\"end\", "
+  "\"timelineitem\".\"linked\" "
+  "FROM \"timelineitem\" "
+  "WHERE \"timelineitem\".\"id\"=$1";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::update_statement[] =
-  "UPDATE \"TimelineItem\" "
+  "UPDATE \"timelineitem\" "
   "SET "
   "\"event\"=$1, "
   "\"start\"=$2, "
@@ -782,25 +782,25 @@ namespace odb
   "WHERE \"id\"=$5";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::erase_statement[] =
-  "DELETE FROM \"TimelineItem\" "
+  "DELETE FROM \"timelineitem\" "
   "WHERE \"id\"=$1";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::query_statement[] =
   "SELECT\n"
-  "\"TimelineItem\".\"id\",\n"
-  "\"TimelineItem\".\"event\",\n"
-  "\"TimelineItem\".\"start\",\n"
-  "\"TimelineItem\".\"end\",\n"
-  "\"TimelineItem\".\"linked\"\n"
-  "FROM \"TimelineItem\"\n"
-  "LEFT JOIN \"Event\" AS \"event\" ON \"event\".\"id\"=\"TimelineItem\".\"event\"\n"
-  "LEFT JOIN \"TimelineItem\" AS \"linked\" ON \"linked\".\"id\"=\"TimelineItem\".\"linked\"";
+  "\"timelineitem\".\"id\",\n"
+  "\"timelineitem\".\"event\",\n"
+  "\"timelineitem\".\"start\",\n"
+  "\"timelineitem\".\"end\",\n"
+  "\"timelineitem\".\"linked\"\n"
+  "FROM \"timelineitem\"\n"
+  "LEFT JOIN \"event\" AS \"event\" ON \"event\".\"id\"=\"timelineitem\".\"event\"\n"
+  "LEFT JOIN \"timelineitem\" AS \"linked\" ON \"linked\".\"id\"=\"timelineitem\".\"linked\"";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::erase_query_statement[] =
-  "DELETE FROM \"TimelineItem\"";
+  "DELETE FROM \"timelineitem\"";
 
   const char access::object_traits_impl< ::TimelineItem, id_pgsql >::table_name[] =
-  "\"TimelineItem\"";
+  "\"timelineitem\"";
 
   void access::object_traits_impl< ::TimelineItem, id_pgsql >::
   persist (database& db, object_type& obj)

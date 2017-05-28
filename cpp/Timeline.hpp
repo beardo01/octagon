@@ -65,10 +65,12 @@ class Timeline {
         // Methods (CRUD order)
         void printTimeline();
         
+        void addTimelineItem(TimelineItem*);
+
         // addItem(type, description, location, start date, end date, frequency, end date)
         // addItem(1, "Meeting on Tuesday", "Owheo Building", 123, 1234, 0, 0)
-        void addItem(short int, string, string, time_t, time_t, 
-            short int frequency = -1, time_t ends = 0);
+        /*void addItem(short int, string, string, time_t, time_t, 
+            short int frequency = -1, time_t ends = 0);*/
 
         // getTimelineItem(1)
         TimelineItem* getTimelineItem(unsigned long);

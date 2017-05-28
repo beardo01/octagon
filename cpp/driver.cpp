@@ -34,7 +34,7 @@ json createUser(string user, string email, string password, string rpassword, st
 	try {
 
         unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
-			"postgres", "104.197.11.127", 5432));
+			"postgres", "db.simpalapps.com", 5432));
             
         typedef odb::query<User> query;
 
@@ -99,12 +99,11 @@ json createUser(string user, string email, string password, string rpassword, st
 
 json createEvent(string client_key, short int type, string description, string location, 
 	time_t start, time_t end, short int frequency, time_t ends) {
-	
 	json response;
 	try {
 
         unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
-			"postgres", "104.197.11.127", 5432));
+			"postgres", "db.simpalapps.com", 5432));
             
         typedef odb::query<User> user_query;
 		typedef odb::query<Timeline> timeline_query;
@@ -120,15 +119,77 @@ json createEvent(string client_key, short int type, string description, string l
 
 				// Timeline to update
 				unsigned long tl_id = curr_user->getTimelineID();
+				unique_ptr<Timeline> timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
 
-				unique_ptr<Timeline> curr_timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
+				if(timeline.get() != 0) {
 
-				if(curr_timeline.get() != 0) {
-					// Basic validation
-					// Data fine, update
-					curr_timeline->addItem(type, description, location, start, end, frequency, ends);
+					//Check if the event repeats or not
+					if (frequency == -1) {
+						// It doesn't have any repeats
+						cout << "in freq -1" << endl;
 
-					db->update(*curr_timeline);
+						// Create new TimelineItem
+						Event *new_event = new Event(type, description, location);
+						TimelineItem *new_item = new TimelineItem(new_event, start, end);
+
+						// Add the new item to the timeline
+						timeline->addTimelineItem(new_item);
+						
+						// Persist TimelineItem and update Timeline
+						db->persist(new_event);
+						db->persist(new_item);
+						db->update(*timeline);
+					} else {
+						// It does have repeats
+						long diff = end - start;
+						long seconds_day = 86400;
+						long step;
+						long repeats = 1;
+
+						if(frequency == 0) {
+							// Daily repeats
+							step = seconds_day;
+						} else if (frequency == 1) {
+							// Weekly repeats
+							step = (seconds_day*7);
+						} else if (frequency == 2) {
+							// Monthly repeats
+							step = (seconds_day*30);
+						}
+
+						while(diff + (step * repeats) < ends) {
+							repeats += 1;
+						}
+
+						// Declare repeated items
+						vector<TimelineItem*> repeat_items;
+
+						// Create intial event
+						Event *new_event = new Event(type, description, location);
+						TimelineItem *new_item = new TimelineItem(new_event, start, end, repeat_items);
+
+						// Persist TimelineItem
+						db->persist(new_event);
+						db->persist(new_item);
+						
+						cout << "here" << endl;
+
+						// Create repeats (repeats - 1 because we make one less repeat because of new_item)
+						for(int i = 0; i < (repeats - 1); i++) {
+							TimelineItem *item = new TimelineItem(new_event, start, end, new_item);
+							repeat_items.push_back(item);
+							db->persist(item);
+						}
+
+						// Update initial item
+						new_item->setLinkedItems(repeat_items);
+
+						// Add the new item to the timeline
+						timeline->addTimelineItem(new_item);
+
+						db->update(*new_item);
+						db->update(*timeline);
+					}
 					
 					t.commit();
 
@@ -156,7 +217,7 @@ json authenticateUser(string identifier, string password, string ip) {
 	try {
 
         unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
-			"postgres", "104.197.11.127", 5432));
+			"postgres", "db.simpalapps.com", 5432));
             
         typedef odb::query<User> query;
 
@@ -214,7 +275,7 @@ json getSettings(string client_key) {
 	try {
 
         unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
-			"postgres", "104.197.11.127", 5432));
+			"postgres", "db.simpalapps.com", 5432));
             
         typedef odb::query<User> query;
 
@@ -254,7 +315,7 @@ json setColours(string client_key, string colour_one, string colour_two, string 
 	try {
 
         unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
-			"postgres", "104.197.11.127", 5432));
+			"postgres", "db.simpalapps.com", 5432));
             
         typedef odb::query<User> user_query;
 		typedef odb::query<Timeline> timeline_query;
@@ -318,7 +379,7 @@ json setLabels(string client_key, string label_one, string label_two, string lab
 	try {
 
         unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
-			"postgres", "104.197.11.127", 5432));
+			"postgres", "db.simpalapps.com", 5432));
             
         typedef odb::query<User> user_query;
 		typedef odb::query<Timeline> timeline_query;
@@ -389,7 +450,6 @@ int main(int argc, char *argv[]) {
 
 			// Event
 			if(subtype == "event") {
-				// addItem(1, "Meeting on Tuesday", "Owheo Building", 123, 1234, 0, 0)
 				cout << createEvent(argv[3], stoi(argv[4]), argv[5], argv[6], stol(argv[7]), 
 					stol(argv[8]), stoi(argv[9]), stol(argv[10])) << endl;
 			}

@@ -6,21 +6,21 @@
     <a href="www.google.com"><ion-icon name="logo-google" class="loginSocial"></ion-icon></a>
   </ion-list>
 
-  <form id="createForm" [formGroup]="createForm" (ngSubmit)="add(createForm.value)">
+  <form id="joinForm" [formGroup]="joinForm" (ngSubmit)="join(joinForm.value)">
   <ion-list>
-    <ion-item class="accountInput">
+    <ion-item class="accountInput" [class.invalid]="!joinForm.controls.name.valid && (submitAttempt)">
       <ion-input type="text" maxlength="20" formControlName="name" [(ngModel)]="name" placeholder="Name"></ion-input>
     </ion-item>
 
-    <ion-item class="accountInput">
+    <ion-item class="accountInput" [class.invalid]="!joinForm.controls.email.valid && (submitAttempt)">
       <ion-input type="text" maxlength="35" formControlName="email" [(ngModel)]="email" placeholder="Email"></ion-input>
     </ion-item>
 
-    <ion-item class="accountInput">
+    <ion-item class="accountInput" [class.invalid]="!joinForm.controls.password.valid && (submitAttempt)">
       <ion-input type="password" formControlName="password" [(ngModel)]="password" placeholder="Password"></ion-input>
     </ion-item>
 
-    <ion-item class="accountInput">
+    <ion-item class="accountInput" [class.invalid]="!joinForm.controls.rpassword.valid && (submitAttempt)">
       <ion-input type="password" formControlName="rpassword" [(ngModel)]="rpassword" placeholder="Re-enter Password"></ion-input>
     </ion-item>
   </ion-list>
@@ -28,7 +28,7 @@
 
   <div class="row">
     <div class="col actionButton">
-      <button (click)="homePage()" ion-button class="accountActionButton" type="submit" form="createForm">Join</button>
+      <button ion-button class="accountActionButton" type="submit" form="joinForm">Join</button>
     </div>
   </div>
 

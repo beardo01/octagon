@@ -157,7 +157,7 @@ json createEvent(string client_key, short int type, string description, string l
 							step = (seconds_day*30);
 						}
 
-						while(diff + (step * repeats) < ends) {
+						while(end + (step * repeats) < ends) {
 							repeats += 1;
 						}
 
@@ -393,11 +393,11 @@ json setLabels(string client_key, string label_one, string label_two, string lab
 
 				if(curr_timeline.get() != 0) {
 					// Basic validation
-					if(label_one.length() > 15 || label_one.length() < 4) {
+					if(label_one.length() > 15 || label_one.length() < 3) {
 						response["data"] = "Label one is invalid.";
-					} else if(label_two.length() > 15 || label_two.length() < 4) {
+					} else if(label_two.length() > 15 || label_two.length() < 3) {
 						response["data"] = "Label two is invalid.";
-					} else if(label_three.length() > 15 || label_three.length() < 4) {
+					} else if(label_three.length() > 15 || label_three.length() < 3) {
 						response["data"] = "Label three is invalid.";
 					} else {
 						// Data fine, update

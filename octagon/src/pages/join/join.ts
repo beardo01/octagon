@@ -25,7 +25,7 @@ export class JoinPage {
 
     this.joinForm = this.builder.group({
       'name' : [this.name, Validators.compose([Validators.pattern('[a-zA-Z]+[a-zA-Z0-9_-]*'), Validators.required])],
-      'email' : [this.email, Validators.compose([Validators.required])],
+      'email' : [this.email, Validators.compose([Validators.pattern('.+@.+[.].+'), Validators.required])],
       'password' : [this.password, Validators.compose([Validators.required])],
       'rpassword' : [this.rpassword, Validators.compose([Validators.required])]
     });

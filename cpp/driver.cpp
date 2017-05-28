@@ -119,11 +119,9 @@ json createEvent(string client_key, short int type, string description, string l
 
 				// Timeline to update
 				unsigned long tl_id = curr_user->getTimelineID();
-
 				unique_ptr<Timeline> timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
 
 				if(timeline.get() != 0) {
-
 
 					//Check if the event repeats or not
 					if (frequency == -1) {
@@ -142,13 +140,10 @@ json createEvent(string client_key, short int type, string description, string l
 						db->update(*timeline);
 					} else {
 						// It does have repeats
-						time_t now = time_t(time);
-						long diff = ends - start;
+						long diff = end - start;
 						long seconds_day = 86400;
-						int step;
-						int repeats = 1;
-						
-						cout << "here" << endl;
+						long step;
+						long repeats = 1;
 
 						if(frequency == 0) {
 							// Daily repeats
@@ -163,9 +158,9 @@ json createEvent(string client_key, short int type, string description, string l
 
 						while(diff + (step * repeats) < ends) {
 							repeats += 1;
-							cout << repeats << endl;
+							cout << (diff + (step * repeats)) << " " << ends << endl;
 						}
-						
+
 						// Declare repeated items
 						vector<TimelineItem*> repeat_items;
 
@@ -179,16 +174,18 @@ json createEvent(string client_key, short int type, string description, string l
 
 						// Create repeats (repeats - 1 because we make one less repeat because of new_item)
 						for(int i = 0; i < (repeats - 1); i++) {
-							TimelineItem* item = new TimelineItem(new_event, start, end, new_item);
+							TimelineItem *item = new TimelineItem(new_event, start, end, new_item);
 							repeat_items.push_back(item);
 							db->persist(item);
 						}
 
 						// Update initial item
 						new_item->setLinkedItems(repeat_items);
+						cout << "here" << endl;
 
 						// Add the new item to the timeline
 						timeline->addTimelineItem(new_item);
+
 
 						db->update(*new_item);
 						db->update(*timeline);

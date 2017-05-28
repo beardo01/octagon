@@ -155,7 +155,9 @@ export class HomePage {
    * @param eventArr Array containing events from provider
    */
   parseEvents(eventArr) {
-    if (eventArr != '') {
+    // if object has length then we have data in it
+    if (eventArr != null) {
+    if (eventArr.length) {
        var outerArr = [];
        eventArr.forEach( event => {
         event.forEach(element => {
@@ -171,6 +173,7 @@ export class HomePage {
       this.input_data.push(outerArr);
       outerArr = [];
     });
+  }
     }
   }
 

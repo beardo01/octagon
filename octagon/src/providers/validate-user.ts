@@ -17,7 +17,7 @@ export class ValidateUser {
     let userData = {
       'id': userObject.id,
       'password': userObject.password,
-      'ip': '192.255.255.255'/*userObject.ip*/
+      'ip': userObject.ip
     };
     return this.http.post('https://api.simpalapps.com/driver/get/user', JSON.stringify(userData), {headers: headers})
       .map(res => {

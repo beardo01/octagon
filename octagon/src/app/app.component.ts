@@ -8,6 +8,8 @@ import { LocalColoursAndLabels } from '../providers/local-colours-and-labels';
 import { ColoursAndLabels } from '../providers/colours-and-labels';
 import { TabsPage } from '../pages/tabs/tabs';
 
+import { ClearLocalStorage } from '../providers/clear-local-storage';
+
 
 @Component({
   templateUrl: 'app.html',
@@ -17,12 +19,15 @@ export class MyApp {
   rootPage = TabsPage;
 
   constructor(platform: Platform, statusBar: StatusBar, public localColoursAndLabels: LocalColoursAndLabels, 
-              public localEvents: LocalEvents, public coloursAndLabels: ColoursAndLabels, public eventData: EventData) {
+              public localEvents: LocalEvents, public coloursAndLabels: ColoursAndLabels, public eventData: EventData, 
+              public clearStorage: ClearLocalStorage) {
     platform.ready().then(() => {
+      //this.clearStorage.clearLocalStorage();
+
       // Check to see if we have events saved in local storage.
       // if we don't request events from API (user may have cleared cache so we need to refresh)
       this.localEvents.requestLocalEvents().then( response => {
-        if(this.localEvents.getProviderEvents() == '') {
+        if( this.localEvents.getProviderEvents() == null ) {
           this.eventData.requestEventData().toPromise().then(response => {
            this.localEvents.setLocalStorageEvents(this.eventData.getEvents())
          })

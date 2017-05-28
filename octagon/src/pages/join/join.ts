@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { RegisterUser } from '../../providers/register-user';
 
 @Component({
   selector: 'page-join',
@@ -20,7 +21,7 @@ export class JoinPage {
   rpassword: string;
   password_same: boolean;
 
-  constructor(public navCtrl: NavController, public builder: FormBuilder) {
+  constructor(public navCtrl: NavController, public builder: FormBuilder, public registerUser: RegisterUser) {
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     }
@@ -60,7 +61,11 @@ export class JoinPage {
     console.log(this.joinForm.value);
     if (this.password === this.rpassword) {
       if (this.joinForm.valid) {
+
         console.log("PASS");
+        console.log("register user join form");
+        this.registerUser.registerUser(this.joinForm.value)
+        
         this.navCtrl.popToRoot();
         this.navCtrl.parent.select(0);
       } else {

@@ -2,9 +2,9 @@
  * compiler for C++.
  */
 
-DROP TABLE IF EXISTS "event" CASCADE;
+DROP TABLE IF EXISTS "Event" CASCADE;
 
-CREATE TABLE "event" (
+CREATE TABLE "Event" (
   "id" BIGSERIAL NOT NULL PRIMARY KEY,
   "type" SMALLINT NOT NULL,
   "description" VARCHAR(128) NOT NULL,

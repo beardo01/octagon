@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController} from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -10,12 +10,15 @@ export class JoinPage {
   tabBarElement: any;
   scrollContent: any;
 
+  submitAttempt: boolean = false;
+
   joinForm: FormGroup;
-  valid: boolean;
+
   name: string;
   email: string;
   password: string;
   rpassword: string;
+  password_same: boolean;
 
   constructor(public navCtrl: NavController, public builder: FormBuilder) {
     if (document.querySelector('.tabbar')) {
@@ -24,10 +27,10 @@ export class JoinPage {
     this.scrollContent = document.querySelector('.scroll-content');
 
     this.joinForm = this.builder.group({
-      'name' : [this.name, Validators.compose([Validators.pattern('[a-zA-Z]+[a-zA-Z0-9_-]*'), Validators.required])],
-      'email' : [this.email, Validators.compose([Validators.pattern('.+@.+[.].+'), Validators.required])],
-      'password' : [this.password, Validators.compose([Validators.required])],
-      'rpassword' : [this.rpassword, Validators.compose([Validators.required])]
+      'name': [this.name, Validators.compose([Validators.pattern('[a-zA-Z]+[a-zA-Z0-9_-]*'), Validators.required])],
+      'email': [this.email, Validators.compose([Validators.pattern('.+@.+[.].+'), Validators.required])],
+      'password': [this.password, Validators.compose([Validators.minLength(6), Validators.required])],
+      'rpassword': [this.rpassword, Validators.compose([Validators.minLength(6), Validators.required])]
     });
   }
 
@@ -52,15 +55,19 @@ export class JoinPage {
 
   /** This method pops to the root of the tab then switches to the home tab. */
   join() {
+    this.submitAttempt = true;
     console.log("Form Submission");
     console.log(this.joinForm.value);
-    if (this.joinForm.valid) {
-      this.valid = true;
-      console.log("WIN");
-      this.navCtrl.popToRoot();
-      this.navCtrl.parent.select(0);
+    if (this.password === this.rpassword) {
+      if (this.joinForm.valid) {
+        console.log("WIN");
+        this.navCtrl.popToRoot();
+        this.navCtrl.parent.select(0);
+      } else {
+        console.log("FAILED");
+      }
     } else {
-      this.valid = false;
+      this.password_same = false;
       console.log("FAILED");
     }
   }

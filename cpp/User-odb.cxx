@@ -27,22 +27,22 @@ namespace odb
   //
 
   const char access::object_traits_impl< ::User, id_pgsql >::
-  persist_statement_name[] = "persist_user";
+  persist_statement_name[] = "persist_User";
 
   const char access::object_traits_impl< ::User, id_pgsql >::
-  find_statement_name[] = "find_user";
+  find_statement_name[] = "find_User";
 
   const char access::object_traits_impl< ::User, id_pgsql >::
-  update_statement_name[] = "update_user";
+  update_statement_name[] = "update_User";
 
   const char access::object_traits_impl< ::User, id_pgsql >::
-  erase_statement_name[] = "erase_user";
+  erase_statement_name[] = "erase_User";
 
   const char access::object_traits_impl< ::User, id_pgsql >::
-  query_statement_name[] = "query_user";
+  query_statement_name[] = "query_User";
 
   const char access::object_traits_impl< ::User, id_pgsql >::
-  erase_query_statement_name[] = "erase_query_user";
+  erase_query_statement_name[] = "erase_query_User";
 
   const unsigned int access::object_traits_impl< ::User, id_pgsql >::
   persist_statement_types[] =
@@ -770,7 +770,7 @@ namespace odb
   }
 
   const char access::object_traits_impl< ::User, id_pgsql >::persist_statement[] =
-  "INSERT INTO \"user\" "
+  "INSERT INTO \"User\" "
   "(\"id\", "
   "\"name\", "
   "\"email\", "
@@ -789,23 +789,23 @@ namespace odb
 
   const char access::object_traits_impl< ::User, id_pgsql >::find_statement[] =
   "SELECT "
-  "\"user\".\"id\", "
-  "\"user\".\"name\", "
-  "\"user\".\"email\", "
-  "\"user\".\"password\", "
-  "\"user\".\"timeline\", "
-  "\"user\".\"create_date\", "
-  "\"user\".\"activated\", "
-  "\"user\".\"last_ip\", "
-  "\"user\".\"ones\", "
-  "\"user\".\"twos\", "
-  "\"user\".\"threes\", "
-  "\"user\".\"client_key\" "
-  "FROM \"user\" "
-  "WHERE \"user\".\"id\"=$1";
+  "\"User\".\"id\", "
+  "\"User\".\"name\", "
+  "\"User\".\"email\", "
+  "\"User\".\"password\", "
+  "\"User\".\"timeline\", "
+  "\"User\".\"create_date\", "
+  "\"User\".\"activated\", "
+  "\"User\".\"last_ip\", "
+  "\"User\".\"ones\", "
+  "\"User\".\"twos\", "
+  "\"User\".\"threes\", "
+  "\"User\".\"client_key\" "
+  "FROM \"User\" "
+  "WHERE \"User\".\"id\"=$1";
 
   const char access::object_traits_impl< ::User, id_pgsql >::update_statement[] =
-  "UPDATE \"user\" "
+  "UPDATE \"User\" "
   "SET "
   "\"name\"=$1, "
   "\"email\"=$2, "
@@ -821,31 +821,31 @@ namespace odb
   "WHERE \"id\"=$12";
 
   const char access::object_traits_impl< ::User, id_pgsql >::erase_statement[] =
-  "DELETE FROM \"user\" "
+  "DELETE FROM \"User\" "
   "WHERE \"id\"=$1";
 
   const char access::object_traits_impl< ::User, id_pgsql >::query_statement[] =
   "SELECT\n"
-  "\"user\".\"id\",\n"
-  "\"user\".\"name\",\n"
-  "\"user\".\"email\",\n"
-  "\"user\".\"password\",\n"
-  "\"user\".\"timeline\",\n"
-  "\"user\".\"create_date\",\n"
-  "\"user\".\"activated\",\n"
-  "\"user\".\"last_ip\",\n"
-  "\"user\".\"ones\",\n"
-  "\"user\".\"twos\",\n"
-  "\"user\".\"threes\",\n"
-  "\"user\".\"client_key\"\n"
-  "FROM \"user\"\n"
-  "LEFT JOIN \"timeline\" AS \"timeline\" ON \"timeline\".\"id\"=\"user\".\"timeline\"";
+  "\"User\".\"id\",\n"
+  "\"User\".\"name\",\n"
+  "\"User\".\"email\",\n"
+  "\"User\".\"password\",\n"
+  "\"User\".\"timeline\",\n"
+  "\"User\".\"create_date\",\n"
+  "\"User\".\"activated\",\n"
+  "\"User\".\"last_ip\",\n"
+  "\"User\".\"ones\",\n"
+  "\"User\".\"twos\",\n"
+  "\"User\".\"threes\",\n"
+  "\"User\".\"client_key\"\n"
+  "FROM \"User\"\n"
+  "LEFT JOIN \"Timeline\" AS \"timeline\" ON \"timeline\".\"id\"=\"User\".\"timeline\"";
 
   const char access::object_traits_impl< ::User, id_pgsql >::erase_query_statement[] =
-  "DELETE FROM \"user\"";
+  "DELETE FROM \"User\"";
 
   const char access::object_traits_impl< ::User, id_pgsql >::table_name[] =
-  "\"user\"";
+  "\"User\"";
 
   void access::object_traits_impl< ::User, id_pgsql >::
   persist (database& db, object_type& obj)

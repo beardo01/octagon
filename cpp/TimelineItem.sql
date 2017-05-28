@@ -2,11 +2,11 @@
  * compiler for C++.
  */
 
-DROP TABLE IF EXISTS "timelineitem_linked_items" CASCADE;
+DROP TABLE IF EXISTS "TimelineItem_linked_items" CASCADE;
 
-DROP TABLE IF EXISTS "timelineitem" CASCADE;
+DROP TABLE IF EXISTS "TimelineItem" CASCADE;
 
-CREATE TABLE "timelineitem" (
+CREATE TABLE "TimelineItem" (
   "id" BIGSERIAL NOT NULL PRIMARY KEY,
   "event" BIGINT NULL,
   "start" BIGINT NOT NULL,
@@ -14,31 +14,31 @@ CREATE TABLE "timelineitem" (
   "linked" BIGINT NULL,
   CONSTRAINT "linked_fk"
     FOREIGN KEY ("linked")
-    REFERENCES "timelineitem" ("id")
+    REFERENCES "TimelineItem" ("id")
     INITIALLY DEFERRED);
 
-CREATE TABLE "timelineitem_linked_items" (
+CREATE TABLE "TimelineItem_linked_items" (
   "object_id" BIGINT NOT NULL,
   "index" BIGINT NOT NULL,
   "value" BIGINT NULL,
   CONSTRAINT "object_id_fk"
     FOREIGN KEY ("object_id")
-    REFERENCES "timelineitem" ("id")
+    REFERENCES "TimelineItem" ("id")
     ON DELETE CASCADE,
   CONSTRAINT "value_fk"
     FOREIGN KEY ("value")
-    REFERENCES "timelineitem" ("id")
+    REFERENCES "TimelineItem" ("id")
     INITIALLY DEFERRED);
 
-CREATE INDEX "timelineitem_linked_items_object_id_i"
-  ON "timelineitem_linked_items" ("object_id");
+CREATE INDEX "TimelineItem_linked_items_object_id_i"
+  ON "TimelineItem_linked_items" ("object_id");
 
-CREATE INDEX "timelineitem_linked_items_index_i"
-  ON "timelineitem_linked_items" ("index");
+CREATE INDEX "TimelineItem_linked_items_index_i"
+  ON "TimelineItem_linked_items" ("index");
 
-ALTER TABLE "timelineitem"
+ALTER TABLE "TimelineItem"
   ADD CONSTRAINT "event_fk"
     FOREIGN KEY ("event")
-    REFERENCES "event" ("id")
+    REFERENCES "Event" ("id")
     INITIALLY DEFERRED;
 

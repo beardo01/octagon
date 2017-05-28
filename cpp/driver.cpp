@@ -107,6 +107,7 @@ json createEvent(string client_key, short int type, string description, string l
             
         typedef odb::query<User> user_query;
 		typedef odb::query<Timeline> timeline_query;
+		typedef odb::query<TimelineItem> timeline_item_query;
 
 		{
 			// Start the query
@@ -126,7 +127,6 @@ json createEvent(string client_key, short int type, string description, string l
 					//Check if the event repeats or not
 					if (frequency == -1) {
 						// It doesn't have any repeats
-						cout << "in freq -1" << endl;
 
 						// Create new TimelineItem
 						Event *new_event = new Event(type, description, location);
@@ -161,34 +161,35 @@ json createEvent(string client_key, short int type, string description, string l
 							repeats += 1;
 						}
 
-						// Declare repeated items
-						vector<TimelineItem*> repeat_items;
-
 						// Create intial event
 						Event *new_event = new Event(type, description, location);
-						TimelineItem *new_item = new TimelineItem(new_event, start, end, repeat_items);
+						TimelineItem *new_item = new TimelineItem(new_event, start, end);
+
+						// Add the new item to the timeline
+						timeline->addTimelineItem(new_item);
 
 						// Persist TimelineItem
 						db->persist(new_event);
-						db->persist(new_item);
-						
-						cout << "here" << endl;
+						unsigned long new_item_id = db->persist(new_item);
+						db->update(*timeline);
 
+						// Declare repeated items
+						vector<TimelineItem*> repeat_items;
+						
 						// Create repeats (repeats - 1 because we make one less repeat because of new_item)
 						for(int i = 0; i < (repeats - 1); i++) {
 							TimelineItem *item = new TimelineItem(new_event, start, end, new_item);
 							repeat_items.push_back(item);
 							db->persist(item);
 						}
+						
+						// Update the new_item
+						//unique_ptr<TimelineItem> update_item(db->query_one<TimelineItem> (timeline_item_query::id == new_item_id));
 
 						// Update initial item
-						new_item->setLinkedItems(repeat_items);
+						//update_item->setLinkedItems(repeat_items);
 
-						// Add the new item to the timeline
-						timeline->addTimelineItem(new_item);
-
-						db->update(*new_item);
-						db->update(*timeline);
+						//db->update(*update_item);
 					}
 					
 					t.commit();

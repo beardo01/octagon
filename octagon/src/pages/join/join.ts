@@ -63,11 +63,15 @@ export class JoinPage {
       if (this.joinForm.valid) {
 
         console.log("PASS");
+<<<<<<< HEAD
         console.log("register user join form");
         this.registerUser.registerUser(this.joinForm.value)
         
         this.navCtrl.popToRoot();
         this.navCtrl.parent.select(0);
+=======
+        this.navCtrl.pop();
+>>>>>>> d3b53a4b4b15051f162b52dfcc8c60ff54e7522c
       } else {
         console.log("FAILED");
       }

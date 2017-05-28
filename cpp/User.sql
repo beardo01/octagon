@@ -2,9 +2,9 @@
  * compiler for C++.
  */
 
-DROP TABLE IF EXISTS "user" CASCADE;
+DROP TABLE IF EXISTS "User" CASCADE;
 
-CREATE TABLE "user" (
+CREATE TABLE "User" (
   "id" BIGSERIAL NOT NULL PRIMARY KEY,
   "name" VARCHAR(128) NOT NULL,
   "email" VARCHAR(128) NOT NULL,
@@ -18,9 +18,9 @@ CREATE TABLE "user" (
   "threes" INTEGER NOT NULL,
   "client_key" VARCHAR(128) NOT NULL);
 
-ALTER TABLE "user"
+ALTER TABLE "User"
   ADD CONSTRAINT "timeline_fk"
     FOREIGN KEY ("timeline")
-    REFERENCES "timeline" ("id")
+    REFERENCES "Timeline" ("id")
     INITIALLY DEFERRED;
 

@@ -91,7 +91,8 @@ void Timeline::addTimelineItem(TimelineItem* item) {
     this->timeline_items_.push_back(item);
 }
 
-void Timeline::addItem(short int type, string description, string location, time_t start, 
+
+/*void Timeline::addItem(short int type, string description, string location, time_t start, 
     time_t end, short int frequency, time_t ends) {
 
     TimelineItem *new_item;
@@ -148,7 +149,7 @@ void Timeline::addItem(short int type, string description, string location, time
     std::sort(this->timeline_items_.begin(), this->timeline_items_.end());
     
     //return new_item->getID();
-}
+}*/
 
 TimelineItem* Timeline::getTimelineItem(unsigned long id) {
     for(int i = 0; i < this->timeline_items_.size(); i++) {

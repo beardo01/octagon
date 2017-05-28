@@ -60,7 +60,7 @@ export class JoinPage {
     console.log(this.joinForm.value);
     if (this.password === this.rpassword) {
       if (this.joinForm.valid) {
-        console.log("WIN");
+        console.log("PASS");
         this.navCtrl.popToRoot();
         this.navCtrl.parent.select(0);
       } else {

@@ -1,6 +1,7 @@
 #ifndef USER_H
 #define USER_H
 
+#include <cstddef>
 #include <iostream>
 #include <string>
 #include <ctime>

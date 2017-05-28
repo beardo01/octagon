@@ -126,7 +126,6 @@ json createEvent(string client_key, short int type, string description, string l
 					//Check if the event repeats or not
 					if (frequency == -1) {
 						// It doesn't have any repeats
-						cout << "in freq -1" << endl;
 
 						// Create new TimelineItem
 						Event *new_event = new Event(type, description, location);

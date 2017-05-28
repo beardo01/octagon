@@ -61,8 +61,7 @@ export class JoinPage {
     if (this.password === this.rpassword) {
       if (this.joinForm.valid) {
         console.log("PASS");
-        this.navCtrl.popToRoot();
-        this.navCtrl.parent.select(0);
+        this.navCtrl.pop();
       } else {
         console.log("FAILED");
       }

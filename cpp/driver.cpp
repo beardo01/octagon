@@ -160,24 +160,22 @@ json createEvent(string client_key, short int type, string description, string l
 							repeats += 1;
 						}
 
-						// Declare repeated items
-						vector<TimelineItem*> repeat_items;
-
 						// Create intial event
 						Event *new_event = new Event(type, description, location);
-						TimelineItem *new_item = new TimelineItem(new_event, start, end, repeat_items);
+						TimelineItem *new_item = new TimelineItem(new_event, start, end);
 
 						// Persist TimelineItem
-						//db->persist(new_event);
-						//db->persist(new_item);
-						
-						cout << "here" << endl;
+						db->persist(new_event);
+						db->persist(new_item);
 
+						// Declare repeated items
+						vector<TimelineItem*> repeat_items;
+						
 						// Create repeats (repeats - 1 because we make one less repeat because of new_item)
 						for(int i = 0; i < (repeats - 1); i++) {
 							TimelineItem *item = new TimelineItem(new_event, start, end, new_item);
 							repeat_items.push_back(item);
-							//db->persist(item);
+							db->persist(item);
 						}
 
 						// Update initial item
@@ -186,8 +184,8 @@ json createEvent(string client_key, short int type, string description, string l
 						// Add the new item to the timeline
 						timeline->addTimelineItem(new_item);
 
-						//db->update(*new_item);
-						//db->update(*timeline);
+						db->update(*new_item);
+						db->update(*timeline);
 					}
 					
 					t.commit();

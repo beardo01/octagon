@@ -68,7 +68,7 @@ json createUser(string user, string email, string password, string rpassword, st
                                 t.commit();
 
 								response["success"] = true;
-								response["data"] = "Successfully created user " + user + ".";
+								response["data"]["client_key"] = new_user->getClientKey();
 
 								return response;
 							} else {
@@ -170,7 +170,7 @@ json createEvent(string client_key, short int type, string description, string l
 
 						// Persist TimelineItem
 						db->persist(new_event);
-						unsigned long new_item_id = db->persist(new_item);
+						db->persist(new_item);
 						db->update(*timeline);
 
 						// Declare repeated items
@@ -182,14 +182,6 @@ json createEvent(string client_key, short int type, string description, string l
 							repeat_items.push_back(item);
 							db->persist(item);
 						}
-						
-						// Update the new_item
-						//unique_ptr<TimelineItem> update_item(db->query_one<TimelineItem> (timeline_item_query::id == new_item_id));
-
-						// Update initial item
-						//update_item->setLinkedItems(repeat_items);
-
-						//db->update(*update_item);
 					}
 					
 					t.commit();

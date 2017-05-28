@@ -258,6 +258,67 @@ json setColours(string client_key, string colour_one, string colour_two, string 
 	return response;
 }
 
+json setLabels(string client_key, string label_one, string label_two, string label_three) {
+	json response;
+	try {
+
+        auto_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
+			"postgres", "104.197.11.127", 5432));
+            
+        typedef odb::query<User> user_query;
+		typedef odb::query<Timeline> timeline_query;
+
+		{
+			// Start the query
+			transaction t (db->begin ());
+
+			auto_ptr<User> curr_user(db->query_one<User> (user_query::client_key == client_key));
+
+			// Check if a user already exists
+			if (curr_user.get() != 0) {
+
+				// Timeline to update
+				unsigned long tl_id = curr_user->getTimelineID();
+
+				auto_ptr<Timeline> curr_timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
+
+				if(curr_timeline.get() != 0) {
+					// Basic validation
+					if(label_one.length() > 15 || label_one.length() < 4) {
+						response["data"] = "Label one is invalid.";
+					} else if(label_two.length() > 15 || label_two.length() < 4) {
+						response["data"] = "Label two is invalid.";
+					} else if(label_three.length() > 15 || label_three.length() < 4) {
+						response["data"] = "Label three is invalid.";
+					} else {
+						// Data fine, update
+						curr_timeline->setLabelOne(label_one);
+						curr_timeline->setLabelTwo(label_two);
+						curr_timeline->setLabelThree(label_three);
+
+						db->update(*curr_timeline);
+						
+						t.commit();
+
+						// Build JSON
+						response["success"] = true;
+						response["data"] = "Labels successfully updated.";
+						return response;
+					}
+				} else {
+					response["data"] = "Couldn't find timeline for user.";
+				}
+			} else {
+				response["data"] = "Client authentication error. Client ID invalid.";
+			}
+		}
+	} catch (const odb::exception& e) {
+		response["data"] = e.what();
+	}
+	response["success"] = false;
+	return response;
+}
+
 int main(int argc, char *argv[]) {
 
 	string type = argv[1];
@@ -294,6 +355,10 @@ int main(int argc, char *argv[]) {
 			// Colours
 			if(subtype == "colours") {
 				cout << setColours(argv[3], argv[4], argv[5], argv[6]) << endl;
+			}
+			
+			if(subtype == "labels" ) {
+				cout << setLabels(argv[3], argv[4], argv[5], argv[6]) << endl;
 			}
 			
 			return 0;

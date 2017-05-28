@@ -63,7 +63,7 @@ export class ColoursAndLabels {
       "auth_key": "9C73815A3C9AA677B379EB69BDF19"
     };
     //console.log(JSON.stringify(body));
-    this.http.post('https://api.simpalapps.com/driver/get/settings', JSON.stringify(body), {headers: headers})
+   return this.http.post('https://api.simpalapps.com/driver/get/settings', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(data => {
         console.log(data);

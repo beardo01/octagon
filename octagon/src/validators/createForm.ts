@@ -3,9 +3,15 @@ import { FormControl } from '@angular/forms';
 export class CreateFormValidator {
  
 
-    static validDescription(control: FormControl): any {
-
+    static validLabel(control: FormControl): any {
+        if(control.value === null){
+            return {
+                "not a valid label": false
+            }
+        }
+        return null;
     }
+
     isValid(control: FormControl) {
         if (control.value) {
             return null;

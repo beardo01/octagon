@@ -30,11 +30,11 @@ export class LoginPage {
       'password' : [this.password]
     });
 
-    this.getIP;
+    this.getIP();
   }
 
   getIP(){
-    this.ip = "192.168.1.254";
+    this.ip = "127.0.0.1";
   }
   /** This will stop the nav bar from showing when entering this page. */
   ionViewWillEnter() {
@@ -56,7 +56,11 @@ export class LoginPage {
   }
 
   authenticate(){
-    this.user.loginUser(this.loginForm.value).subscribe( result => {
+    // add ip address - To implement!@!#R@#URGIO#UFVOUYEVH J
+    var sendValue = this.loginForm.value;
+    sendValue.ip = this.ip;
+
+    this.user.loginUser(sendValue).subscribe( result => {
       if (!this.user.getValid()) {
         this.invalid = true;
       } else {

@@ -20,6 +20,6 @@ echo "Compiling driver..."
 g++ -std=c++11 -c driver.cpp
 
 echo "Linking files..."
-g++ -lbcrypt -lboost_regex -o driver driver.o Timeline-odb.o Event-odb.o TimelineItem-odb.o User-odb.o -lodb-pgsql -lodb
+g++ -g -lbcrypt -lboost_regex -o driver driver.o Timeline-odb.o Event-odb.o TimelineItem-odb.o User-odb.o -lodb-pgsql -lodb
 
 echo "Doneski"

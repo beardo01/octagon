@@ -87,8 +87,14 @@ void Timeline::printTimeline() {
     }
 }
 
+void Timeline::addTimelineItem(TimelineItem* item) {
+    this->timeline_items_.push_back(item);
+}
+
 void Timeline::addItem(short int type, string description, string location, time_t start, 
     time_t end, short int frequency, time_t ends) {
+
+    TimelineItem *new_item;
 
     //Check if the event repeats or not
     if (frequency == -1) {
@@ -96,7 +102,7 @@ void Timeline::addItem(short int type, string description, string location, time
 
         //Create new TimelineItem
         Event *new_event = new Event(type, description, location);
-        TimelineItem *new_item = new TimelineItem(new_event, start, end);
+        new_item = new TimelineItem(new_event, start, end);
 
         // Add the new item to the timeline
         this->timeline_items_.push_back(new_item);
@@ -123,7 +129,7 @@ void Timeline::addItem(short int type, string description, string location, time
 
         // Create intial event
         Event *new_event = new Event(type, description, location);
-        TimelineItem *new_item = new TimelineItem(new_event, start, end, repeat_items); 
+        new_item = new TimelineItem(new_event, start, end, repeat_items); 
 
         // Create repeats (repeats - 1 because we make one less repeat because of new_item)
         for(int i = 0; i < (repeats - 1); i++) {
@@ -140,6 +146,8 @@ void Timeline::addItem(short int type, string description, string location, time
 
     // Sort the timeline items
     std::sort(this->timeline_items_.begin(), this->timeline_items_.end());
+    
+    //return new_item->getID();
 }
 
 TimelineItem* Timeline::getTimelineItem(unsigned long id) {

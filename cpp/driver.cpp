@@ -99,7 +99,6 @@ json createUser(string user, string email, string password, string rpassword, st
 
 json createEvent(string client_key, short int type, string description, string location, 
 	time_t start, time_t end, short int frequency, time_t ends) {
-	
 	json response;
 	try {
 
@@ -121,14 +120,79 @@ json createEvent(string client_key, short int type, string description, string l
 				// Timeline to update
 				unsigned long tl_id = curr_user->getTimelineID();
 
-				unique_ptr<Timeline> curr_timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
+				unique_ptr<Timeline> timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
 
-				if(curr_timeline.get() != 0) {
-					// Basic validation
-					// Data fine, update
-					curr_timeline->addItem(type, description, location, start, end, frequency, ends);
+				if(timeline.get() != 0) {
 
-					db->update(*curr_timeline);
+
+					//Check if the event repeats or not
+					if (frequency == -1) {
+						// It doesn't have any repeats
+
+						// Create new TimelineItem
+						Event *new_event = new Event(type, description, location);
+						TimelineItem *new_item = new TimelineItem(new_event, start, end);
+
+						// Add the new item to the timeline
+						timeline->addTimelineItem(new_item);
+						
+						// Persist TimelineItem and update Timeline
+						db->persist(new_event);
+						db->persist(new_item);
+						db->update(*timeline);
+					} else {
+						// It does have repeats
+						time_t now = time_t(time);
+						long diff = ends - start;
+						long seconds_day = 86400;
+						int step;
+						int repeats = 1;
+						
+						cout << "here" << endl;
+
+						if(frequency == 0) {
+							// Daily repeats
+							step = seconds_day;
+						} else if (frequency == 1) {
+							// Weekly repeats
+							step = (seconds_day*7);
+						} else if (frequency == 2) {
+							// Monthly repeats
+							step = (seconds_day*30);
+						}
+
+						while(diff + (step * repeats) < ends) {
+							repeats += 1;
+							cout << repeats << endl;
+						}
+						
+						// Declare repeated items
+						vector<TimelineItem*> repeat_items;
+
+						// Create intial event
+						Event *new_event = new Event(type, description, location);
+						TimelineItem *new_item = new TimelineItem(new_event, start, end, repeat_items);
+
+						// Persist TimelineItem
+						db->persist(new_event);
+						db->persist(new_item);
+
+						// Create repeats (repeats - 1 because we make one less repeat because of new_item)
+						for(int i = 0; i < (repeats - 1); i++) {
+							TimelineItem* item = new TimelineItem(new_event, start, end, new_item);
+							repeat_items.push_back(item);
+							db->persist(item);
+						}
+
+						// Update initial item
+						new_item->setLinkedItems(repeat_items);
+
+						// Add the new item to the timeline
+						timeline->addTimelineItem(new_item);
+
+						db->update(*new_item);
+						db->update(*timeline);
+					}
 					
 					t.commit();
 
@@ -389,7 +453,6 @@ int main(int argc, char *argv[]) {
 
 			// Event
 			if(subtype == "event") {
-				// addItem(1, "Meeting on Tuesday", "Owheo Building", 123, 1234, 0, 0)
 				cout << createEvent(argv[3], stoi(argv[4]), argv[5], argv[6], stol(argv[7]), 
 					stol(argv[8]), stoi(argv[9]), stol(argv[10])) << endl;
 			}

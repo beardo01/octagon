@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController} from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CreateFormValidator } from '../../validators/createForm';
 
 @Component({
   selector: 'page-join',
@@ -11,8 +10,8 @@ export class JoinPage {
   tabBarElement: any;
   scrollContent: any;
 
-  createForm: FormGroup;
-
+  joinForm: FormGroup;
+  valid: boolean;
   name: string;
   email: string;
   password: string;
@@ -24,11 +23,11 @@ export class JoinPage {
     }
     this.scrollContent = document.querySelector('.scroll-content');
 
-    this.createForm = this.builder.group({
-      'name' : [this.name],
-      'email' : [this.email],
-      'password' : [this.password],
-      'rpassword' : [this.rpassword]
+    this.joinForm = this.builder.group({
+      'name' : [this.name, Validators.compose([Validators.pattern('[a-zA-Z]+[a-zA-Z0-9_-]*'), Validators.required])],
+      'email' : [this.email, Validators.compose([Validators.required])],
+      'password' : [this.password, Validators.compose([Validators.required])],
+      'rpassword' : [this.rpassword, Validators.compose([Validators.required])]
     });
   }
 
@@ -52,14 +51,18 @@ export class JoinPage {
   }
 
   /** This method pops to the root of the tab then switches to the home tab. */
-  homePage() {
-    this.navCtrl.popToRoot();
-    this.navCtrl.parent.select(0);
-  }
-
-  add(){
+  join() {
     console.log("Form Submission");
-    console.log(this.createForm.value);
+    console.log(this.joinForm.value);
+    if (this.joinForm.valid) {
+      this.valid = true;
+      console.log("WIN");
+      this.navCtrl.popToRoot();
+      this.navCtrl.parent.select(0);
+    } else {
+      this.valid = false;
+      console.log("FAILED");
+    }
   }
 
 }

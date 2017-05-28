@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
-
+import { Http } from '@angular/http';
 import { NavController } from 'ionic-angular';
+import { ColoursAndLabels } from '../../providers/colours-and-labels';
+import { EventData } from '../../providers/event-data';
+import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
+import { LocalEvents } from '../../providers/local-events';
 //import { CreatePage } from '../create/create';
 
 @Component({
@@ -24,45 +28,131 @@ export class WeekPage {
 
   // Arrays filled by http
   //Holds all input data of each day.
-  input_data_days: any[][][] = [
-    [
-      [456, 0, 1495828800, 1495836000, 'Meeting Tom', 'Owheo Building'],
-      [876, 1, 1495843200, 1495843200, 'tgiutgtg', 'Outside RMT'],          // Day 1
-      [543, 2, 1495879200, 1495879200, 'rkgjbgibdig', 'Outside RMT']
-    ],
-    [
-      [456, 0, 1495886400, 1495886400, 'Meeting Tom', 'Owheo Building'],
-      [876, 1, 1495922400, 1495922400, 'tgiutgtg', 'Outside RMT'],          // Day 2
-      [543, 2, 1495972740, 1495972740, 'rkgjbgibdig', 'Outside RMT']
-    ],
-    [
-      [456, 0, 1496001600, 1496001600, 'Meeting Tom', 'Owheo Building'],
-      [876, 1, 1496005200, 1496005200, 'tgiutgtg', 'Outside RMT'],
-      [876, 1, 1496030400, 1496030400, 'tgiutgtg', 'Outside RMT'],        // Day 3
-      [543, 2, 1496052000, 1496052000, 'rkgjbgibdig', 'Outside RMT']
-    ],
-    [
+  input_data_days: any[][][] = new Array();
+  colours: string[];
+  labels: string[];
 
-    ],
-    [
-      [456, 0, 1496170800, 1496170800, 'Meeting Tom', 'Owheo Building'],       // Day 5
-      [543, 2, 1496188800, 1496231940, 'rkgjbgibdig', 'Outside RMT']
-    ]
-  ];
-  colours: string[] = ['red', 'blue', 'green'];
-  labels: string[] = ['Meeting', 'Assignment', 'Event'];
-
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, http: Http, public coloursAndLabels: ColoursAndLabels,
+    public eventData: EventData, public storage: LocalColoursAndLabels,  public localEventStorage: LocalEvents) {
     this.date = new Date();
     this.display_days = new Array();
-
-    for (var day = 0; day != 5; day++) {
-      this.bubbles_week.push([]);
-    }
-
-
+    
+    // Set colour data field from values stored in provider
+    this.colours = this.getProviderColours();
+    // set labels data field from values stored in provider
+    this.labels = this.getProviderLabels();
+    this.initaliseBubbles();
+  }
+  
+  ionViewWillEnter() {
+    this.reinitalizeView();
   }
 
+  reinitalizeView() {
+    console.log("rein reinitalizeView() called - week page")
+    this.colours = this.getProviderColours();
+    this.labels = this.getProviderLabels();
+
+    this.input_data_days = new Array();
+    this.bubbles_week = new Array();
+
+    this.initaliseBubbles(); 
+    this.parseEvents(this.localEventStorage.getProviderEvents());
+    this.filterData();
+}
+  
+  // Values from local storage
+  getProviderColours() {
+    return this.storage.getProviderColours();
+  }
+  //values from local storage
+  getProviderLabels() {
+    return this.storage.getProviderLabels();
+  }
+  // Set up bubbles array to hold spaces for inner arrays
+  initaliseBubbles() {
+  for (var day = 0; day != 5; day++) {
+      this.bubbles_week.push([]);
+    }
+  }
+//     /**
+//  * Make a call to the coloursAndLabels provider that requests data from the api.
+//  * If sucessfull set variables accordinly. If it fails get data from local storage.
+//  * 
+//  */
+//   requestColoursAndLabels() {
+//     this.coloursAndLabels.requestColoursAndLabels()
+//       .subscribe(
+//       response => {
+//         this.colours = this.coloursAndLabels.getColours();
+//         this.labels = this.coloursAndLabels.getLabels();
+
+//         // Update Local storage
+//         if (this.storage.colours != this.colours || this.storage.labels != this.labels) {
+//           this.setLocalStorage();
+//         }
+//       },
+//       error => {
+//         console.log(error);
+//       }
+//       );
+//   }
+//     /**
+//  * Update colours and labels in local storage and provider
+//  */
+//   setLocalStorage() {
+//     this.storage.setProviderColours(this.colours);
+//     this.storage.setStorageColours(this.colours);
+//     this.storage.setProviderLabels(this.labels);
+//     this.storage.setStorageLabels(this.labels);
+//   }
+  /*
+
+    /**
+   * Process data requested from the provider and push to array
+   * 
+   * @param eventArr Array containing events from provider
+   */
+  parseEvents(eventArr) {
+    if (eventArr != '') {
+      var outerArr = [];
+      eventArr.forEach( event => {
+        event.forEach(element => {
+          var arr = [];
+          arr.push(element.id);
+          arr.push(element.type);
+          arr.push(element.start);
+          arr.push(element.end);
+          arr.push(element.description);
+          arr.push(element.location);
+          outerArr.push(arr);
+        });
+        this.input_data_days.push(outerArr);
+        outerArr = [];
+      });
+    }
+  }
+  //   /**
+  //  * Request data from provider.
+  //  */
+  // requestEventData() {
+  //   this.eventData.requestEventData()
+  //     .subscribe(
+  //     response => {
+  //       //console.log(this.eventData.getEvents().length);
+  //       //console.log(this.eventData.getEvents());
+
+  //       // Executes when we have recieved data from the web API
+  //       this.input_data_days = new Array();
+  //       this.parseEvents(this.eventData.getEvents());
+  //       this.filterData();
+  //     },
+  //     error => {
+  //       console.log(error);
+  //       this.filterData();
+  //       // Can't connect to network, use what's in local storage
+  //     });
+  // }
   // Works out the date in 5 days
   addDays(dateObj, numDays) {
     dateObj.setDate(dateObj.getDate() + numDays);
@@ -71,9 +161,9 @@ export class WeekPage {
 
   filterData() {
     //Setup bubbles array
-    for (var day = 0; day < 5; day++) {
-      for (var bubble_selected = 0; bubble_selected < this.input_data_days[day].length; bubble_selected++) {
+    for (var day = 0; day < this.input_data_days.length; day++) {
 
+      for (var bubble_selected = 0; bubble_selected < this.input_data_days[day].length; bubble_selected++) {
         var filtered = new Array();
 
         var type = this.input_data_days[day][bubble_selected][1];
@@ -132,14 +222,12 @@ export class WeekPage {
         if (height === 0) {
           height = 7;
         }
-        console.log(timebar_start,timebar_end,height);
         // Fill filtered array with data.
         filtered.push(timebar_location); // [0]
         filtered.push(colour);           // [1]
         filtered.push(time_start_24);    // [2]
         filtered.push(time_end_24);      // [3]
         filtered.push(height + '%');     // [4]
-
         // Push filtered bubble to bubbles.
         this.bubbles_week[day].push(filtered);
       }

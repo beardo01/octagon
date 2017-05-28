@@ -2,8 +2,10 @@ import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { Splashscreen } from 'ionic-native';
 import { StatusBar } from '@ionic-native/status-bar';
-
+import { LocalEvents } from '../providers/local-events';
+import { EventData } from '../providers/event-data';
 import { LocalColoursAndLabels } from '../providers/local-colours-and-labels';
+import { ColoursAndLabels } from '../providers/colours-and-labels';
 import { TabsPage } from '../pages/tabs/tabs';
 
 
@@ -14,19 +16,26 @@ import { TabsPage } from '../pages/tabs/tabs';
 export class MyApp {
   rootPage = TabsPage;
 
-  constructor(platform: Platform, statusBar: StatusBar, public localColoursAndLabels: LocalColoursAndLabels) {
+  constructor(platform: Platform, statusBar: StatusBar, public localColoursAndLabels: LocalColoursAndLabels, 
+              public localEvents: LocalEvents, public coloursAndLabels: ColoursAndLabels, public eventData: EventData) {
     platform.ready().then(() => {
-      // Okay, so the platform is ready and our plugins are available.
-      // Here you can do any higher level native things you might need.
-      //console.log("REQESTING DATA - app.component.ts")
-      //this.coloursAndLabels.requestColoursAndLabels();
+      // Check to see if we have events saved in local storage.
+      // if we don't request events from API (user may have cleared cache so we need to refresh)
+      this.localEvents.requestLocalEvents().then( response => {
+        if(this.localEvents.getProviderEvents() == '') {
+          this.eventData.requestEventData().toPromise().then(response => {
+           this.localEvents.setLocalStorageEvents(this.eventData.getEvents())
+         })
+        }
+      })
+
+      // get local data
+      this.localColoursAndLabels.requestLocalLabels();
       this.localColoursAndLabels.requestLocalColours();
-      this.localColoursAndLabels.requestLocalLabels().then(() =>
-        // do some usefull shit here
-        console.log("called from app.component", this.localColoursAndLabels.getProviderColours())
-      );
+      this.localEvents.requestLocalEvents();
 
       Splashscreen.hide();
     });
   }
+  
 }

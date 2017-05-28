@@ -54,16 +54,36 @@ export class ColoursAndLabels {
   setColours(colourArr) {
     // post to server and set new colour strings
     let headers: Headers =  new Headers();
-    headers.append('Content-Type', 'application/x-www-form-urlencoded');
+    headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
+    headers.append('client_key', 'Ym2fv0ZxMyJrnCiwmNDi');
+    headers.append('Content-Type', 'application/json');
 
     let body = {
-      "colour1": colourArr[0],
-      "colour2": colourArr[1],
-      "colour3": colourArr[2],
-      "auth_key": "9C73815A3C9AA677B379EB69BDF19"
+      "colour_one": colourArr[0],
+      "colour_two": colourArr[1],
+      "colour_three": colourArr[2],
     };
-    //console.log(JSON.stringify(body));
-   return this.http.post('https://api.simpalapps.com/driver/get/settings', JSON.stringify(body), {headers: headers})
+    console.log('data sent in body setColours()', JSON.stringify(body));
+   return this.http.post('https://api.simpalapps.com/driver/set/colours', JSON.stringify(body), {headers: headers})
+      .map(res => res.json())
+      .subscribe(data => {
+        console.log(data);
+      });
+  }
+    setLabels(labelArr) {
+    // post to server and set new colour strings
+    let headers: Headers =  new Headers();
+    headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
+    headers.append('client_key', 'Ym2fv0ZxMyJrnCiwmNDi');
+    headers.append('Content-Type', 'application/json');
+
+    let body = {
+      "label_one": labelArr.label1,
+      "label_two": labelArr.label2,
+      "label_three": labelArr.label3
+    };
+    console.log('data sent in body setLabels()', JSON.stringify(body));
+   return this.http.post('https://api.simpalapps.com/driver/set/labels', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(data => {
         console.log(data);

@@ -5,8 +5,8 @@ import { CreatePage } from '../create/create';
 import { Http } from '@angular/http';
 import { ColoursAndLabels } from '../../providers/colours-and-labels';
 import { EventData } from '../../providers/event-data';
-import { Storage } from '@ionic/storage';
 import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
+import { LocalEvents } from '../../providers/local-events';
 
 
 @Component({
@@ -35,14 +35,14 @@ export class HomePage {
 
   // Sets up dates in the header of homepage.
   constructor(public navCtrl: NavController, http: Http, public coloursAndLabels: ColoursAndLabels,
-    public eventData: EventData, public storage: LocalColoursAndLabels) {
+    public eventData: EventData, public localCLStorage: LocalColoursAndLabels, public localEventStorage: LocalEvents) {
 
     this.date = new Date();
     // set header to the current day name from days array.
     this.weekday_header = this.days[this.date.getDay()];
-    // Set colour data field from values stored in provider
+    // Set colour data field from values stored in provider for local
     this.colours = this.getProviderColours();
-    // set labels data field from values stored in provider
+    // set labels data field from values stored in provider for local
     this.labels = this.getProviderLabels();
     this.initaliseBubbles();
     
@@ -52,77 +52,88 @@ export class HomePage {
       this.bubbles.push([]); 
     }
   }
-
-  reinitalizeView() {
-    var localColours = this.getProviderColours();
-    var localLabels = this.getProviderLabels();
-    this.colours = localColours;
-    this.labels = localLabels;
-    // set labels data field from values stored in provider
-
-    // Make call to WEB API
-    this.requestColoursAndLabels();
-    this.requestEventData();
-
-    // reload events
-    this.input_data = new Array();
-
-    this.bubbles = new Array();
-    this.initaliseBubbles(); 
-    this.parseEvents(this.eventData.getEvents());
-  }
   ionViewWillEnter() {
     this.reinitalizeView();
   }
 
+  
+  reinitalizeView() {
+    console.log("rein reinitalizeView() called")
+    this.colours = this.getProviderColours();
+    this.labels = this.getProviderLabels();
+
+    this.input_data = new Array();
+    this.bubbles = new Array();
+
+    this.initaliseBubbles(); 
+    this.parseEvents(this.localEventStorage.getProviderEvents());
+    this.filterData();
+    this.displayWeekDays();
+    
+    // set labels data field from values stored in provider
+    //this.requestEventData();
+    // // Make call to WEB API
+    // //this.requestColoursAndLabels();
+    // //this.requestEventData();
+
+    // // reload events
+    // this.input_data = new Array();
+    // this.bubbles = new Array();
+    // this.initaliseBubbles(); 
+    // this.parseEvents(this.eventData.getEvents());
+    // // should get local events
+
+  }
+
+
   getProviderColours() {
-    return this.storage.getProviderColours();
+    return this.localCLStorage.getProviderColours();
   }
 
   getProviderLabels() {
-    return this.storage.getProviderLabels();
+    return this.localCLStorage.getProviderLabels();
   }
 
-  /**
- * Make a call to the coloursAndLabels provider that requests data from the api.
- * If sucessfull set variables accordinly. If it fails get data from local storage.
- * 
- */
-  requestColoursAndLabels() {
-    this.coloursAndLabels.requestColoursAndLabels()
-      .subscribe(
-      response => {
-        this.colours = this.coloursAndLabels.getColours();
-        this.labels = this.coloursAndLabels.getLabels();
+//   /**
+//  * Make a call to the coloursAndLabels provider that requests data from the api.
+//  * If sucessfull set variables accordinly. If it fails get data from local storage.
+//  * 
+//  */
+//   requestColoursAndLabels() {
+//     this.coloursAndLabels.requestColoursAndLabels()
+//       .subscribe(
+//       response => {
+//         this.colours = this.coloursAndLabels.getColours();
+//         this.labels = this.coloursAndLabels.getLabels();
 
-        // Update Local storage
-        if (this.storage.colours != this.colours || this.storage.labels != this.labels) {
-          this.setLocalStorage();
-        }
-      },
-      error => {
-        console.log(error);
-      }
-      );
-  }
-  /**
- * Update colours and labels in local storage and provider
- */
-  setLocalStorage() {
-    this.storage.setProviderColours(this.colours);
-    this.storage.setStorageColours(this.colours);
-    this.storage.setProviderLabels(this.labels);
-    this.storage.setStorageLabels(this.labels);
-  }
-  /**
-   * Request data from provider.
-   */
+//         // Update Local storage
+//         if (this.localCLStorage.colours != this.colours || this.localCLStorage.labels != this.labels) {
+//           this.setLocalStorage();
+//         }
+//       },
+//       error => {
+//         console.log(error);
+//       }
+//       );
+//   }
+//   /**
+//  * Update colours and labels in local storage and provider
+//  */
+//   setLocalStorage() {
+//     this.localCLStorage.setProviderColours(this.colours);
+//     this.localCLStorage.setStorageColours(this.colours);
+//     this.localCLStorage.setProviderLabels(this.labels);
+//     this.localCLStorage.setStorageLabels(this.labels);
+//   }
+  // /**
+  //  * Request data from provider.
+  //  */
   requestEventData() {
     this.eventData.requestEventData()
       .subscribe(
       response => {
-        //console.log(this.eventData.getEvents().length);
-        //console.log(this.eventData.getEvents());
+        console.log(this.eventData.getEvents().length);
+        console.log(this.eventData.getEvents());
 
         // Executes when we have recieved data from the web API
         this.input_data = new Array();
@@ -144,9 +155,10 @@ export class HomePage {
    * @param eventArr Array containing events from provider
    */
   parseEvents(eventArr) {
-    var outerArr = [];
-    eventArr.forEach( event => {
-      event.forEach(element => {
+    if (eventArr != '') {
+       var outerArr = [];
+       eventArr.forEach( event => {
+        event.forEach(element => {
         var arr = [];
         arr.push(element.id);
         arr.push(element.type);
@@ -159,6 +171,7 @@ export class HomePage {
       this.input_data.push(outerArr);
       outerArr = [];
     });
+    }
   }
 
 

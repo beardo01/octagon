@@ -105,8 +105,7 @@ export class LabelPage {
     if(!this.labelForm.valid){
       console.log("tried to submit invalid form")
     } else {
-        console.log("success! Now do something useful with the data (cordova plugin)")
-        console.log(this.labelForm.value);
+        this.coloursAndLabels.setLabels(this.labelForm.value);
         this.setLocalStorage();
         this.navCtrl.pop();
     }

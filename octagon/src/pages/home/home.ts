@@ -252,6 +252,7 @@ export class HomePage {
   dateChange(newValue: number) {
     if (this.selected_date !== newValue) {
       this.selected_date = newValue;
+      this.weekday_header = this.days[this.addDays(new Date(),this.selected_date).getDay()];
     }
   }
 
@@ -262,11 +263,29 @@ export class HomePage {
 
   ionViewDidLoad() {
   }
+
+  // Works out the date in number days
+  addDays(dateObj, numDays) {
+    dateObj.setDate(dateObj.getDate() + numDays);
+    return dateObj;
+  }
+
+  giveDay(numberOfDays) {
+    var day: number = this.addDays(new Date(), numberOfDays).getDate();
+    return day;
+  }
+
+  giveMonth(numberOfDays) {
+    var month: number = this.addDays(new Date(), numberOfDays).getMonth();
+    return month;
+  }
+
   // Display the next 5 days
   // Formatted: date_number month.
   displayWeekDays() {
+    // Adds 5 dates to the page.
     for (var i = 0; i < 5; i++) {
-      this.display_days[i] = ((this.date.getDate() + i).toString() + " " + this.months[this.date.getMonth()].toString());
+      this.display_days[i] = this.giveDay(i) + " " + this.months[this.giveMonth(i)];
     }
   }
 

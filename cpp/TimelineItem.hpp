@@ -7,11 +7,10 @@
 #include <ctime>
 #include <vector>
 #include <sstream>
+#include <memory>
 
 // ODB database include
 #include <odb/core.hxx>
-
-#include "Event.hpp"
 
 // String declaration for ODB persistence
 #pragma db value(std::string) type("VARCHAR(128)")
@@ -31,25 +30,23 @@ class TimelineItem {
         #pragma db id auto
         unsigned long id_;
 
-        Event *event_;
+        short int type_;
+        string description_;
+        string location_;
         time_t start_;
         time_t end_;
-        TimelineItem *linked_;
-        vector<TimelineItem*> linked_items_;
 
-    // Timeline Item methods
     public:
 
         // Constructor
-        TimelineItem(Event*, time_t, time_t);
-        TimelineItem(Event*, time_t, time_t, TimelineItem*);
+        TimelineItem(short int, string, string, time_t, time_t);
 
         // toString
         string toString() {
             std::stringstream ss;
             ss << this->getID() << " " << this->getDescription() << " " << 
-                this->getStartTime() << " " << this->getEndTime() << " " << 
-                this->getLinkedItems().size() << endl;
+                this->getLocation() << " " << this->getStartTime() << " " << this->getEndTime() 
+                << endl;
             std::string s = ss.str();
             return s;
         }
@@ -63,13 +60,10 @@ class TimelineItem {
         // Getters
         unsigned long getID();
         short int getType();
-        Event *getEvent();
         time_t getStartTime();
         time_t getEndTime();
         string getDescription();
         string getLocation();
-        TimelineItem *getLinked();
-        vector<TimelineItem*> getLinkedItems();
 
         // Setters
         void setType(short int);
@@ -77,8 +71,7 @@ class TimelineItem {
         void setEndTime(time_t);
         void setDescription(string);
         void setLocation(string);
-        void setLinked(TimelineItem*);
-        void setLinkedItems(vector<TimelineItem*>);
+ 
 };
 
 #endif

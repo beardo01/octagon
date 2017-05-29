@@ -27,7 +27,7 @@ export class CreatePage {
   date: Date;
 
   // min and max dates for datetime picker
-  minDate: Number;
+  minDate: string;
   maxDate: Number;
 
   // Date strings
@@ -36,6 +36,11 @@ export class CreatePage {
   timeStarts: string;
   timeEnds: string;
   repeatEndDate: string;
+
+  padded_month: string;
+  padded_day: string;
+
+  groupData: any[];
 
   // If item repeats or not
   repeat: boolean;
@@ -51,7 +56,19 @@ export class CreatePage {
     this.date = new Date();
     this.labelNames = ["Assignment", "Meeting", "Event"]; // Recieve call from plugin and pass data
     //   this.colours = [];
-    this.minDate = this.date.getFullYear();
+
+    this.padded_month = (this.date.getMonth()+1).toString();
+    this.padded_day = this.date.getDate().toString();
+
+    if (this.padded_month.length != 2) {
+      this.padded_month = '0' + this.padded_month;
+    }
+
+    if (this.padded_day.length != 2) {
+      this.padded_day = '0' + this.padded_day;
+    }
+
+    this.minDate = this.date.getFullYear() + '-' + this.padded_month + '-' + this.padded_day;
     this.maxDate = this.date.getFullYear() + 2;
 
     this.dateStarts = this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-' + ('0' + this.date.getDate()).slice(-2);
@@ -77,8 +94,9 @@ export class CreatePage {
       'timeEnds': [this.timeEnds, Validators.compose([Validators.required])],
       'repeatFrequency': [this.repeatFreq, Validators.compose([Validators.required])],
       'repeatEndDate': [this.repeatEndDate, Validators.compose([Validators.required])],
-      'description': [this.description, Validators.compose([Validators.minLength(3),Validators.required])]
-    });
+      'description': [this.description, Validators.compose([Validators.minLength(3), Validators.required])]
+    }, { 'validator': CreateFormValidator.validEndTime }
+    );
   }
   /* 
    * Called when submitting the form.

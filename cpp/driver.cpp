@@ -11,9 +11,6 @@
 #include <odb/transaction.hxx>
 #include <odb/pgsql/database.hxx>
 
-#include "Event.hpp"
-#include "Event.cpp"
-#include "Event-odb.hxx"
 #include "Timeline.hpp"
 #include "Timeline.cpp"
 #include "Timeline-odb.hxx"
@@ -59,18 +56,18 @@ json createUser(string user, string email, string password, string rpassword, st
 							if(password.length() > 5) {
 
 								// Create the user object
-								User *new_user = new User(user, email, password, ip);
-								Timeline *new_timeline = new_user->getTimeline();
+								auto new_user = make_shared<User>(user, email, password, ip);
+								auto new_timeline = new_user->getTimeline();
 
 								// Commit it to the database
-								db->persist(new_timeline);
-								db->persist(new_user);
+								db->persist(*new_timeline);
+								db->persist(*new_user);
 
                                 t.commit();
 
 								response["success"] = true;
 								response["data"]["client_key"] = new_user->getClientKey();
-								Timeline* timeline = new_user->getTimeline();
+								auto timeline = new_user->getTimeline();
 								response["data"]["colours"]["colour_one"] = timeline->getColourOne();
 								response["data"]["colours"]["colour_two"] = timeline->getColourTwo();
 								response["data"]["colours"]["colour_three"] = timeline->getColourThree();
@@ -106,7 +103,7 @@ json createUser(string user, string email, string password, string rpassword, st
 //     time_t end, short int frequency, time_t ends) {
 
 json createEvent(string client_key, short int type, string description, string location, 
-	time_t start, time_t end, short int frequency, time_t ends) {
+	time_t start, time_t end) {
 	json response;
 	try {
 
@@ -115,7 +112,6 @@ json createEvent(string client_key, short int type, string description, string l
             
         typedef odb::query<User> user_query;
 		typedef odb::query<Timeline> timeline_query;
-		typedef odb::query<TimelineItem> timeline_item_query;
 
 		{
 			// Start the query
@@ -132,74 +128,14 @@ json createEvent(string client_key, short int type, string description, string l
 
 				if(timeline.get() != 0) {
 
-					//Check if the event repeats or not
-					if (frequency == -1) {
-						// It doesn't have any repeats
+					// Create new TimelineItem
+					auto new_item = make_shared<TimelineItem>(type, description, location, start, end);
 
-						// Create new TimelineItem
-						Event *new_event = new Event(type, description, location);
-						TimelineItem *new_item = new TimelineItem(new_event, start, end);
-
-						// Add the new item to the timeline
-						timeline->addTimelineItem(new_item);
-						
-						// Persist TimelineItem and update Timeline
-						db->persist(new_event);
-						db->persist(new_item);
-						db->update(*timeline);
-					} else {
-						// It does have repeats
-						long diff = end - start;
-						long seconds_day = 86400;
-						long step;
-						long repeats = 1;
-
-						if(frequency == 0) {
-							// Daily repeats
-							step = seconds_day;
-						} else if (frequency == 1) {
-							// Weekly repeats
-							step = (seconds_day*7);
-						} else if (frequency == 2) {
-							// Monthly repeats
-							step = (seconds_day*30);
-						}
-
-						while(end + (step * repeats) < ends) {
-							repeats += 1;
-						}
-
-						// Create intial event
-						Event *new_event = new Event(type, description, location);
-						TimelineItem *new_item = new TimelineItem(new_event, start, end);
-
-						// Add the new item to the timeline
-						timeline->addTimelineItem(new_item);
-
-						// Persist TimelineItem
-						db->persist(new_event);
-						unsigned long update_id = db->persist(new_item);
-						db->update(*timeline);
-
-						// Declare repeated items
-						vector<TimelineItem*> repeat_items;
-						
-						// Create repeats (repeats - 1 because we make one less repeat because of new_item)
-						for(int i = 0; i < (repeats - 1); i++) {
-							TimelineItem *item = new TimelineItem(new_event, start, end, new_item);
-							repeat_items.push_back(item);
-							db->persist(item);
-						}
-
-						// Get
-						unique_ptr<TimelineItem> update_item(db->load<TimelineItem> (update_id));
-
-						// Update initial item
-						update_item->setLinkedItems(repeat_items);
-
-						db->update(*update_item);
-  
-					}
+					// Add the new item to the timeline
+					timeline->addTimelineItem(new_item);
+					
+					db->persist(*new_item);
+					db->update(*timeline);
 					
 					t.commit();
 
@@ -264,7 +200,7 @@ json authenticateUser(string identifier, string password, string ip) {
 					response["data"]["threes"] = curr_user->getThrees();
 					//response["data"]["client_key"] = key;
 					response["data"]["client_key"] = curr_user->getClientKey();
-					Timeline* timeline = curr_user->getTimeline();
+					auto timeline = curr_user->getTimeline();
 					response["data"]["colours"]["colour_one"] = timeline->getColourOne();
 					response["data"]["colours"]["colour_two"] = timeline->getColourTwo();
 					response["data"]["colours"]["colour_three"] = timeline->getColourThree();
@@ -288,44 +224,62 @@ json authenticateUser(string identifier, string password, string ip) {
 	return response;
 }
 
-json getEvents(string client_key, time_t start) {
+json getEvent(string client_key, time_t start) {
 	json response;
 	try {
 
         unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
 			"postgres", "db.simpalapps.com", 5432));
             
-        typedef odb::query<User> user_query;
-		typedef odb::query<Timeline> timeline_query;
+        typedef odb::query<User> query;
 
 		{
 			// Start the query
 			transaction t (db->begin ());
-			unique_ptr<User> curr_user(db->query_one<User> (user_query::client_key == client_key));
+			unique_ptr<User> curr_user(db->query_one<User> (query::client_key == client_key));
 
 			// Check if a user already exists
 			if (curr_user.get() != 0) {
 
 				// Timeline to update
 				unsigned long tl_id = curr_user->getTimelineID();
-				unique_ptr<Timeline> curr_timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
 
-				if(curr_timeline.get() != 0) {
-					
-					// Create 10 JSON days
-					for(int i = 0; i < 10; i++) {
-						response["data"][i];
+				if(curr_user.get() != 0) {
+			
+					// Get the timeline items
+					auto items = curr_user->getTimeline()->getTimelineItems();
+					int time_day = 86400;
+
+					for(int day = 0; day < 10; day++) {
+						unsigned long day_start = start + (time_day * day);
+						unsigned long day_end = day_start + time_day;
+						int count = 0;
+
+						// Add each days events
+						for(int i = 0; i < items.size(); i++) {
+							if(items[i]->getStartTime() >= day_start && items[i]->getStartTime() < day_end) {
+								response["data"][day][count]["id"] = items[i]->getID();
+								response["data"][day][count]["type"] = items[i]->getType();
+								response["data"][day][count]["description"] = items[i]->getDescription();
+								response["data"][day][count]["location"] = items[i]->getLocation();
+								response["data"][day][count]["start"] = items[i]->getStartTime();
+								response["data"][day][count]["end"] = items[i]->getEndTime();
+								count++;
+							}
+						}
+
+						// If the day had no events, add no events message
+						if(count == 0) {
+							response["data"][day] = "No items today";
+						}
+
+						count = 0;
 					}
 
-					// Iterate over users events
-					vector<TimelineItem*> items = curr_timeline->getTimelineItems();
-
-					for(int i = 0; i < items.size(); i++) {
-						cout << items[i] << endl;
-					}
-					
+					// Build JSON
 					response["success"] = true;
 					return response;
+				
 				} else {
 					response["data"] = "Couldn't find timeline for user.";
 				}
@@ -520,9 +474,9 @@ int main(int argc, char *argv[]) {
 			}
 
 			// Event
-			if(subtype == "event" && argc == 11) {
+			if(subtype == "event" && argc == 9) {
 				cout << createEvent(argv[3], stoi(argv[4]), argv[5], argv[6], stol(argv[7]), 
-					stol(argv[8]), stoi(argv[9]), stol(argv[10])) << endl;
+					stol(argv[8])) << endl;
 				return 0;
 			}
 
@@ -542,7 +496,7 @@ int main(int argc, char *argv[]) {
 
 			// Events
 			if(subtype == "events" && argc == 5) {
-				cout << getEvents(argv[3], stol(argv[4])) << endl;
+				cout << getEvent(argv[3], stol(argv[4])) << endl;
 				return 0;
 			}
 

@@ -81,9 +81,7 @@ export class HomePage {
     }
   }
   ionViewWillEnter() {
-    
     this.reinitalizeView();
-    
   }
 
 
@@ -97,6 +95,25 @@ export class HomePage {
     this.initaliseBubbles();
     this.parseEvents(this.localEventStorage.getProviderEvents());
     this.filterData();
+    /*if(this.parameter1 != undefined) {
+        this.dateChange(this.parameter1);
+    }
+     if(this.parameter1 != undefined) {
+        this.dateChange(this.parameter1);
+    }
+     if(this.parameter1 != undefined) {
+        this.dateChange(this.parameter1);
+    }
+     if(this.parameter1 != undefined) {
+        this.dateChange(this.parameter1);
+    }
+     if(this.parameter1 != undefined) {
+        this.dateChange(this.parameter1);
+    }
+     if(this.parameter1 != undefined) {
+        this.dateChange(this.parameter1);
+    }*/
+
     this.displayWeekDays();
 
   }

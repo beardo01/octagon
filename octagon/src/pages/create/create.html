@@ -24,6 +24,9 @@
       <ion-item [class.invalid]="!createForm.controls.location.valid && (createForm.controls.location.dirty || submitAttempt)">
         <ion-input placeholder="Location" formControlName="location" [(ngModel)]="location"></ion-input>
       </ion-item>
+      <ion-item class="invalid" *ngIf="!createForm.controls.valid && submitAttempt">
+        <small>Fields have invalid entry</small>
+      </ion-item>
     </ion-list>
 
     <ion-list>
@@ -47,8 +50,7 @@
         <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" formControlName="timeEnds" [(ngModel)]="timeEnds"></ion-datetime>
       </ion-item>
 
-
-      <ion-item>
+      <!--<ion-item>
         <ion-label>Repeat</ion-label>
         <ion-select formControlName="repeatFrequency" [(ngModel)]="repeatFreq" (ionChange)="repeatToggle()">
           <ion-option>Never</ion-option>
@@ -61,7 +63,7 @@
       <ion-item *ngIf="repeat">
         <ion-label>Repeat Till</ion-label>
         <ion-datetime displayFormat="DD MMMM YYYY" max="{{maxDate}}" min="{{minDate}}" formControlName="repeatEndDate" [(ngModel)]="repeatEndDate"></ion-datetime>
-      </ion-item>
+      </ion-item>-->
 
     </ion-list>
 

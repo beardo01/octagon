@@ -10,7 +10,8 @@ User::User(string name, string email, string password, string ip) {
 	password_ = bcrypt.generateHash(password);
 	last_ip_ = ip;
 	create_date_ = time(0);
-	timeline_ = new Timeline(vector<TimelineItem*> (), "red", "green", "blue", "Meeting", "Assignment", "Event");
+	timeline_ = make_shared<Timeline>(vector<shared_ptr<TimelineItem> > (), "red", "green", 
+		"blue", "Meeting", "Assignment", "Event");
 	activated_ = 0;
 	ones_ = 0;
 	twos_ = 0;
@@ -35,7 +36,7 @@ string User::getPassword() {
 	return password_;
 }
 
-Timeline* User::getTimeline() {
+shared_ptr<Timeline> User::getTimeline() {
 	return this->timeline_;
 }
 

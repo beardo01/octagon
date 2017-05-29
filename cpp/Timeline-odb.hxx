@@ -15,7 +15,6 @@
 
 #include "Timeline.hpp"
 
-#include "Event-odb.hxx"
 #include "TimelineItem-odb.hxx"
 
 #include <memory>
@@ -301,7 +300,7 @@ namespace odb
       static const char select_statement[];
       static const char delete_statement[];
 
-      typedef ::std::vector< ::TimelineItem* > container_type;
+      typedef ::std::vector< ::std::shared_ptr< ::TimelineItem > > container_type;
       typedef
       odb::access::container_traits<container_type>
       container_traits_type;

@@ -971,7 +971,7 @@ namespace odb
     // timeline_items_
     //
     {
-      ::std::vector< ::TimelineItem* > const& v =
+      ::std::vector< ::std::shared_ptr< ::TimelineItem > > const& v =
         obj.timeline_items_;
 
       timeline_items_traits::persist (
@@ -1046,7 +1046,7 @@ namespace odb
     // timeline_items_
     //
     {
-      ::std::vector< ::TimelineItem* > const& v =
+      ::std::vector< ::std::shared_ptr< ::TimelineItem > > const& v =
         obj.timeline_items_;
 
       timeline_items_traits::update (
@@ -1276,7 +1276,7 @@ namespace odb
     // timeline_items_
     //
     {
-      ::std::vector< ::TimelineItem* >& v =
+      ::std::vector< ::std::shared_ptr< ::TimelineItem > >& v =
         obj.timeline_items_;
 
       timeline_items_traits::load (

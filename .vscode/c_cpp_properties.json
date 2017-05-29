@@ -11,8 +11,6 @@
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": "",
                 "path": [
-                    "/usr/include",
-                    "/usr/local/include",
                     "/Users/oreid/dev/uni/345/octagon/cpp",
                     "/Users/oreid/dev/uni/345/octagon/cpp/libbcrypt/include/bcrypt"
                 ]

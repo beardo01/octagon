@@ -1,19 +1,9 @@
 #include "Timeline.hpp"
 
 // Constructor
-// Timeline::Timeline(vector<shared_ptr<TimelineItem> > timeline_items, string colour_one, 
-//     string colour_two, string colour_three, string label_one, string label_two, 
-//     string label_three) {
-//         timeline_items_ = timeline_items;
-//         colour_one_ = colour_one;
-//         colour_two_ = colour_two;
-//         colour_three_ = colour_three;
-//         label_one_ = label_one;
-//         label_two_ = label_two;
-//         label_three_ = label_three;
-// }
-Timeline::Timeline(string colour_one, string colour_two, string colour_three, string label_one, 
-    string label_two, string label_three) {
+Timeline::Timeline(vector<shared_ptr<TimelineItem> > timeline_items, string colour_one, 
+    string colour_two, string colour_three, string label_one, string label_two, string label_three) {
+        timeline_items_ = timeline_items;
         colour_one_ = colour_one;
         colour_two_ = colour_two;
         colour_three_ = colour_three;
@@ -21,10 +11,6 @@ Timeline::Timeline(string colour_one, string colour_two, string colour_three, st
         label_two_ = label_two;
         label_three_ = label_three;
 }
-
-// Timeline::~Timeline(void) {
-//    //cout << "Timeline " << this->getID() << " is being deleted." << endl;
-// }
 
 // Getters
 unsigned long Timeline::getID(){
@@ -87,11 +73,6 @@ void Timeline::setLabelThree(string label_three) {
 // Methods
 void Timeline::printTimeline() {
     for(std::vector<int>::size_type i = 0; i != this->getTimelineItems().size(); i++) {
-        if (this->getTimelineItems()[i]->getLinkedItems().size() > 0) {
-            for(std::vector<int>::size_type j = 0; j != this->getTimelineItems()[i]->getLinkedItems().size(); j++) {
-                std::cout << this->getTimelineItems()[i]->getLinkedItems()[j]->toString();
-            }
-        }
         std::cout << this->getTimelineItems()[i]->toString();
     }
 }
@@ -108,9 +89,7 @@ shared_ptr<TimelineItem> Timeline::getTimelineItem(unsigned long id) {
     }
 
     // Temp solution
-    auto event = make_shared<Event>(0, "Not found", "Not found");
-    auto not_found = make_shared<TimelineItem>(event, time_t(0), time_t(0));
-    event->setTimelineItem(not_found);
+    auto not_found = make_shared<TimelineItem>(0, "Not found", "Not found", time_t(0), time_t(0));
     return not_found;
 }
 

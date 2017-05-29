@@ -12,7 +12,6 @@
 // ODB database include
 #include <odb/core.hxx>
 
-#include "Event.hpp"
 #include "TimelineItem.hpp"
 
 // String declaration for ODB persistence
@@ -45,8 +44,8 @@ class Timeline {
     public:
 
         // Constructor
-        //Timeline(vector<shared_ptr<TimelineItem> >, string, string, string, string, string, string);
-        Timeline(string, string, string, string, string, string);
+        Timeline(vector<shared_ptr<TimelineItem> >, string, string, string, string, string, string);
+        //Timeline(string, string, string, string, string, string);
         //~Timeline();
 
         // Getters

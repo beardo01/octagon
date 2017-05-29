@@ -1,73 +1,73 @@
 page-week {
 
-}
+  /* --------------------------------
+  Date Selection
+  -------------------------------- */
+  #weekDateArea {
+    text-align: center;
+  }
 
-/* --------------------------------
-Date Selection
--------------------------------- */
-#weekDateArea {
-  text-align: center;
-}
+  span div {
+    display: inline-block;
+    font-size: 12pt;
+    width: 18%;
+  }
 
-span div {
-  display: inline-block;
-  font-size: 12pt;
-}
+  .bubble_week {
+    content: '';
+    float: left;
+    position: absolute;
+    width: 11%;
+    height: 7%;
+    margin-left: 4px;
+    border-radius: 25px;
+    background-color: whitesmoke;
+  }
 
-.bubble_week {
-  content: '';
-  float: left;
-  position: absolute;
-  width: 11%;
-  height: 7%;
-  margin-left: 4px;
-  border-radius: 25px;
-  background-color: whitesmoke;
-}
+  /* --------------------------------
+  Timeline Bars
+  -------------------------------- */
 
-/* --------------------------------
-Timeline Bars
--------------------------------- */
+  #tl-container {
+    height: 80%;
+  }
 
-#tl-container {
-  height: 80%;
-}
+  .tl-line:first-child {
+    margin-left: 17px;
+  }
 
-.tl-line:first-child {
-  margin-left: 17px;
-}
+  .tl-line {
+    border-radius: 15px;
+    content: '';
+    height: 95%;
+    width: 15%;
+    margin: 1.9%;
+    background-color: rgba(255,255,255,0.2);
+    display: inline-block;
+  }
 
-.tl-line {
-  border-radius: 15px;
-  content: '';
-  height: 95%;
-  width: 15%;
-  margin: 1.9%;
-  background-color: rgba(255,255,255,0.2);
-  display: inline-block;
-}
+  // Timeline colours
+  .tl-red {
+    background-color: color($colors, red);
+  }
 
-// Timeline colours
-.tl-red {
-  background-color: color($colors, red);
-}
+  .tl-green {
+    background-color: color($colors, green);
+  }
 
-.tl-green {
-  background-color: color($colors, green);
-}
+  .tl-yellow {
+    background-color: color($colors, yellow);
+  }
 
-.tl-yellow {
-  background-color: color($colors, yellow);
-}
+  .tl-blue {
+    background-color: color($colors, blue);
+  }
 
-.tl-blue {
-  background-color: color($colors, blue);
-}
+  .tl-purple {
+    background-color: color($colors, purple);
+  }
 
-.tl-purple {
-  background-color: color($colors, purple);
-}
-
-.tl-grey {
-  background-color: color($colors, grey);
+  .tl-grey {
+    background-color: color($colors, grey);
+  }
 }

@@ -68,7 +68,14 @@ json createUser(string user, string email, string password, string rpassword, st
                                 t.commit();
 
 								response["success"] = true;
-								response["data"] = "Successfully created user " + user + ".";
+								response["data"]["client_key"] = new_user->getClientKey();
+								Timeline* timeline = new_user->getTimeline();
+								response["data"]["colours"]["colour_one"] = timeline->getColourOne();
+								response["data"]["colours"]["colour_two"] = timeline->getColourTwo();
+								response["data"]["colours"]["colour_three"] = timeline->getColourThree();
+								response["data"]["labels"]["label_one"] = timeline->getLabelOne();
+								response["data"]["labels"]["label_two"] = timeline->getLabelTwo();
+								response["data"]["labels"]["label_three"] = timeline->getLabelThree();
 
 								return response;
 							} else {
@@ -157,7 +164,7 @@ json createEvent(string client_key, short int type, string description, string l
 							step = (seconds_day*30);
 						}
 
-						while(diff + (step * repeats) < ends) {
+						while(end + (step * repeats) < ends) {
 							repeats += 1;
 						}
 
@@ -170,7 +177,7 @@ json createEvent(string client_key, short int type, string description, string l
 
 						// Persist TimelineItem
 						db->persist(new_event);
-						unsigned long new_item_id = db->persist(new_item);
+						unsigned long update_id = db->persist(new_item);
 						db->update(*timeline);
 
 						// Declare repeated items
@@ -182,14 +189,15 @@ json createEvent(string client_key, short int type, string description, string l
 							repeat_items.push_back(item);
 							db->persist(item);
 						}
-						
-						// Update the new_item
-						//unique_ptr<TimelineItem> update_item(db->query_one<TimelineItem> (timeline_item_query::id == new_item_id));
+
+						// Get
+						unique_ptr<TimelineItem> update_item(db->query_one<TimelineItem> (timeline_item_query::id == update_id));
 
 						// Update initial item
-						//update_item->setLinkedItems(repeat_items);
+						update_item->setLinkedItems(repeat_items);
 
-						//db->update(*update_item);
+						db->update(*update_item);
+  
 					}
 					
 					t.commit();
@@ -254,6 +262,13 @@ json authenticateUser(string identifier, string password, string ip) {
 					response["data"]["threes"] = curr_user->getThrees();
 					//response["data"]["client_key"] = key;
 					response["data"]["client_key"] = curr_user->getClientKey();
+					Timeline* timeline = curr_user->getTimeline();
+					response["data"]["colours"]["colour_one"] = timeline->getColourOne();
+					response["data"]["colours"]["colour_two"] = timeline->getColourTwo();
+					response["data"]["colours"]["colour_three"] = timeline->getColourThree();
+					response["data"]["labels"]["label_one"] = timeline->getLabelOne();
+					response["data"]["labels"]["label_two"] = timeline->getLabelTwo();
+					response["data"]["labels"]["label_three"] = timeline->getLabelThree();
 
 					response["success"] = true;
 					return response;
@@ -401,11 +416,11 @@ json setLabels(string client_key, string label_one, string label_two, string lab
 
 				if(curr_timeline.get() != 0) {
 					// Basic validation
-					if(label_one.length() > 15 || label_one.length() < 4) {
+					if(label_one.length() > 15 || label_one.length() < 3) {
 						response["data"] = "Label one is invalid.";
-					} else if(label_two.length() > 15 || label_two.length() < 4) {
+					} else if(label_two.length() > 15 || label_two.length() < 3) {
 						response["data"] = "Label two is invalid.";
-					} else if(label_three.length() > 15 || label_three.length() < 4) {
+					} else if(label_three.length() > 15 || label_three.length() < 3) {
 						response["data"] = "Label three is invalid.";
 					} else {
 						// Data fine, update

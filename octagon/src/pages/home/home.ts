@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { CreatePage } from '../create/create';
 
 import { Http } from '@angular/http';
@@ -8,6 +8,7 @@ import { EventData } from '../../providers/event-data';
 import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
 import { LocalEvents } from '../../providers/local-events';
 import { ValidateUser } from '../../providers/validate-user';
+import { ActionSheetController } from 'ionic-angular';
 
 
 @Component({
@@ -30,13 +31,21 @@ export class HomePage {
   colours: string[];
   labels: string[];
 
+  actionSheet;
+  parameter1: number;
+
   // bubbles = [[timebar_location,labels,start,end,description,location,colour]]
   //                  [0]           [1]   [2]   [3]   [4]         [5]     [6]
   bubbles: any[][][] = new Array();
 
   // Sets up dates in the header of homepage.
   constructor(public navCtrl: NavController, http: Http, public coloursAndLabels: ColoursAndLabels,
-    public eventData: EventData, public localCLStorage: LocalColoursAndLabels, public localEventStorage: LocalEvents, public validUser: ValidateUser) {
+    public eventData: EventData, public localCLStorage: LocalColoursAndLabels, public localEventStorage: LocalEvents,
+    private navParams: NavParams, public actionSheetCtrl: ActionSheetController, public validUser: ValidateUser) {
+
+    this.parameter1 = navParams.get('param1');
+    console.log(this.parameter1);
+
 
     this.date = new Date();
     // set header to the current day name from days array.
@@ -46,7 +55,6 @@ export class HomePage {
     // set labels data field from values stored in provider for local
     this.labels = this.getProviderLabels();
     this.initaliseBubbles();
-    
   }
   // set entry conditions
   ionViewCanEnter():any {
@@ -68,8 +76,8 @@ export class HomePage {
   }
 
   initaliseBubbles() {
-   for (var day = 0; day != 5; day++) {
-      this.bubbles.push([]); 
+    for (var day = 0; day != 5; day++) {
+      this.bubbles.push([]);
     }
   }
   ionViewWillEnter() {
@@ -78,7 +86,7 @@ export class HomePage {
     
   }
 
-  
+
   reinitalizeView() {
     console.log("rein reinitalizeView() called")
     this.colours = this.getProviderColours();
@@ -87,11 +95,11 @@ export class HomePage {
     this.input_data = new Array();
     this.bubbles = new Array();
 
-    this.initaliseBubbles(); 
+    this.initaliseBubbles();
     this.parseEvents(this.localEventStorage.getProviderEvents());
     this.filterData();
     this.displayWeekDays();
-    
+
     // set labels data field from values stored in provider
     //this.requestEventData();
     // // Make call to WEB API
@@ -116,37 +124,37 @@ export class HomePage {
     return this.localCLStorage.getProviderLabels();
   }
 
-//   /**
-//  * Make a call to the coloursAndLabels provider that requests data from the api.
-//  * If sucessfull set variables accordinly. If it fails get data from local storage.
-//  * 
-//  */
-//   requestColoursAndLabels() {
-//     this.coloursAndLabels.requestColoursAndLabels()
-//       .subscribe(
-//       response => {
-//         this.colours = this.coloursAndLabels.getColours();
-//         this.labels = this.coloursAndLabels.getLabels();
+  //   /**
+  //  * Make a call to the coloursAndLabels provider that requests data from the api.
+  //  * If sucessfull set variables accordinly. If it fails get data from local storage.
+  //  * 
+  //  */
+  //   requestColoursAndLabels() {
+  //     this.coloursAndLabels.requestColoursAndLabels()
+  //       .subscribe(
+  //       response => {
+  //         this.colours = this.coloursAndLabels.getColours();
+  //         this.labels = this.coloursAndLabels.getLabels();
 
-//         // Update Local storage
-//         if (this.localCLStorage.colours != this.colours || this.localCLStorage.labels != this.labels) {
-//           this.setLocalStorage();
-//         }
-//       },
-//       error => {
-//         console.log(error);
-//       }
-//       );
-//   }
-//   /**
-//  * Update colours and labels in local storage and provider
-//  */
-//   setLocalStorage() {
-//     this.localCLStorage.setProviderColours(this.colours);
-//     this.localCLStorage.setStorageColours(this.colours);
-//     this.localCLStorage.setProviderLabels(this.labels);
-//     this.localCLStorage.setStorageLabels(this.labels);
-//   }
+  //         // Update Local storage
+  //         if (this.localCLStorage.colours != this.colours || this.localCLStorage.labels != this.labels) {
+  //           this.setLocalStorage();
+  //         }
+  //       },
+  //       error => {
+  //         console.log(error);
+  //       }
+  //       );
+  //   }
+  //   /**
+  //  * Update colours and labels in local storage and provider
+  //  */
+  //   setLocalStorage() {
+  //     this.localCLStorage.setProviderColours(this.colours);
+  //     this.localCLStorage.setStorageColours(this.colours);
+  //     this.localCLStorage.setProviderLabels(this.labels);
+  //     this.localCLStorage.setStorageLabels(this.labels);
+  //   }
   // /**
   //  * Request data from provider.
   //  */
@@ -179,23 +187,23 @@ export class HomePage {
   parseEvents(eventArr) {
     // if object has length then we have data in it
     if (eventArr != null) {
-    if (eventArr.length) {
-       var outerArr = [];
-       eventArr.forEach( event => {
-        event.forEach(element => {
-        var arr = [];
-        arr.push(element.id);
-        arr.push(element.type);
-        arr.push(element.start);
-        arr.push(element.end);
-        arr.push(element.description);
-        arr.push(element.location);
-        outerArr.push(arr);
-      });
-      this.input_data.push(outerArr);
-      outerArr = [];
-    });
-  }
+      if (eventArr.length) {
+        var outerArr = [];
+        eventArr.forEach(event => {
+          event.forEach(element => {
+            var arr = [];
+            arr.push(element.id);
+            arr.push(element.type);
+            arr.push(element.start);
+            arr.push(element.end);
+            arr.push(element.description);
+            arr.push(element.location);
+            outerArr.push(arr);
+          });
+          this.input_data.push(outerArr);
+          outerArr = [];
+        });
+      }
     }
   }
 
@@ -280,7 +288,7 @@ export class HomePage {
         filtered.push(id);               // [9]
         // Push filtered bubble to bubbles.
         this.bubbles[day].push(filtered);
-        
+
       }
     }
   }
@@ -288,10 +296,10 @@ export class HomePage {
   // Changes where the style of underlines goes for each date.
   // Number is the button that has been clicked.
   dateChange(newValue: number) {
+    console.log("CLICKED: ", newValue);
     if (this.selected_date !== newValue) {
       this.selected_date = newValue;
-      this.weekday_header = this.days[this.addDays(new Date(),this.selected_date).getDay()];
-      //this.reinitalizeView();
+      this.weekday_header = this.days[this.addDays(new Date(), this.selected_date).getDay()];
     }
   }
 
@@ -326,6 +334,29 @@ export class HomePage {
     for (var date = 0; date < 5; date++) {
       this.display_days[date] = this.giveDay(date) + " " + this.months[this.giveMonth(date)];
     }
+  }
+
+  delete(bubble : number) {
+    this.actionSheet = this.actionSheetCtrl.create({
+      title: 'Delete Event?',
+      buttons: [
+        {
+          text: 'Delete',
+          role: 'destructive',
+          handler: () => {
+            console.log('Delete clicked | Day |',this.selected_date, 'Bubble',  bubble);
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    this.actionSheet.present();
   }
 
 }

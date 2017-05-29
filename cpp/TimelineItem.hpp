@@ -43,7 +43,6 @@ class TimelineItem {
         // Constructor
         TimelineItem(Event*, time_t, time_t);
         TimelineItem(Event*, time_t, time_t, TimelineItem*);
-        TimelineItem(Event*, time_t, time_t, vector<TimelineItem*>);
 
         // toString
         string toString() {

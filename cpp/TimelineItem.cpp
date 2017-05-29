@@ -15,15 +15,6 @@ TimelineItem::TimelineItem(Event *event, time_t start, time_t end, TimelineItem 
     linked_(linked)
     {}
 
-TimelineItem::TimelineItem(Event *event, time_t start, time_t end, 
-    vector<TimelineItem*> linked_items):
-        event_(event),
-        start_(start),
-        end_(end),
-        linked_(NULL),
-        linked_items_(linked_items) 
-        {}
-
 // Getters
 unsigned long TimelineItem::getID(){
     return id_;

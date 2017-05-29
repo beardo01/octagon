@@ -15,15 +15,15 @@ unsigned long TimelineItem::getID(){
 }
 
 short int TimelineItem::getType(){
-    return this->getType();
+    return this->type_;
 }
 
 string TimelineItem::getDescription(){
-    return this->getDescription();
+    return this->description_;
 }
 
 string TimelineItem::getLocation(){
-    return this->getLocation();
+    return this->location_;
 }
 
 time_t TimelineItem::getStartTime(){

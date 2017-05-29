@@ -45,7 +45,8 @@ class TimelineItem {
         string toString() {
             std::stringstream ss;
             ss << this->getID() << " " << this->getDescription() << " " << 
-                this->getStartTime() << " " << this->getEndTime() << endl;
+                this->getLocation() << " " << this->getStartTime() << " " << this->getEndTime() 
+                << endl;
             std::string s = ss.str();
             return s;
         }

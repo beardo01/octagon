@@ -231,33 +231,53 @@ json getEvent(string client_key, time_t start) {
         unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
 			"postgres", "db.simpalapps.com", 5432));
             
-        typedef odb::query<User> user_query;
-		typedef odb::query<Timeline> timeline_query;
+        typedef odb::query<User> query;
 
 		{
 			// Start the query
 			transaction t (db->begin ());
-			unique_ptr<User> curr_user(db->query_one<User> (user_query::client_key == client_key));
+			unique_ptr<User> curr_user(db->query_one<User> (query::client_key == client_key));
 
 			// Check if a user already exists
 			if (curr_user.get() != 0) {
 
 				// Timeline to update
 				unsigned long tl_id = curr_user->getTimelineID();
-				unique_ptr<Timeline> curr_timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
 
-				if(curr_timeline.get() != 0) {
+				if(curr_user.get() != 0) {
 			
-					// Data fine, update
-					vector<shared_ptr<TimelineItem> > items = curr_timeline->getTimelineItems();
+					// Get the timeline items
+					auto items = curr_user->getTimeline()->getTimelineItems();
+					int time_day = 86400;
 
-					for(int i = 0; i < items.size(); i++) {
-						cout << items[i]->toString() << endl;
+					for(int day = 0; day < 10; day++) {
+						unsigned long day_start = start + (time_day * day);
+						unsigned long day_end = day_start + time_day;
+						int count = 0;
+
+						// Add each days events
+						for(int i = 0; i < items.size(); i++) {
+							if(items[i]->getStartTime() >= day_start && items[i]->getStartTime() < day_end) {
+								response["data"][day][count]["id"] = items[i]->getID();
+								response["data"][day][count]["type"] = items[i]->getType();
+								response["data"][day][count]["description"] = items[i]->getDescription();
+								response["data"][day][count]["location"] = items[i]->getLocation();
+								response["data"][day][count]["start"] = items[i]->getStartTime();
+								response["data"][day][count]["end"] = items[i]->getEndTime();
+								count++;
+							}
+						}
+
+						// If the day had no events, add no events message
+						if(count == 0) {
+							response["data"][day] = "No items today";
+						}
+
+						count = 0;
 					}
 
 					// Build JSON
 					response["success"] = true;
-					response["data"] = "Colours successfully updated.";
 					return response;
 				
 				} else {

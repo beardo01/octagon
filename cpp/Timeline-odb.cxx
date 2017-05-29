@@ -226,7 +226,7 @@ namespace odb
         i.value_null = is_null;
       }
       else
-        throw null_pointer ();
+        i.value_null = true;
     }
 
     if (grew)

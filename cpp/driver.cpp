@@ -179,15 +179,15 @@ json authenticateUser(string identifier, string password, string ip) {
 				// Check that password is correct
 				if(BCrypt::validatePassword(password, curr_user->getPassword())) {
 					// New client key
-					// string key = curr_user->generateKey(20);
-					// curr_user->setClientKey(key);
-					// curr_user->setLastIP(ip);
+					string key = curr_user->generateKey(20);
+					curr_user->setClientKey(key);
+					curr_user->setLastIP(ip);
 
 					// Update user
 					db->update(*curr_user);
 
 					// Commit update
-					//t.commit();
+					t.commit();
 
 					// Build JSON
 					response["data"]["id"] = curr_user->getID();
@@ -198,8 +198,8 @@ json authenticateUser(string identifier, string password, string ip) {
 					response["data"]["ones"] = curr_user->getOnes();
 					response["data"]["twos"] = curr_user->getTwos();
 					response["data"]["threes"] = curr_user->getThrees();
-					//response["data"]["client_key"] = key;
-					response["data"]["client_key"] = curr_user->getClientKey();
+					response["data"]["client_key"] = key;
+					//response["data"]["client_key"] = curr_user->getClientKey();
 					auto timeline = curr_user->getTimeline();
 					response["data"]["colours"]["colour_one"] = timeline->getColourOne();
 					response["data"]["colours"]["colour_two"] = timeline->getColourTwo();

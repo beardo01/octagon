@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
+import * as moment from 'moment';
+import { LocalEvents } from '../providers/local-events'
+import { ValidateUser } from '../providers/validate-user';
 
 @Injectable()
 export class EventData {
@@ -8,41 +11,33 @@ export class EventData {
   events: string [][] = [];
   success: boolean;
 
-  constructor(public http: Http) {
+  constructor(public http: Http, public localEvents: LocalEvents) {
     
   }
+
+
   requestEventData() {
-
-    let opt: RequestOptions
-    let myHeaders: Headers = new Headers();
-    myHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
-    myHeaders.append('client_key', 'XxZyHGKt6ORDNMJeNthz');
-    myHeaders.append('Content-Type', 'application/json');
-    opt = new RequestOptions({
-      headers: myHeaders
-    })  
+    var start = moment().startOf('day').unix();
+    //var end = start + 
+    let headers: Headers =  new Headers();
+    headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
+    headers.append('client_key', 'Ym2fv0ZxMyJrnCiwmNDi');
+    headers.append('Content-Type', 'application/json');
+    
+    let body = {
+      'from': start
+    };
     // Make get request to API and get current values for colour strings
-    return this.http.get('https://api.simpalapps.com/driver/get/events', opt).map(res => 
-      {
-      if (res.json().success) {
-        this.success = true;
-        // empty current data field.
-        this.events = [];
-        var data = res.json().data;
-        // Loop through each event array in JSON object and add to an array
-        data.forEach(day => {
-            this.events.push(day);
-        });
+    return this.http.post('https://api.simpalapps.com/driver/get/events', JSON.stringify(body), {headers:headers})
+    .map(res => res.json())
+      .subscribe(data => {
+        this.events = data
 
-      } else {
-        // set failed flag
-        this.success = false;
-      }
-      },
-      error => {
-        console.log(error)
-      });
-    }
+        this.localEvents.setLocalStorageEvents(data);
+        this.localEvents.requestLocalEvents();
+        console.log("response from server", data)
+      })
+  }
 
     getEvents() {
       return this.events;

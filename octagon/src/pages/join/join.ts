@@ -5,6 +5,8 @@ import { RegisterUser } from '../../providers/register-user';
 import { ValidateUser } from '../../providers/validate-user';
 import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
 import { AlertController } from 'ionic-angular';
+//import { TabPage } from '../tabs/tabs'
+
 @Component({
   selector: 'page-join',
   templateUrl: 'join.html'
@@ -70,7 +72,7 @@ export class JoinPage {
     this.submitAttempt = true;
     if (this.password === this.rpassword) {
       if (this.joinForm.valid) {
-        this.registerUser.registerUser(this.joinForm.value).toPromise().then( response =>{
+        this.registerUser.registerUser(this.joinForm.value).subscribe( response =>{
           if (response.success) {
             // Succesfully register user. Set local storage up!
             this.validateUser.setLocalClientKey(response.data.client_key);
@@ -90,8 +92,8 @@ export class JoinPage {
             this.localColoursAndLabels.setProviderLabels(labelArr);
         
             // REDIRECT New user
+            //this.navCtrl.setRoot(TabPage);
             this.navCtrl.popToRoot();
-            this.navCtrl.parent.select(0);
           } else {
             // Display error message from server
             this.presentAlert(response.data)

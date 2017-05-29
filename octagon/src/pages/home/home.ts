@@ -9,6 +9,7 @@ import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels'
 import { LocalEvents } from '../../providers/local-events';
 import { ValidateUser } from '../../providers/validate-user';
 import { ActionSheetController } from 'ionic-angular';
+import * as moment from 'moment';
 
 
 @Component({
@@ -93,27 +94,9 @@ export class HomePage {
     this.bubbles = new Array();
 
     this.initaliseBubbles();
+    console.log('local events home pages', this.localEventStorage.getProviderEvents())
     this.parseEvents(this.localEventStorage.getProviderEvents());
     this.filterData();
-    /*if(this.parameter1 != undefined) {
-        this.dateChange(this.parameter1);
-    }
-     if(this.parameter1 != undefined) {
-        this.dateChange(this.parameter1);
-    }
-     if(this.parameter1 != undefined) {
-        this.dateChange(this.parameter1);
-    }
-     if(this.parameter1 != undefined) {
-        this.dateChange(this.parameter1);
-    }
-     if(this.parameter1 != undefined) {
-        this.dateChange(this.parameter1);
-    }
-     if(this.parameter1 != undefined) {
-        this.dateChange(this.parameter1);
-    }*/
-
     this.displayWeekDays();
 
   }
@@ -134,27 +117,24 @@ export class HomePage {
    * @param eventArr Array containing events from provider
    */
   parseEvents(eventArr) {
-    // if object has length then we have data in it
-    if (eventArr != null) {
-      if (eventArr.length) {
-        var outerArr = [];
-        eventArr.forEach(event => {
-          event.forEach(element => {
-            var arr = [];
-            arr.push(element.id);
-            arr.push(element.type);
-            arr.push(element.start);
-            arr.push(element.end);
-            arr.push(element.description);
-            arr.push(element.location);
-            outerArr.push(arr);
-          });
+        eventArr.data.forEach(eventObj => {
+            var outerArr = [];
+            if (eventObj != "No items today"){
+              eventObj.forEach(element => {
+                var arr = [];
+                arr.push(element.id);
+                arr.push(element.type);
+                arr.push(element.start);
+                arr.push(element.end);
+                arr.push(element.description);
+                arr.push(element.location);
+                outerArr.push(arr);
+              })
+            }
           this.input_data.push(outerArr);
           outerArr = [];
         });
       }
-    }
-  }
 
 
   filterData() {
@@ -281,7 +261,8 @@ export class HomePage {
   displayWeekDays() {
     // Adds 5 dates to the page.
     for (var date = 0; date < 5; date++) {
-      this.display_days[date] = this.giveDay(date) + " " + this.months[this.giveMonth(date)];
+      //this.display_days[date] = this.giveDay(date) + " " + this.months[this.giveMonth(date)];
+      this.display_days[date] = moment().add(date, "days").format("D MMM");
     }
   }
 

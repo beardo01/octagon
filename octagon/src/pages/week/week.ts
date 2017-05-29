@@ -81,27 +81,24 @@ export class WeekPage {
    * @param eventArr Array containing events from provider
    */
   parseEvents(eventArr) {
-    // if object has length then we have data in it
-    if (eventArr != null) {
-      if (eventArr.length) {
-        var outerArr = [];
-        eventArr.forEach( event => {
-          event.forEach(element => {
-          var arr = [];
-          arr.push(element.id);
-          arr.push(element.type);
-          arr.push(element.start);
-          arr.push(element.end);
-          arr.push(element.description);
-          arr.push(element.location);
-          outerArr.push(arr);
+        eventArr.data.forEach(eventObj => {
+            var outerArr = [];
+            if (eventObj != "No items today"){
+              eventObj.forEach(element => {
+                var arr = [];
+                arr.push(element.id);
+                arr.push(element.type);
+                arr.push(element.start);
+                arr.push(element.end);
+                arr.push(element.description);
+                arr.push(element.location);
+                outerArr.push(arr);
+              })
+            }
+          this.input_data_days.push(outerArr);
+          outerArr = [];
         });
-        this.input_data_days.push(outerArr);
-        outerArr = [];
-      });
       }
-    }
-  }
 
   // Works out the date in 5 days
   addDays(dateObj, numDays) {

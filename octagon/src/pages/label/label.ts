@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, NavParams } from 'ionic-angular';
 import { ColoursAndLabels } from '../../providers/colours-and-labels';
 import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
+import { SyncData } from '../../providers/sync-data'
 
 
 @Component({
@@ -15,12 +16,11 @@ export class LabelPage {
   label1: string;
   label2: string;
   label3: string;
-
   labelForm: FormGroup;
   submitAttempt: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public builder: FormBuilder, public coloursAndLabels: ColoursAndLabels,
-              public storage: LocalColoursAndLabels) {
+              public storage: LocalColoursAndLabels, public sync: SyncData) {
     // Set the label and colour data fields to data we read in from the provider localColoursAndLabels
 
     var labelArr: string[] = this.getProviderLabels();
@@ -40,37 +40,7 @@ export class LabelPage {
     //this.requestColoursAndLabels();
   }
 
-  ionViewDidLoad() {
-    
-  }
-
-  // /**
-  //  * Make a call to the coloursAndLabels provider if success update local variables and local storage
-  //  * 
-  //  */
-  // requestColoursAndLabels() {
-  //   this.coloursAndLabels.requestColoursAndLabels()
-  //   .subscribe(
-  //     response => {
-  //       this.colours = this.coloursAndLabels.getColours();
-  //       var labels = this.coloursAndLabels.getLabels();
-
-  //       this.label1 = labels[0];
-  //       this.labelForm.controls['label1'].setValue(this.label1);
-        
-  //       this.label2 = labels[1];
-  //       this.labelForm.controls['label2'].setValue(this.label2);
-        
-  //       this.label3 = labels[2];
-  //       this.labelForm.controls['label3'].setValue(this.label3);
-
-  //       this.setLocalStorage();
-  //     },
-  //     error => {
-  //       console.log(error);
-  //       }
-  //     );
-  // } 
+  ionViewDidLoad() {}
 
   /**
    * Update colours and labels in local storage and provider
@@ -100,22 +70,21 @@ export class LabelPage {
 /**
  * Send data to web based database and update local storage
  */
-  save(){
+  save() {
     this.submitAttempt = true;
-    if(!this.labelForm.valid){
+
+    if(!this.labelForm.valid) {
       console.log("tried to submit invalid form")
     } else {
       // query api if failed set to storage then push
+      this.coloursAndLabels.setLabels(this.labelForm.value).subscribe( response => {
+        if (!response.success) {
+        // failed to send colours. Need to setup storage till we reconnect.
+        console.log("need to push to labels offline");
+        this.sync.setSyncLabels(this.labelForm.value);
+        }
+      })
 
-      /*
-      if (this.coloursAndLabels.setLabels(this.labelForm.response is GOOOD) )
-          exit
-          if shit
-          set unsynced flag
-          add to syn colours 
-
-          set local
-      */
         this.coloursAndLabels.setLabels(this.labelForm.value);
         this.setLocalStorage();
         this.navCtrl.pop();

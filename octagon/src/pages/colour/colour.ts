@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Http } from '@angular/http';
 import { ColoursAndLabels } from '../../providers/colours-and-labels';
 import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
+import { SyncData } from '../../providers/sync-data';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class ColourPage {
   toggle3 : boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, http: Http, public coloursAndLabels: ColoursAndLabels, 
-              public storage: LocalColoursAndLabels) {
+              public storage: LocalColoursAndLabels, public sync: SyncData) {
 
     this.inUseColours = this.getProviderColours();
     this.labels = this.getProviderLabels();
@@ -122,9 +123,14 @@ export class ColourPage {
   }  
 
   save() {
-    // make a post request with data stored in inUseColours array
-    // console.log("Save button clicked")
-    this.coloursAndLabels.setColours(this.inUseColours);
+    console.log(JSON.stringify(this.inUseColours))
+
+    this.coloursAndLabels.setColours(this.inUseColours).subscribe( response => {
+      if (!response.success) {
+        // failed to send colours. Need to setup storage till we reconnect.
+        this.sync.setSyncColours(this.inUseColours);
+      }
+    })
     this.setLocalStorage();
     this.navCtrl.pop();
   }

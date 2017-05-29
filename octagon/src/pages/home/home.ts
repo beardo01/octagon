@@ -88,7 +88,6 @@ export class HomePage {
 
 
   reinitalizeView() {
-    console.log("rein reinitalizeView() called")
     this.colours = this.getProviderColours();
     this.labels = this.getProviderLabels();
 
@@ -99,19 +98,6 @@ export class HomePage {
     this.parseEvents(this.localEventStorage.getProviderEvents());
     this.filterData();
     this.displayWeekDays();
-
-    // set labels data field from values stored in provider
-    //this.requestEventData();
-    // // Make call to WEB API
-    // //this.requestColoursAndLabels();
-    // //this.requestEventData();
-
-    // // reload events
-    // this.input_data = new Array();
-    // this.bubbles = new Array();
-    // this.initaliseBubbles(); 
-    // this.parseEvents(this.eventData.getEvents());
-    // // should get local events
 
   }
 
@@ -124,60 +110,6 @@ export class HomePage {
     return this.localCLStorage.getProviderLabels();
   }
 
-  //   /**
-  //  * Make a call to the coloursAndLabels provider that requests data from the api.
-  //  * If sucessfull set variables accordinly. If it fails get data from local storage.
-  //  * 
-  //  */
-  //   requestColoursAndLabels() {
-  //     this.coloursAndLabels.requestColoursAndLabels()
-  //       .subscribe(
-  //       response => {
-  //         this.colours = this.coloursAndLabels.getColours();
-  //         this.labels = this.coloursAndLabels.getLabels();
-
-  //         // Update Local storage
-  //         if (this.localCLStorage.colours != this.colours || this.localCLStorage.labels != this.labels) {
-  //           this.setLocalStorage();
-  //         }
-  //       },
-  //       error => {
-  //         console.log(error);
-  //       }
-  //       );
-  //   }
-  //   /**
-  //  * Update colours and labels in local storage and provider
-  //  */
-  //   setLocalStorage() {
-  //     this.localCLStorage.setProviderColours(this.colours);
-  //     this.localCLStorage.setStorageColours(this.colours);
-  //     this.localCLStorage.setProviderLabels(this.labels);
-  //     this.localCLStorage.setStorageLabels(this.labels);
-  //   }
-  // /**
-  //  * Request data from provider.
-  //  */
-  // requestEventData() {
-  //   this.eventData.requestEventData()
-  //     .subscribe(
-  //     response => {
-  //       console.log(this.eventData.getEvents().length);
-  //       console.log(this.eventData.getEvents());
-
-  //       // Executes when we have recieved data from the web API
-  //       this.input_data = new Array();
-  //       this.parseEvents(this.eventData.getEvents());
-  //       this.filterData();
-  //       this.displayWeekDays();
-  //     },
-  //     error => {
-  //       console.log(error);
-  //       this.filterData();
-  //       this.displayWeekDays();
-  //       // Can't connect to network, use what's in local storage
-  //     });
-  // }
 
   /**
    * Process data requested from the provider and push to array

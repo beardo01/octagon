@@ -19,6 +19,7 @@ import { ValidateUser } from '../providers/validate-user';
 import { FormatDate } from '../pipes/format-date';
 import { ClearLocalStorage } from '../providers/clear-local-storage';
 import { RegisterUser } from '../providers/register-user';
+import { SyncData } from '../providers/sync-data';
 
 
 @NgModule({
@@ -53,6 +54,6 @@ import { RegisterUser } from '../providers/register-user';
     LabelPage
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, ColoursAndLabels, EventData, LocalColoursAndLabels,
-              ValidateUser, LocalEvents, ClearLocalStorage, RegisterUser ]
+              ValidateUser, LocalEvents, ClearLocalStorage, RegisterUser, SyncData ]
 })
 export class AppModule {}

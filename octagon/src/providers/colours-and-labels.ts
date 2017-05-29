@@ -36,6 +36,7 @@ export class ColoursAndLabels {
       this.labels[0] = data.labels.label_one;
       this.labels[1] = data.labels.label_two;
       this.labels[2] = data.labels.label_three;
+      return data
       },
       error => {
         console.log(error)
@@ -64,12 +65,13 @@ export class ColoursAndLabels {
       "colour_three": colourArr[2],
     };
     console.log('data sent in body setColours()', JSON.stringify(body));
-   return this.http.post('https://api.simpalapps.com/driver/set/colours', JSON.stringify(body), {headers: headers})
-      .map(res => res.json())
-      .subscribe(data => {
-        console.log('WHAT U GOT SENT', data);
+    return this.http.post('https://api.simpalapps.com/driver/set/colours', JSON.stringify(body), {headers: headers})
+      .map(res => {
+       var response = res.json()
+       console.log("response from server", response)
+        return response
       });
-  }
+    }
 
 
     setLabels(labelArr) {
@@ -84,12 +86,12 @@ export class ColoursAndLabels {
       "label_two": labelArr.label2,
       "label_three": labelArr.label3
     };
-    console.log('data sent in body setLabels()', JSON.stringify(body));
+    //console.log('data sent in body setLabels()', JSON.stringify(body));
     return this.http.post('https://api.simpalapps.com/driver/set/labels', JSON.stringify(body), {headers: headers})
-      .map(res => res.json())
-      .subscribe(data => {
-        console.log('data from labelArr');
-        console.log(data)
-      });
+      .map(res =>  {
+        console.log("response from server label arr", response)
+        var response = res.json() 
+        return response
+      })
   }
 } // end class

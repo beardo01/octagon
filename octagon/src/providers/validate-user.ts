@@ -23,7 +23,7 @@ export class ValidateUser {
     return this.http.post('https://api.simpalapps.com/driver/get/user', JSON.stringify(userData), {headers: headers})
       .map(res => {
         var response = res.json();
-
+        // set invalid flag
         this.validated(response)
         return response
       })

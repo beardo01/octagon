@@ -10,7 +10,7 @@ import { ValidateUser } from '../providers/validate-user';
 import { TabsPage } from '../pages/tabs/tabs';
 import { Storage } from '@ionic/storage';
 import { ClearLocalStorage } from '../providers/clear-local-storage';
-
+import { SyncData } from '../providers/sync-data';
 
 @Component({
   templateUrl: 'app.html',
@@ -21,8 +21,13 @@ export class MyApp {
 
   constructor(platform: Platform, statusBar: StatusBar, public localColoursAndLabels: LocalColoursAndLabels, 
               public localEvents: LocalEvents, public coloursAndLabels: ColoursAndLabels, public eventData: EventData, 
-              public clearStorage: ClearLocalStorage, public validUser: ValidateUser, public storage: Storage) {
+              public clearStorage: ClearLocalStorage, public validUser: ValidateUser, public storage: Storage, public syncData: SyncData) {
     platform.ready().then(() => {
+
+      this.syncData.syncColours();
+      this.syncData.syncLabels();
+       
+      
       //this.clearStorage.clearLocalStorage();
       this.storage.set('client_key', "mcbmnsdjbknb123123123");
       // Redirect to login screen if cant find value 
@@ -30,6 +35,7 @@ export class MyApp {
 
       // Check to see if we have events saved in local storage.
       // if we don't request events from API (user may have cleared cache so we need to refresh)
+      
       this.localEvents.requestLocalEvents().then( response => {
         if( this.localEvents.getProviderEvents() == null ) {
           console.log("No Local events found, trying to get from API")

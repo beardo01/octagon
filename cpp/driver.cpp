@@ -147,10 +147,10 @@ json createEvent(string client_key, short int type, string description, string l
 						unsigned long event_id = db->persist(*new_event);
 						unsigned long item_id = db->persist(*new_item);
 						
-						unique_ptr<Event> update_event(db->load<Event> (event_id));
-						unique_ptr<TimelineItem> update_item(db->load<TimelineItem> (item_id));
+						shared_ptr<Event> update_event(db->load<Event> (event_id));
+						shared_ptr<TimelineItem> update_item(db->load<TimelineItem> (item_id));
 
-						update_event->setTimelineItem(new_item);
+						update_event->setTimelineItem(update_item);
 						
 						db->update(*update_event);
 						db->update(*timeline);

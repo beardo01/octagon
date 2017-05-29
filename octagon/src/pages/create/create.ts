@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from 'ionic-angular';
 import { CreateFormValidator } from '../../validators/createForm';
+import { Http, Headers, RequestOptions } from '@angular/http';
+import * as moment from 'moment';
+import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
 
 @Component({
   selector: 'page-create',
@@ -51,10 +54,10 @@ export class CreatePage {
   // Events description
   description: string;
 
-  constructor(public navCtrl: NavController, public builder: FormBuilder) {
+  constructor(public navCtrl: NavController, public builder: FormBuilder, public http: Http, public localColoursAndLabels: LocalColoursAndLabels) {
     // initialise data fields
     this.date = new Date();
-    this.labelNames = ["Assignment", "Meeting", "Event"]; // Recieve call from plugin and pass data
+    this.labelNames = this.localColoursAndLabels.getProviderLabels();
     //   this.colours = [];
 
     this.padded_month = (this.date.getMonth()+1).toString();
@@ -95,7 +98,7 @@ export class CreatePage {
       'repeatFrequency': [this.repeatFreq, Validators.compose([Validators.required])],
       'repeatEndDate': [this.repeatEndDate, Validators.compose([Validators.required])],
       'description': [this.description, Validators.compose([Validators.minLength(3), Validators.required])]
-    }, { 'validator': CreateFormValidator.validEndTime }
+    },
     );
   }
   /* 
@@ -116,14 +119,44 @@ export class CreatePage {
    */
   add() {
     this.submitAttempt = true;
-    console.log("Form Submission");
-    console.log(this.createForm.value);
+    console.log("time ends" ,this.createForm.value.timeEnds);
+    console.log("Date ends", this.createForm.value.dateEnds);
     if (this.createForm.valid) {
-      console.log("WIN!!!");
-      this.navCtrl.popToRoot();
+
+      var type = this.labelNames.indexOf(this.createForm.value.label);
+      var description = this.createForm.value.description
+      var location = this.createForm.value.location
+      var start = moment(this.createForm.value.dateStarts + " " + this.createForm.value.timeStarts).unix();
+      var end = moment(this.createForm.value.dateEnds + " " + this.createForm.value.timeEnds).unix();
+      
+
+
+      let headers: Headers =  new Headers();
+      headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
+      headers.append('client_key', 'Ym2fv0ZxMyJrnCiwmNDi');
+      headers.append('Content-Type', 'application/json');
+
+      let body = {
+        "type": type,
+        "description": description,
+        "location": location,
+        "start": start,
+        "end": end
+      };
+      console.log('data sent in add()', JSON.stringify(body));
+
+      return this.http.post('https://api.simpalapps.com/driver/create/event', JSON.stringify(body), {headers: headers})
+      .map(res => res.json())
+      .subscribe(data => {
+        console.log("response from server", data)
+      })
+
+
+        //this.navCtrl.popToRoot();
     } else {
       console.log("FAILED");
     }
+    console.log("Form Submission");
 
   }
   getLabels() {

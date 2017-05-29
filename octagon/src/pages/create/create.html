@@ -24,9 +24,6 @@
       <ion-item [class.invalid]="!createForm.controls.location.valid && (createForm.controls.location.dirty || submitAttempt)">
         <ion-input placeholder="Location" formControlName="location" [(ngModel)]="location"></ion-input>
       </ion-item>
-      <ion-item class="invalid" *ngIf="!createForm.controls.valid && submitAttempt">
-        <small>Fields have invalid entry</small>
-      </ion-item>
     </ion-list>
 
     <ion-list>

@@ -232,7 +232,7 @@ namespace odb
         i.value_null = is_null;
       }
       else
-        i.value_null = true;
+        throw null_pointer ();
     }
 
     if (grew)
@@ -546,11 +546,11 @@ namespace odb
     // event_
     //
     {
-      ::Event* const& v =
+      ::std::shared_ptr< ::Event > const& v =
         o.event_;
 
       typedef object_traits< ::Event > obj_traits;
-      typedef odb::pointer_traits< ::Event* > ptr_traits;
+      typedef odb::pointer_traits< ::std::shared_ptr< ::Event > > ptr_traits;
 
       bool is_null (ptr_traits::null_ptr (v));
       if (!is_null)
@@ -565,7 +565,7 @@ namespace odb
         i.event_null = is_null;
       }
       else
-        i.event_null = true;
+        throw null_pointer ();
     }
 
     // start_
@@ -599,11 +599,11 @@ namespace odb
     // linked_
     //
     {
-      ::TimelineItem* const& v =
+      ::std::shared_ptr< ::TimelineItem > const& v =
         o.linked_;
 
       typedef object_traits< ::TimelineItem > obj_traits;
-      typedef odb::pointer_traits< ::TimelineItem* > ptr_traits;
+      typedef odb::pointer_traits< ::std::shared_ptr< ::TimelineItem > > ptr_traits;
 
       bool is_null (ptr_traits::null_ptr (v));
       if (!is_null)
@@ -650,11 +650,11 @@ namespace odb
     // event_
     //
     {
-      ::Event*& v =
+      ::std::shared_ptr< ::Event >& v =
         o.event_;
 
       typedef object_traits< ::Event > obj_traits;
-      typedef odb::pointer_traits< ::Event* > ptr_traits;
+      typedef odb::pointer_traits< ::std::shared_ptr< ::Event > > ptr_traits;
 
       if (i.event_null)
         v = ptr_traits::pointer_type ();
@@ -709,11 +709,11 @@ namespace odb
     // linked_
     //
     {
-      ::TimelineItem*& v =
+      ::std::shared_ptr< ::TimelineItem >& v =
         o.linked_;
 
       typedef object_traits< ::TimelineItem > obj_traits;
-      typedef odb::pointer_traits< ::TimelineItem* > ptr_traits;
+      typedef odb::pointer_traits< ::std::shared_ptr< ::TimelineItem > > ptr_traits;
 
       if (i.linked_null)
         v = ptr_traits::pointer_type ();
@@ -865,7 +865,7 @@ namespace odb
     // linked_items_
     //
     {
-      ::std::vector< ::TimelineItem* > const& v =
+      ::std::vector< ::std::shared_ptr< ::TimelineItem > > const& v =
         obj.linked_items_;
 
       linked_items_traits::persist (
@@ -940,7 +940,7 @@ namespace odb
     // linked_items_
     //
     {
-      ::std::vector< ::TimelineItem* > const& v =
+      ::std::vector< ::std::shared_ptr< ::TimelineItem > > const& v =
         obj.linked_items_;
 
       linked_items_traits::update (
@@ -1156,7 +1156,7 @@ namespace odb
     // linked_items_
     //
     {
-      ::std::vector< ::TimelineItem* >& v =
+      ::std::vector< ::std::shared_ptr< ::TimelineItem > >& v =
         obj.linked_items_;
 
       linked_items_traits::load (

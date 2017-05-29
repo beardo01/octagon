@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS "timelineitem" CASCADE;
 
 CREATE TABLE "timelineitem" (
   "id" BIGSERIAL NOT NULL PRIMARY KEY,
-  "event" BIGINT NULL,
+  "event" BIGINT NOT NULL,
   "start" BIGINT NOT NULL,
   "end" BIGINT NOT NULL,
   "linked" BIGINT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE "timelineitem" (
 CREATE TABLE "timelineitem_linked_items" (
   "object_id" BIGINT NOT NULL,
   "index" BIGINT NOT NULL,
-  "value" BIGINT NULL,
+  "value" BIGINT NOT NULL,
   CONSTRAINT "object_id_fk"
     FOREIGN KEY ("object_id")
     REFERENCES "timelineitem" ("id")

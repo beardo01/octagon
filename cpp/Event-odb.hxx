@@ -15,6 +15,8 @@
 
 #include "Event.hpp"
 
+#include "TimelineItem-odb.hxx"
+
 #include <memory>
 #include <cstddef>
 #include <utility>
@@ -90,7 +92,7 @@ namespace odb
   // Event
   //
   template <typename A>
-  struct query_columns< ::Event, id_pgsql, A >
+  struct pointer_query_columns< ::Event, id_pgsql, A >
   {
     // id
     //
@@ -115,6 +117,18 @@ namespace odb
     type_type_;
 
     static const type_type_ type;
+
+    // item
+    //
+    typedef
+    pgsql::query_column<
+      pgsql::value_traits<
+        long unsigned int,
+        pgsql::id_bigint >::query_type,
+      pgsql::id_bigint >
+    item_type_;
+
+    static const item_type_ item;
 
     // description
     //
@@ -142,30 +156,29 @@ namespace odb
   };
 
   template <typename A>
-  const typename query_columns< ::Event, id_pgsql, A >::id_type_
-  query_columns< ::Event, id_pgsql, A >::
+  const typename pointer_query_columns< ::Event, id_pgsql, A >::id_type_
+  pointer_query_columns< ::Event, id_pgsql, A >::
   id (A::table_name, "\"id\"", 0);
 
   template <typename A>
-  const typename query_columns< ::Event, id_pgsql, A >::type_type_
-  query_columns< ::Event, id_pgsql, A >::
+  const typename pointer_query_columns< ::Event, id_pgsql, A >::type_type_
+  pointer_query_columns< ::Event, id_pgsql, A >::
   type (A::table_name, "\"type\"", 0);
 
   template <typename A>
-  const typename query_columns< ::Event, id_pgsql, A >::description_type_
-  query_columns< ::Event, id_pgsql, A >::
+  const typename pointer_query_columns< ::Event, id_pgsql, A >::item_type_
+  pointer_query_columns< ::Event, id_pgsql, A >::
+  item (A::table_name, "\"item\"", 0);
+
+  template <typename A>
+  const typename pointer_query_columns< ::Event, id_pgsql, A >::description_type_
+  pointer_query_columns< ::Event, id_pgsql, A >::
   description (A::table_name, "\"description\"", 0);
 
   template <typename A>
-  const typename query_columns< ::Event, id_pgsql, A >::location_type_
-  query_columns< ::Event, id_pgsql, A >::
+  const typename pointer_query_columns< ::Event, id_pgsql, A >::location_type_
+  pointer_query_columns< ::Event, id_pgsql, A >::
   location (A::table_name, "\"location\"", 0);
-
-  template <typename A>
-  struct pointer_query_columns< ::Event, id_pgsql, A >:
-    query_columns< ::Event, id_pgsql, A >
-  {
-  };
 
   template <>
   class access::object_traits_impl< ::Event, id_pgsql >:
@@ -192,6 +205,11 @@ namespace odb
       short type_value;
       bool type_null;
 
+      // item_
+      //
+      long long item_value;
+      bool item_null;
+
       // description_
       //
       details::buffer description_value;
@@ -208,6 +226,8 @@ namespace odb
     };
 
     struct extra_statement_cache_type;
+
+    struct item_tag;
 
     using object_traits<object_type>::id;
 
@@ -246,7 +266,7 @@ namespace odb
 
     typedef pgsql::query_base query_base_type;
 
-    static const std::size_t column_count = 4UL;
+    static const std::size_t column_count = 5UL;
     static const std::size_t id_column_count = 1UL;
     static const std::size_t inverse_column_count = 0UL;
     static const std::size_t readonly_column_count = 0UL;
@@ -323,6 +343,133 @@ namespace odb
 
   // Event
   //
+  template <>
+  struct alias_traits<
+    ::TimelineItem,
+    id_pgsql,
+    access::object_traits_impl< ::Event, id_pgsql >::item_tag>
+  {
+    static const char table_name[];
+  };
+
+  template <>
+  struct query_columns_base< ::Event, id_pgsql >
+  {
+    // item
+    //
+    typedef
+    odb::alias_traits<
+      ::TimelineItem,
+      id_pgsql,
+      access::object_traits_impl< ::Event, id_pgsql >::item_tag>
+    item_alias_;
+  };
+
+  template <typename A>
+  struct query_columns< ::Event, id_pgsql, A >:
+    query_columns_base< ::Event, id_pgsql >
+  {
+    // id
+    //
+    typedef
+    pgsql::query_column<
+      pgsql::value_traits<
+        long unsigned int,
+        pgsql::id_bigint >::query_type,
+      pgsql::id_bigint >
+    id_type_;
+
+    static const id_type_ id;
+
+    // type
+    //
+    typedef
+    pgsql::query_column<
+      pgsql::value_traits<
+        short int,
+        pgsql::id_smallint >::query_type,
+      pgsql::id_smallint >
+    type_type_;
+
+    static const type_type_ type;
+
+    // item
+    //
+    typedef
+    pgsql::query_column<
+      pgsql::value_traits<
+        long unsigned int,
+        pgsql::id_bigint >::query_type,
+      pgsql::id_bigint >
+    item_column_type_;
+
+    typedef
+    odb::query_pointer<
+      odb::pointer_query_columns<
+        ::TimelineItem,
+        id_pgsql,
+        item_alias_ > >
+    item_pointer_type_;
+
+    struct item_type_: item_pointer_type_, item_column_type_
+    {
+      item_type_ (const char* t, const char* c, const char* conv)
+        : item_column_type_ (t, c, conv)
+      {
+      }
+    };
+
+    static const item_type_ item;
+
+    // description
+    //
+    typedef
+    pgsql::query_column<
+      pgsql::value_traits<
+        ::std::string,
+        pgsql::id_string >::query_type,
+      pgsql::id_string >
+    description_type_;
+
+    static const description_type_ description;
+
+    // location
+    //
+    typedef
+    pgsql::query_column<
+      pgsql::value_traits<
+        ::std::string,
+        pgsql::id_string >::query_type,
+      pgsql::id_string >
+    location_type_;
+
+    static const location_type_ location;
+  };
+
+  template <typename A>
+  const typename query_columns< ::Event, id_pgsql, A >::id_type_
+  query_columns< ::Event, id_pgsql, A >::
+  id (A::table_name, "\"id\"", 0);
+
+  template <typename A>
+  const typename query_columns< ::Event, id_pgsql, A >::type_type_
+  query_columns< ::Event, id_pgsql, A >::
+  type (A::table_name, "\"type\"", 0);
+
+  template <typename A>
+  const typename query_columns< ::Event, id_pgsql, A >::item_type_
+  query_columns< ::Event, id_pgsql, A >::
+  item (A::table_name, "\"item\"", 0);
+
+  template <typename A>
+  const typename query_columns< ::Event, id_pgsql, A >::description_type_
+  query_columns< ::Event, id_pgsql, A >::
+  description (A::table_name, "\"description\"", 0);
+
+  template <typename A>
+  const typename query_columns< ::Event, id_pgsql, A >::location_type_
+  query_columns< ::Event, id_pgsql, A >::
+  location (A::table_name, "\"location\"", 0);
 }
 
 #include "Event-odb.ixx"

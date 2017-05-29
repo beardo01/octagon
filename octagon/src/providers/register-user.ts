@@ -11,31 +11,7 @@ import 'rxjs/add/operator/map';
 export class RegisterUser {
 
   constructor(public http: Http) {}
-/*
- "username" : "oliver",
- "email"	: "oliver@gmail.com",
- "password" : "password",
- "rpassword": "password",
- "ip"		: "127.0.0.1"
 
-
-{
-  "success": true,
-  "data": {
-    "client_key": "47bUWIYJe3BgnpRik7gz",
-    "colours": {
-      "colour_one": "red",
-      "colour_three": "blue",
-      "colour_two": "green"
-    },
-    "labels": {
-      "label_one": "Meeting",
-      "label_three": "Event",
-      "label_two": "Assignment"
-    }
-  }
-}
-*/
   registerUser(userObject) {
     // post to server and set new colour strings
     let headers: Headers =  new Headers();
@@ -54,7 +30,6 @@ export class RegisterUser {
         console.log("RESPONSE FROM register USER POST");
         console.log(response);
         return response;
-        //this.validated(response)
       })
   }
 

@@ -69,6 +69,13 @@ json createUser(string user, string email, string password, string rpassword, st
 
 								response["success"] = true;
 								response["data"]["client_key"] = new_user->getClientKey();
+								Timeline* timeline = new_user->getTimeline();
+								response["data"]["colours"]["colour_one"] = timeline->getColourOne();
+								response["data"]["colours"]["colour_two"] = timeline->getColourTwo();
+								response["data"]["colours"]["colour_three"] = timeline->getColourThree();
+								response["data"]["labels"]["label_one"] = timeline->getLabelOne();
+								response["data"]["labels"]["label_two"] = timeline->getLabelTwo();
+								response["data"]["labels"]["label_three"] = timeline->getLabelThree();
 
 								return response;
 							} else {
@@ -170,7 +177,7 @@ json createEvent(string client_key, short int type, string description, string l
 
 						// Persist TimelineItem
 						db->persist(new_event);
-						db->persist(new_item);
+						unsigned long update_id = db->persist(new_item);
 						db->update(*timeline);
 
 						// Declare repeated items
@@ -182,6 +189,15 @@ json createEvent(string client_key, short int type, string description, string l
 							repeat_items.push_back(item);
 							db->persist(item);
 						}
+
+						// Get
+						unique_ptr<TimelineItem> update_item(db->query_one<TimelineItem> (timeline_item_query::id == update_id));
+
+						// Update initial item
+						update_item->setLinkedItems(repeat_items);
+
+						db->update(*update_item);
+  
 					}
 					
 					t.commit();
@@ -246,6 +262,13 @@ json authenticateUser(string identifier, string password, string ip) {
 					response["data"]["threes"] = curr_user->getThrees();
 					//response["data"]["client_key"] = key;
 					response["data"]["client_key"] = curr_user->getClientKey();
+					Timeline* timeline = curr_user->getTimeline();
+					response["data"]["colours"]["colour_one"] = timeline->getColourOne();
+					response["data"]["colours"]["colour_two"] = timeline->getColourTwo();
+					response["data"]["colours"]["colour_three"] = timeline->getColourThree();
+					response["data"]["labels"]["label_one"] = timeline->getLabelOne();
+					response["data"]["labels"]["label_two"] = timeline->getLabelTwo();
+					response["data"]["labels"]["label_three"] = timeline->getLabelThree();
 
 					response["success"] = true;
 					return response;

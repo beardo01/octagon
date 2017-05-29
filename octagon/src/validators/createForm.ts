@@ -1,5 +1,6 @@
-import { FormControl } from '@angular/forms';
- 
+import { FormControl, FormGroup } from '@angular/forms';
+import * as moment from 'moment';
+
 export class CreateFormValidator {
  
 
@@ -7,6 +8,19 @@ export class CreateFormValidator {
         if(control.value === null){
             return {
                 "not a valid label": false
+            }
+        }
+        return null;
+    }
+
+    static validEndTime(group: FormGroup) {
+        var formattedStart: string = group.value.dateStarts + " " + group.value.timeStarts;
+        var formattedEnd: string = group.value.dateEnds + " " + group.value.timeEnds;
+        var timeS: number = moment(formattedStart).unix();
+        var timeE: number = moment(formattedEnd).unix();
+        if (timeE - timeS < 0) {
+            return {
+                "invalid time": false
             }
         }
         return null;

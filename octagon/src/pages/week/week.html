@@ -11,7 +11,7 @@
   </div>
 
   <div id="tl-container">
-    <div class="tl-line" (click)="select_day(i)" *ngFor="let bubble of bubbles_week let i = index">
+    <div class="tl-line" (press)="select_day(i)" *ngFor="let bubble of bubbles_week let i = index">
       <div *ngFor="let bubble_day of bubble">
         <div class="bubble_week tl-{{bubble_day[1]}}" [ngStyle]="{'margin-top': bubble_day[0]}"></div>
       </div>

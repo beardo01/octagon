@@ -27,6 +27,8 @@ export class MyApp {
 
       this.syncData.syncColours();
       this.syncData.syncLabels();
+      console.log('trying to get events')
+      this.eventData.requestEventData();
        
       
       //this.clearStorage.clearLocalStorage();
@@ -36,15 +38,18 @@ export class MyApp {
 
       // Check to see if we have events saved in local storage.
       // if we don't request events from API (user may have cleared cache so we need to refresh)
-      
-      this.localEvents.requestLocalEvents().then( response => {
-        if( this.localEvents.getProviderEvents() == null ) {
-          console.log("No Local events found, trying to get from API")
-          this.eventData.requestEventData().toPromise().then(response => {
-           this.localEvents.setLocalStorageEvents(this.eventData.getEvents())
-         })
-        }
-      })
+      this.eventData.requestEventData();
+
+
+      // this.localEvents.requestLocalEvents().then(response => {
+
+      //   if( this.localEvents.getProviderEvents() == null ) {
+      //     console.log("No Local events found, trying to get from API")
+      //     this.eventData.requestEventData();
+
+      //      this.localEvents.setLocalStorageEvents(this.eventData.getEvents())
+      //   }
+      // })
 
       // get local data
       this.localColoursAndLabels.requestLocalLabels();

@@ -286,6 +286,45 @@ json authenticateUser(string identifier, string password, string ip) {
 	return response;
 }
 
+json getEvents(string client_key, time_t start) {
+	json response;
+	try {
+
+        unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
+			"postgres", "db.simpalapps.com", 5432));
+            
+        typedef odb::query<User> query;
+
+		{
+			// Start the query
+			transaction t (db->begin ());
+
+			unique_ptr<User> curr_user(db->query_one<User> (query::client_key == client_key));
+
+			// Check if a user already exists
+			if (curr_user.get() != 0) {
+
+				// Build JSON
+				response["data"]["colours"]["colour_one"] = curr_user->getTimeline()->getColourOne();
+				response["data"]["colours"]["colour_two"] = curr_user->getTimeline()->getColourTwo();
+				response["data"]["colours"]["colour_three"] = curr_user->getTimeline()->getColourThree();
+				response["data"]["labels"]["label_one"] = curr_user->getTimeline()->getLabelOne();
+				response["data"]["labels"]["label_two"] = curr_user->getTimeline()->getLabelTwo();
+				response["data"]["labels"]["label_three"] = curr_user->getTimeline()->getLabelThree();
+
+				response["success"] = true;
+				return response;
+			} else {
+				response["data"] = "Client authentication error. Client ID invalid.";
+			}
+		}
+	} catch (const odb::exception& e) {
+		response["data"] = e.what();
+	}
+	response["success"] = false;
+	return response;
+}
+
 json getSettings(string client_key) {
 	json response;
 	try {
@@ -460,49 +499,56 @@ int main(int argc, char *argv[]) {
 		if(type == "create") {
 		
 			// User
-			if(subtype == "user") {
+			if(subtype == "user" && argc == 8) {
 				cout << createUser(argv[3], argv[4], argv[5], argv[6], argv[7]) << endl;
+				return 0;
 			}
 
 			// Event
-			if(subtype == "event") {
+			if(subtype == "event" && argc == 11) {
 				cout << createEvent(argv[3], stoi(argv[4]), argv[5], argv[6], stol(argv[7]), 
 					stol(argv[8]), stoi(argv[9]), stol(argv[10])) << endl;
+				return 0;
 			}
 
 		} else if (type == "get") {
 			
 			// User
-			if(subtype == "user") {
+			if(subtype == "user" && argc == 6) {
 				cout << authenticateUser(argv[3], argv[4], argv[5]) << endl;
+				return 0;
 			}
 
 			// Settings
-			if(subtype == "settings") {
+			if(subtype == "settings" && argc == 4) {
 				cout << getSettings(argv[3]) << endl;
+				return 0;
 			}
 
-			return 0;
+			// Events
+			if(subtype == "events" && argc == 5) {
+				cout << getEvents(argv[3], stol(argv[4])) << endl;
+				return 0;
+			}
+
 		} else if (type == "set") {
 
 			// Colours
-			if(subtype == "colours") {
+			if(subtype == "colours" && argc == 7) {
 				cout << setColours(argv[3], argv[4], argv[5], argv[6]) << endl;
+				return 0;
 			}
 			
-			if(subtype == "labels" ) {
+			if(subtype == "labels" && argc == 7) {
 				cout << setLabels(argv[3], argv[4], argv[5], argv[6]) << endl;
+				return 0;
 			}
-			
-			return 0;
 		}
-	} else {
-		json response;
-		response["success"] = false;
-		response["data"] = "Incorrect driver call.";
-		cerr << response << endl;
-		return 1;
 	}
 
-	return 0;
+	json response;
+	response["success"] = false;
+	response["data"] = "Incorrect driver call.";
+	cerr << response << endl;
+	return 1;
 }

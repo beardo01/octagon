@@ -104,7 +104,47 @@ $action-sheet-ios-button-text-color: (
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
+$toolbar-md-border-color: (
+  transparent
+);
 
+$tabs-md-tab-color-inactive: white;
+
+$button-md-background-color: (
+  rgba(255, 255, 255, 0.3)
+);
+
+$alert-md-background: (
+ rgba(160, 160, 160, 0.5)
+);
+
+$alert-md-radio-label-text-color: (
+  #FFFFFF
+);
+
+$action-sheet-md-background: (
+  rgba(140, 140, 140, 0.9)
+);
+
+$action-sheet-md-button-cancel-background: (
+  rgba(140, 140, 140, 0.9)
+);
+
+$action-sheet-md-button-background-activated: (
+  rgba(140, 140, 140, 0.4)
+);
+
+$action-sheet-md-button-destructive-text-color: (
+  white
+);
+
+$action-sheet-md-title-color: (
+  white
+);
+
+$action-sheet-md-button-text-color: (
+  white
+);
 
 
 // App Windows Variables

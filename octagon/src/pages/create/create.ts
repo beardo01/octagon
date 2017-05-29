@@ -74,10 +74,10 @@ export class CreatePage {
     this.minDate = this.date.getFullYear() + '-' + this.padded_month + '-' + this.padded_day;
     this.maxDate = this.date.getFullYear() + 2;
 
-    this.dateStarts = this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-' + ('0' + this.date.getDate()).slice(-2);
-    this.dateEnds = this.date.getFullYear() + '-' + ('0' + (this.date.getMonth() + 1)).slice(-2) + '-' + ('0' + this.date.getDate()).slice(-2);
-    this.timeStarts = this.getTimes()[0];
-    this.timeEnds = this.getTimes()[1];
+    this.dateStarts = moment().format("YYYY-MM-DD");
+    this.dateEnds = moment().add(1, "hour").format("YYYY-MM-DD");
+    this.timeStarts = moment().format("HH:MM");
+    this.timeEnds = moment().add(1, "hour").format("HH:MM");
 
     this.repeat = false;
     this.repeatFreq = "Never";

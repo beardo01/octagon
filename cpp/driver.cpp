@@ -37,15 +37,16 @@ json createUser(string user, string email, string password, string rpassword, st
 			"postgres", "db.simpalapps.com", 5432));
             
         typedef odb::query<User> query;
+		typedef odb::result<User> result;
 
 		{
 			// Start the query
 			transaction t (db->begin ());
 
-			unique_ptr<User> curr_user(db->query_one<User> (query::name == user || query::email == email));
+			result r (db->query<User> (query::name == user || query::email == email));
 
 			// Check if a user already exists
-			if (curr_user.get() == 0) {
+			if (r.size() == 0) {
 				
 				// Check that the passwords match
 				if (password == rpassword) {
@@ -127,7 +128,7 @@ json createEvent(string client_key, short int type, string description, string l
 
 				// Timeline to update
 				unsigned long tl_id = curr_user->getTimelineID();
-				unique_ptr<Timeline> timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
+				unique_ptr<Timeline> timeline(db->load<Timeline> (tl_id));
 
 				if(timeline.get() != 0) {
 
@@ -191,7 +192,7 @@ json createEvent(string client_key, short int type, string description, string l
 						}
 
 						// Get
-						unique_ptr<TimelineItem> update_item(db->query_one<TimelineItem> (timeline_item_query::id == update_id));
+						unique_ptr<TimelineItem> update_item(db->load<TimelineItem> (update_id));
 
 						// Update initial item
 						update_item->setLinkedItems(repeat_items);
@@ -229,6 +230,7 @@ json authenticateUser(string identifier, string password, string ip) {
 			"postgres", "db.simpalapps.com", 5432));
             
         typedef odb::query<User> query;
+		typedef odb::result<User> result;
 
 		{
 			// Start the query
@@ -277,6 +279,58 @@ json authenticateUser(string identifier, string password, string ip) {
 				}
 			} else {
 				response["data"] = "Username doesn't exist.";
+			}
+		}
+	} catch (const odb::exception& e) {
+		response["data"] = e.what();
+	}
+	response["success"] = false;
+	return response;
+}
+
+json getEvents(string client_key, time_t start) {
+	json response;
+	try {
+
+        unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
+			"postgres", "db.simpalapps.com", 5432));
+            
+        typedef odb::query<User> user_query;
+		typedef odb::query<Timeline> timeline_query;
+
+		{
+			// Start the query
+			transaction t (db->begin ());
+			unique_ptr<User> curr_user(db->query_one<User> (user_query::client_key == client_key));
+
+			// Check if a user already exists
+			if (curr_user.get() != 0) {
+
+				// Timeline to update
+				unsigned long tl_id = curr_user->getTimelineID();
+				unique_ptr<Timeline> curr_timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
+
+				if(curr_timeline.get() != 0) {
+					
+					// Create 10 JSON days
+					for(int i = 0; i < 10; i++) {
+						response["data"][i];
+					}
+
+					// Iterate over users events
+					vector<TimelineItem*> items = curr_timeline->getTimelineItems();
+
+					for(int i = 0; i < items.size(); i++) {
+						cout << items[i] << endl;
+					}
+					
+					response["success"] = true;
+					return response;
+				} else {
+					response["data"] = "Couldn't find timeline for user.";
+				}
+			} else {
+				response["data"] = "Client authentication error. Client ID invalid.";
 			}
 		}
 	} catch (const odb::exception& e) {
@@ -460,49 +514,56 @@ int main(int argc, char *argv[]) {
 		if(type == "create") {
 		
 			// User
-			if(subtype == "user") {
+			if(subtype == "user" && argc == 8) {
 				cout << createUser(argv[3], argv[4], argv[5], argv[6], argv[7]) << endl;
+				return 0;
 			}
 
 			// Event
-			if(subtype == "event") {
+			if(subtype == "event" && argc == 11) {
 				cout << createEvent(argv[3], stoi(argv[4]), argv[5], argv[6], stol(argv[7]), 
 					stol(argv[8]), stoi(argv[9]), stol(argv[10])) << endl;
+				return 0;
 			}
 
 		} else if (type == "get") {
 			
 			// User
-			if(subtype == "user") {
+			if(subtype == "user" && argc == 6) {
 				cout << authenticateUser(argv[3], argv[4], argv[5]) << endl;
+				return 0;
 			}
 
 			// Settings
-			if(subtype == "settings") {
+			if(subtype == "settings" && argc == 4) {
 				cout << getSettings(argv[3]) << endl;
+				return 0;
 			}
 
-			return 0;
+			// Events
+			if(subtype == "events" && argc == 5) {
+				cout << getEvents(argv[3], stol(argv[4])) << endl;
+				return 0;
+			}
+
 		} else if (type == "set") {
 
 			// Colours
-			if(subtype == "colours") {
+			if(subtype == "colours" && argc == 7) {
 				cout << setColours(argv[3], argv[4], argv[5], argv[6]) << endl;
+				return 0;
 			}
 			
-			if(subtype == "labels" ) {
+			if(subtype == "labels" && argc == 7) {
 				cout << setLabels(argv[3], argv[4], argv[5], argv[6]) << endl;
+				return 0;
 			}
-			
-			return 0;
 		}
-	} else {
-		json response;
-		response["success"] = false;
-		response["data"] = "Incorrect driver call.";
-		cerr << response << endl;
-		return 1;
 	}
 
-	return 0;
+	json response;
+	response["success"] = false;
+	response["data"] = "Incorrect driver call.";
+	cerr << response << endl;
+	return 1;
 }

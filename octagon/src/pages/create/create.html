@@ -13,7 +13,12 @@
 
   <form id="createForm" [formGroup]="createForm" (ngSubmit)="add(createForm.value)">
     <ion-list>
-      <ion-item [class.invalid]="!createForm.controls.label.valid && (createForm.controls.label.dirty || submitAttempt)">
+      <ion-item class="invalid" *ngIf="!createForm.controls.valid && submitAttempt">
+        <small>Fields have invalid entry</small>
+    </ion-item>
+    </ion-list>
+    <ion-list>
+      <ion-item>
         <ion-label>Label</ion-label>
         <ion-select formControlName="label">
           <ion-option>{{labelNames[0]}}</ion-option>
@@ -21,7 +26,7 @@
           <ion-option>{{labelNames[2]}}</ion-option>
         </ion-select>
       </ion-item>
-      <ion-item [class.invalid]="!createForm.controls.location.valid && (createForm.controls.location.dirty || submitAttempt)">
+      <ion-item>
         <ion-input placeholder="Location" formControlName="location" [(ngModel)]="location"></ion-input>
       </ion-item>
     </ion-list>
@@ -66,7 +71,7 @@
 
 
     <ion-list>
-      <ion-item [class.invalid]="!createForm.controls.description.valid && (createForm.controls.description.dirty || submitAttempt)">
+      <ion-item>
         <ion-textarea maxlength="50" formControlName="description" [(ngModel)]="description" placeholder="Description"></ion-textarea>
       </ion-item>
     </ion-list>

@@ -91,6 +91,7 @@ export class JoinPage {
         
             // REDIRECT New user
             this.navCtrl.popToRoot();
+            this.navCtrl.parent.select(0);
           } else {
             // Display error message from server
             this.presentAlert(response.data)

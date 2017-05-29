@@ -3,6 +3,8 @@ import { NavController} from 'ionic-angular';
 import { JoinPage } from '../join/join';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidateUser } from '../../providers/validate-user';
+import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
+import { AlertController } from 'ionic-angular';
 //import { CreateFormValidator } from '../../validators/createForm';
 
 
@@ -22,7 +24,8 @@ export class LoginPage {
   ip: string;
   invalid: boolean;
 
-  constructor(public navCtrl: NavController, public builder: FormBuilder, public user: ValidateUser) {
+  constructor(public navCtrl: NavController, public builder: FormBuilder, public validateUser: ValidateUser, public localColoursAndLabels: LocalColoursAndLabels, 
+              public alertCtrl: AlertController) {
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     }
@@ -63,21 +66,50 @@ export class LoginPage {
     var sendValue = this.loginForm.value;
     sendValue.ip = this.ip;
 
-    this.user.loginUser(sendValue).subscribe( result => {
-      if (!this.user.getValid()) {
-        this.invalid = true;
-      } else {
-        this.invalid = false;
-        // successfully logged in go to homepage.
-        this.homePage()
-      }
-    })
-  }
+    this.validateUser.loginUser(sendValue).toPromise().then( response => {
+      if (response.success) {
+      // Succesfully logged in. Get users data
+        this.validateUser.setLocalClientKey(response.data.client_key);
+        // colour array
+        var colourArr = []
+            colourArr.push(response.data.colours.colour_one);
+            colourArr.push(response.data.colours.colour_two);
+            colourArr.push(response.data.colours.colour_three);
+            this.localColoursAndLabels.setStorageColours(colourArr)
+            this.localColoursAndLabels.setProviderColours(colourArr);
+          // label array
+          var labelArr = []
+            labelArr.push(response.data.labels.label_one);
+            labelArr.push(response.data.labels.label_two);
+            labelArr.push(response.data.labels.label_three);
+            this.localColoursAndLabels.setStorageLabels(labelArr);
+            this.localColoursAndLabels.setProviderLabels(labelArr);
+            
+
+            // READ IN NEK 10 DAYS OF BLOODY EVENTS m8
+
+            // REDIRECT New user
+            this.navCtrl.popToRoot();
+            this.navCtrl.parent.select(0);
+          } else {
+            // Display error message from server
+            this.presentAlert(response.data)
+          }
+        })
+    }
 
   /** This method pops to the root of the tab then switches to the home tab. */
   homePage() {
     this.navCtrl.popToRoot();
     this.navCtrl.parent.select(0);
   }
+  presentAlert(errorMessage: string) {
+    let alert = this.alertCtrl.create({
+      title: 'Error during registration',
+      message: errorMessage,
+      buttons: ['Dismiss']
+    });
+    alert.present();
+}
 
 }

@@ -1,10 +1,5 @@
-<ion-content no-bounce>
+<ion-content padding no-bounce>
   <div class="accountLogo"></div>
-
-  <ion-list class="loginSocial">
-    <a href="www.facebook.com"><ion-icon name="logo-facebook" class="loginSocial"></ion-icon></a>
-    <a href="www.google.com"><ion-icon name="logo-google" class="loginSocial"></ion-icon></a>
-  </ion-list>
   
   <form id="loginForm" [formGroup]="loginForm" (ngSubmit)="authenticate(loginForm.value)">
   <ion-list>

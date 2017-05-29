@@ -49,7 +49,8 @@
     height: 130px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 10px;
+    margin-top: 30px;
+    margin-bottom: 50px;
 }
 
 .accountInput {
@@ -60,12 +61,6 @@
 .accountInput:first-child {
     border-top: 0;
     margin-top: 20px;
-}
-
-.loginSocial {
-    margin: 10px 10px 0px 10px;
-    font-size: 50px;
-    text-align: center;
 }
 
 .actionButton, .actionButton > button {

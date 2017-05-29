@@ -8,58 +8,64 @@
 
   <ion-navbar>
     <ion-title>Labels</ion-title>
-      <ion-buttons end>
-        <button ion-button icon-only type="submit" form="labelNames">
+    <ion-buttons end>
+      <button ion-button icon-only type="submit" form="labelNames">
          Save
         </button>
-      </ion-buttons>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-<form id="labelNames" [formGroup]="labelForm" (ngSubmit)="save(labelForm.value)">
+  <form id="labelNames" [formGroup]="labelForm" (ngSubmit)="save(labelForm.value)">
 
-<ion-list class="event-label" [class.invalid]="!labelForm.controls.label1.valid && (labelForm.controls.label1.dirty || submitAttempt)">
-  <ion-item>
-    <ion-input clearOnEdit="true" formControlName="label1"></ion-input>
-    <ion-label>
-      <div class="coloured-dot-wrapper"><div [ngClass]='colours[0]'></div></div>
-    </ion-label>
-  </ion-item>
-  <ion-item *ngIf="!labelForm.controls.label1.valid && submitAttempt" >
-      <small>Must be between 3 and 15 letters</small>
-  </ion-item>
-</ion-list>
- 
-
-<ion-list class="event-label" [class.invalid]="!labelForm.controls.label2.valid && (labelForm.controls.label2.dirty || submitAttempt)">
-  <ion-item>
-  <ion-input clearOnEdit="true" formControlName="label2"></ion-input>
-  <ion-label>
-    <div class="coloured-dot-wrapper"><div [ngClass]='colours[1]'></div></div>
-  </ion-label>
-  </ion-item>
-    <ion-item *ngIf="!labelForm.controls.label2.valid && submitAttempt">
-      <small>Must be between 3 and 15 letters</small>
-  </ion-item>
-</ion-list>
+    <ion-list class="event-label" [class.invalid]="!labelForm.controls.label1.valid && (labelForm.controls.label1.dirty || submitAttempt)">
+      <ion-item>
+        <ion-input clearOnEdit="true" formControlName="label1"></ion-input>
+        <ion-label>
+          <div class="coloured-dot-wrapper">
+            <div [ngClass]='colours[0]'></div>
+          </div>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="!labelForm.controls.label1.valid && submitAttempt">
+        <small>Must be between 3 and 15 letters</small>
+      </ion-item>
+    </ion-list>
 
 
-<ion-list class="event-label" [class.invalid]="!labelForm.controls.label3.valid && (labelForm.controls.label3.dirty || submitAttempt)">
-  <ion-item>
-    <ion-input clearOnEdit="true" formControlName="label3"></ion-input>
-    <ion-label>
-      <div class="coloured-dot-wrapper"><div [ngClass]='colours[2]'></div></div>
-    </ion-label>
-  </ion-item>
-    <ion-item *ngIf="!labelForm.controls.label3.valid && submitAttempt" >
-      <small>Must be between 3 and 15 letters</small>
-  </ion-item>
-</ion-list>
+    <ion-list class="event-label" [class.invalid]="!labelForm.controls.label2.valid && (labelForm.controls.label2.dirty || submitAttempt)">
+      <ion-item>
+        <ion-input clearOnEdit="true" formControlName="label2"></ion-input>
+        <ion-label>
+          <div class="coloured-dot-wrapper">
+            <div [ngClass]='colours[1]'></div>
+          </div>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="!labelForm.controls.label2.valid && submitAttempt">
+        <small>Must be between 3 and 15 letters</small>
+      </ion-item>
+    </ion-list>
 
-<!-- <ion-item *ngIf="!labelForm.controls.label2.valid && (labelForm.controls.label2.dirty || submitAttempt)" > -->
 
-</form>
+    <ion-list class="event-label" [class.invalid]="!labelForm.controls.label3.valid && (labelForm.controls.label3.dirty || submitAttempt)">
+      <ion-item>
+        <ion-input clearOnEdit="true" formControlName="label3"></ion-input>
+        <ion-label>
+          <div class="coloured-dot-wrapper">
+            <div [ngClass]='colours[2]'></div>
+          </div>
+        </ion-label>
+      </ion-item>
+      <ion-item *ngIf="!labelForm.controls.label3.valid && submitAttempt">
+        <small>Must be between 3 and 15 letters</small>
+      </ion-item>
+    </ion-list>
+
+    <!-- <ion-item *ngIf="!labelForm.controls.label2.valid && (labelForm.controls.label2.dirty || submitAttempt)" > -->
+
+  </form>
 </ion-content>

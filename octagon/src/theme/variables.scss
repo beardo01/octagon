@@ -76,6 +76,22 @@ $alert-ios-radio-label-text-color: (
   #FFFFFF
 );
 
+$action-sheet-ios-background: (
+  rgba(140, 140, 140, 0.9)
+);
+
+$action-sheet-ios-button-cancel-background: (
+  rgba(140, 140, 140, 0.9)
+);
+
+$action-sheet-ios-title-color: (
+  white
+);
+
+$action-sheet-ios-button-text-color: (
+  white
+);
+
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here

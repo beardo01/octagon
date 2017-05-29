@@ -320,7 +320,7 @@ export class HomePage {
       buttons: [
         {
           text: 'Delete',
-          role: 'delete',
+          role: 'destructive',
           handler: () => {
             console.log('Delete clicked | Day |',this.selected_date, 'Bubble',  bubble);
           }

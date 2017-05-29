@@ -59,18 +59,18 @@ json createUser(string user, string email, string password, string rpassword, st
 							if(password.length() > 5) {
 
 								// Create the user object
-								User *new_user = new User(user, email, password, ip);
-								Timeline *new_timeline = new_user->getTimeline();
+								auto new_user = make_shared<User>(user, email, password, ip);
+								auto new_timeline = new_user->getTimeline();
 
 								// Commit it to the database
-								db->persist(new_timeline);
-								db->persist(new_user);
+								db->persist(*new_timeline);
+								db->persist(*new_user);
 
                                 t.commit();
 
 								response["success"] = true;
 								response["data"]["client_key"] = new_user->getClientKey();
-								Timeline* timeline = new_user->getTimeline();
+								auto timeline = new_user->getTimeline();
 								response["data"]["colours"]["colour_one"] = timeline->getColourOne();
 								response["data"]["colours"]["colour_two"] = timeline->getColourTwo();
 								response["data"]["colours"]["colour_three"] = timeline->getColourThree();
@@ -137,15 +137,22 @@ json createEvent(string client_key, short int type, string description, string l
 						// It doesn't have any repeats
 
 						// Create new TimelineItem
-						Event *new_event = new Event(type, description, location);
-						TimelineItem *new_item = new TimelineItem(new_event, start, end);
+						auto new_event = make_shared<Event>(type, description, location);
+						auto new_item = make_shared<TimelineItem>(new_event, start, end);
 
 						// Add the new item to the timeline
 						timeline->addTimelineItem(new_item);
 						
 						// Persist TimelineItem and update Timeline
-						db->persist(new_event);
-						db->persist(new_item);
+						unsigned long event_id = db->persist(*new_event);
+						unsigned long item_id = db->persist(*new_item);
+						
+						unique_ptr<Event> update_event(db->load<Event> (event_id));
+						unique_ptr<TimelineItem> update_item(db->load<TimelineItem> (item_id));
+
+						update_event->setTimelineItem(new_item);
+						
+						db->update(*update_event);
 						db->update(*timeline);
 					} else {
 						// It does have repeats
@@ -170,25 +177,25 @@ json createEvent(string client_key, short int type, string description, string l
 						}
 
 						// Create intial event
-						Event *new_event = new Event(type, description, location);
-						TimelineItem *new_item = new TimelineItem(new_event, start, end);
+						auto new_event = make_shared<Event>(type, description, location);
+						auto new_item = make_shared<TimelineItem>(new_event, start, end);
 
 						// Add the new item to the timeline
 						timeline->addTimelineItem(new_item);
 
 						// Persist TimelineItem
-						db->persist(new_event);
-						unsigned long update_id = db->persist(new_item);
+						db->persist(*new_event);
+						unsigned long update_id = db->persist(*new_item);
 						db->update(*timeline);
 
 						// Declare repeated items
-						vector<TimelineItem*> repeat_items;
+						vector<shared_ptr<TimelineItem> > repeat_items;
 						
 						// Create repeats (repeats - 1 because we make one less repeat because of new_item)
 						for(int i = 0; i < (repeats - 1); i++) {
-							TimelineItem *item = new TimelineItem(new_event, start, end, new_item);
+							auto item = make_shared<TimelineItem>(new_event, start, end, new_item);
 							repeat_items.push_back(item);
-							db->persist(item);
+							db->persist(*item);
 						}
 
 						// Get
@@ -264,7 +271,7 @@ json authenticateUser(string identifier, string password, string ip) {
 					response["data"]["threes"] = curr_user->getThrees();
 					//response["data"]["client_key"] = key;
 					response["data"]["client_key"] = curr_user->getClientKey();
-					Timeline* timeline = curr_user->getTimeline();
+					auto timeline = curr_user->getTimeline();
 					response["data"]["colours"]["colour_one"] = timeline->getColourOne();
 					response["data"]["colours"]["colour_two"] = timeline->getColourTwo();
 					response["data"]["colours"]["colour_three"] = timeline->getColourThree();
@@ -308,7 +315,7 @@ json getEvents(string client_key, time_t start) {
 
 				// Timeline to update
 				unsigned long tl_id = curr_user->getTimelineID();
-				unique_ptr<Timeline> curr_timeline(db->query_one<Timeline> (timeline_query::id == tl_id));
+				unique_ptr<Timeline> curr_timeline(db->load<Timeline> (tl_id));
 
 				if(curr_timeline.get() != 0) {
 					
@@ -318,11 +325,14 @@ json getEvents(string client_key, time_t start) {
 					}
 
 					// Iterate over users events
-					vector<TimelineItem*> items = curr_timeline->getTimelineItems();
-
+					vector<shared_ptr<TimelineItem> > items = curr_timeline->getTimelineItems();
+					
+					// Set TimelineItem event data
 					for(int i = 0; i < items.size(); i++) {
-						cout << items[i] << endl;
+						cout << items[i]->toString() << endl;
 					}
+
+					items[0]->toString();
 					
 					response["success"] = true;
 					return response;

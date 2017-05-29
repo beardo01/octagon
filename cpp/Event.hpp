@@ -5,11 +5,14 @@
 #include <iostream>
 #include <string>
 #include <ctime>
-#include <vector>
 #include <sstream>
+#include <memory>
 
 // ODB database include
 #include <odb/core.hxx>
+
+#include "TimelineItem.hpp"
+class TimelineItem;
 
 // String declaration for ODB persistence
 #pragma db value(std::string) type("VARCHAR(128)")
@@ -28,6 +31,10 @@ class Event {
         unsigned long id_;
 
         short int type_;
+        
+        #pragma db null
+        shared_ptr<TimelineItem> item_;
+
         string description_;
         string location_;
 
@@ -53,6 +60,7 @@ class Event {
 
         // Setters
         void setType(short int);
+        void setTimelineItem(shared_ptr<TimelineItem>);
         void setDescription(string);
         void setLocation(string);
 };

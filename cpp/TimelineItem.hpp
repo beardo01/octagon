@@ -7,11 +7,13 @@
 #include <ctime>
 #include <vector>
 #include <sstream>
+#include <memory>
 
 // ODB database include
 #include <odb/core.hxx>
 
 #include "Event.hpp"
+class Event;
 
 // String declaration for ODB persistence
 #pragma db value(std::string) type("VARCHAR(128)")
@@ -31,23 +33,27 @@ class TimelineItem {
         #pragma db id auto
         unsigned long id_;
 
-        Event *event_;
+        #pragma db not_null
+        shared_ptr<Event> event_;
+
         time_t start_;
         time_t end_;
-        TimelineItem *linked_;
-        vector<TimelineItem*> linked_items_;
+
+        shared_ptr<TimelineItem> linked_;
+        #pragma db value_not_null
+        vector<shared_ptr<TimelineItem> > linked_items_;
 
     // Timeline Item methods
     public:
 
         // Constructor
-        TimelineItem(Event*, time_t, time_t);
-        TimelineItem(Event*, time_t, time_t, TimelineItem*);
+        TimelineItem(shared_ptr<Event>, time_t, time_t);
+        TimelineItem(shared_ptr<Event>, time_t, time_t, shared_ptr<TimelineItem>);
 
         // toString
         string toString() {
             std::stringstream ss;
-            ss << this->getID() << " " << this->getDescription() << " " << 
+            ss << this->getID() << " desc:" << this->getDescription() << " start: " << 
                 this->getStartTime() << " " << this->getEndTime() << " " << 
                 this->getLinkedItems().size() << endl;
             std::string s = ss.str();
@@ -63,22 +69,23 @@ class TimelineItem {
         // Getters
         unsigned long getID();
         short int getType();
-        Event *getEvent();
+        shared_ptr<Event> getEvent();
         time_t getStartTime();
         time_t getEndTime();
         string getDescription();
         string getLocation();
-        TimelineItem *getLinked();
-        vector<TimelineItem*> getLinkedItems();
+        shared_ptr<TimelineItem> getLinked();
+        vector<shared_ptr<TimelineItem> > getLinkedItems();
 
         // Setters
         void setType(short int);
+        void setEvent(shared_ptr<Event>);
         void setStartTime(time_t);
         void setEndTime(time_t);
         void setDescription(string);
         void setLocation(string);
-        void setLinked(TimelineItem*);
-        void setLinkedItems(vector<TimelineItem*>);
+        void setLinked(shared_ptr<TimelineItem>);
+        void setLinkedItems(vector<shared_ptr<TimelineItem> >);
 };
 
 #endif

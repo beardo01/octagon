@@ -7,6 +7,7 @@
 #include <ctime>
 #include <vector>
 #include <algorithm>
+#include <memory>
 
 // ODB database include
 #include <odb/core.hxx>
@@ -31,7 +32,9 @@ class Timeline {
         #pragma db id auto
         unsigned long id_;
 
-        vector<TimelineItem*> timeline_items_;
+        #pragma db value_not_null
+        vector<shared_ptr<TimelineItem> > timeline_items_;
+
         string colour_one_;
         string colour_two_;
         string colour_three_;
@@ -42,12 +45,13 @@ class Timeline {
     public:
 
         // Constructor
-        Timeline(vector<TimelineItem*>, string, string, string, string, string, string);
+        //Timeline(vector<shared_ptr<TimelineItem> >, string, string, string, string, string, string);
+        Timeline(string, string, string, string, string, string);
         //~Timeline();
 
         // Getters
         unsigned long getID();
-        vector<TimelineItem*> getTimelineItems();
+        vector<shared_ptr<TimelineItem> > getTimelineItems();
         string getColourOne();
         string getColourTwo();
         string getColourThree();
@@ -66,7 +70,7 @@ class Timeline {
         // Methods (CRUD order)
         void printTimeline();
         
-        void addTimelineItem(TimelineItem*);
+        void addTimelineItem(shared_ptr<TimelineItem>);
 
         // addItem(type, description, location, start date, end date, frequency, end date)
         // addItem(1, "Meeting on Tuesday", "Owheo Building", 123, 1234, 0, 0)
@@ -74,7 +78,7 @@ class Timeline {
             short int frequency = -1, time_t ends = 0);*/
 
         // getTimelineItem(1)
-        TimelineItem* getTimelineItem(unsigned long);
+        shared_ptr<TimelineItem> getTimelineItem(unsigned long);
 
         // updateItem(1, 1, "Meeting on Tuesday afternoon", "Owheo, Lab A", 123, 1234)
         void updateTimelineItem(unsigned long, short int, string, string, time_t, time_t,

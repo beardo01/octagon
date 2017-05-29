@@ -419,11 +419,11 @@ namespace odb
     // timeline_
     //
     {
-      ::Timeline* const& v =
+      ::std::shared_ptr< ::Timeline > const& v =
         o.timeline_;
 
       typedef object_traits< ::Timeline > obj_traits;
-      typedef odb::pointer_traits< ::Timeline* > ptr_traits;
+      typedef odb::pointer_traits< ::std::shared_ptr< ::Timeline > > ptr_traits;
 
       bool is_null (ptr_traits::null_ptr (v));
       if (!is_null)
@@ -438,7 +438,7 @@ namespace odb
         i.timeline_null = is_null;
       }
       else
-        i.timeline_null = true;
+        throw null_pointer ();
     }
 
     // create_date_
@@ -627,11 +627,11 @@ namespace odb
     // timeline_
     //
     {
-      ::Timeline*& v =
+      ::std::shared_ptr< ::Timeline >& v =
         o.timeline_;
 
       typedef object_traits< ::Timeline > obj_traits;
-      typedef odb::pointer_traits< ::Timeline* > ptr_traits;
+      typedef odb::pointer_traits< ::std::shared_ptr< ::Timeline > > ptr_traits;
 
       if (i.timeline_null)
         v = ptr_traits::pointer_type ();

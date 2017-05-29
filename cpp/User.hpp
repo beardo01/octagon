@@ -8,13 +8,10 @@
 #include <limits>
 #include <regex>
 #include <random>
+#include <memory>
 
 // ODB database include
 #include <odb/core.hxx>
-
-/*#include <odb/database.hxx>
-#include <odb/transaction.hxx>
-#include <odb/pgsql/database.hxx>*/
 
 #include "bcrypt/BCrypt.hpp"
 #include "Timeline.hpp"
@@ -42,7 +39,10 @@ class User {
 		string name_;
 		string email_;
 		string password_;
-		Timeline *timeline_;
+
+		#pragma db not_null
+		shared_ptr<Timeline> timeline_;
+
 		time_t create_date_;
 		short int activated_;
 		string last_ip_;
@@ -61,7 +61,7 @@ class User {
 		string getName();
 		string getEmail();
 		string getPassword();
-		Timeline *getTimeline();
+		shared_ptr<Timeline> getTimeline();
 		unsigned long getTimelineID();
 		time_t getCreate();
 		short int getActivated();

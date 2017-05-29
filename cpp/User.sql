@@ -9,7 +9,7 @@ CREATE TABLE "user" (
   "name" VARCHAR(128) NOT NULL,
   "email" VARCHAR(128) NOT NULL,
   "password" VARCHAR(128) NOT NULL,
-  "timeline" BIGINT NULL,
+  "timeline" BIGINT NOT NULL,
   "create_date" BIGINT NOT NULL,
   "activated" SMALLINT NOT NULL,
   "last_ip" VARCHAR(128) NOT NULL,

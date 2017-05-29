@@ -1,14 +1,13 @@
 #include "TimelineItem.hpp"
 
 // Constructors
-TimelineItem::TimelineItem(Event *event, time_t start, time_t end):
+TimelineItem::TimelineItem(shared_ptr<Event> event, time_t start, time_t end):
     event_(event),
     start_(start),
-    end_(end),
-    linked_(NULL)
+    end_(end)
     {}
 
-TimelineItem::TimelineItem(Event *event, time_t start, time_t end, TimelineItem *linked):
+TimelineItem::TimelineItem(shared_ptr<Event> event, time_t start, time_t end, shared_ptr<TimelineItem> linked):
     event_(event),
     start_(start),
     end_(end),
@@ -20,7 +19,7 @@ unsigned long TimelineItem::getID(){
     return id_;
 }
 
-Event* TimelineItem::getEvent() {
+shared_ptr<Event> TimelineItem::getEvent() {
     return this->event_;
 }
 
@@ -44,17 +43,21 @@ string TimelineItem::getLocation(){
     return this->event_->getLocation();
 }
 
-TimelineItem* TimelineItem::getLinked(){
+shared_ptr<TimelineItem> TimelineItem::getLinked(){
     return this->linked_;
 }
 
-vector<TimelineItem*> TimelineItem::getLinkedItems(){
+vector<shared_ptr<TimelineItem> > TimelineItem::getLinkedItems(){
     return this->linked_items_;
 }
 
 // Setters
 void TimelineItem::setType(short int type){
     this->event_->setType(type);
+}
+
+void TimelineItem::setEvent(shared_ptr<Event> event) {
+    this->event_ = event;
 }
 
 void TimelineItem::setStartTime(time_t start){
@@ -73,10 +76,10 @@ void TimelineItem::setLocation(string location){
     this->event_->setLocation(location);
 }
 
-void TimelineItem::setLinked(TimelineItem *linked){
+void TimelineItem::setLinked(shared_ptr<TimelineItem> linked){
     this->linked_ = linked;
 }
 
-void TimelineItem::setLinkedItems(vector<TimelineItem*> linked_items){
+void TimelineItem::setLinkedItems(vector<shared_ptr<TimelineItem> > linked_items){
     this->linked_items_ = linked_items;
 }

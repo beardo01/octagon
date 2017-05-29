@@ -7,6 +7,13 @@ DROP TABLE IF EXISTS "event" CASCADE;
 CREATE TABLE "event" (
   "id" BIGSERIAL NOT NULL PRIMARY KEY,
   "type" SMALLINT NOT NULL,
+  "item" BIGINT NULL,
   "description" VARCHAR(128) NOT NULL,
   "location" VARCHAR(128) NOT NULL);
+
+ALTER TABLE "event"
+  ADD CONSTRAINT "item_fk"
+    FOREIGN KEY ("item")
+    REFERENCES "timelineitem" ("id")
+    INITIALLY DEFERRED;
 

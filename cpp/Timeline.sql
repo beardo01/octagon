@@ -18,7 +18,7 @@ CREATE TABLE "timeline" (
 CREATE TABLE "timeline_timeline_items" (
   "object_id" BIGINT NOT NULL,
   "index" BIGINT NOT NULL,
-  "value" BIGINT NULL,
+  "value" BIGINT NOT NULL,
   CONSTRAINT "object_id_fk"
     FOREIGN KEY ("object_id")
     REFERENCES "timeline" ("id")

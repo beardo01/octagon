@@ -48,6 +48,7 @@ namespace odb
   persist_statement_types[] =
   {
     pgsql::int2_oid,
+    pgsql::int8_oid,
     pgsql::text_oid,
     pgsql::text_oid
   };
@@ -62,10 +63,16 @@ namespace odb
   update_statement_types[] =
   {
     pgsql::int2_oid,
+    pgsql::int8_oid,
     pgsql::text_oid,
     pgsql::text_oid,
     pgsql::int8_oid
   };
+
+  const char alias_traits<  ::TimelineItem,
+    id_pgsql,
+    access::object_traits_impl< ::Event, id_pgsql >::item_tag>::
+  table_name[] = "\"item\"";
 
   struct access::object_traits_impl< ::Event, id_pgsql >::extra_statement_cache_type
   {
@@ -138,9 +145,13 @@ namespace odb
     //
     t[1UL] = 0;
 
+    // item_
+    //
+    t[2UL] = 0;
+
     // description_
     //
-    if (t[2UL])
+    if (t[3UL])
     {
       i.description_value.capacity (i.description_size);
       grew = true;
@@ -148,7 +159,7 @@ namespace odb
 
     // location_
     //
-    if (t[3UL])
+    if (t[4UL])
     {
       i.location_value.capacity (i.location_size);
       grew = true;
@@ -183,6 +194,13 @@ namespace odb
     b[n].type = pgsql::bind::smallint;
     b[n].buffer = &i.type_value;
     b[n].is_null = &i.type_null;
+    n++;
+
+    // item_
+    //
+    b[n].type = pgsql::bind::bigint;
+    b[n].buffer = &i.item_value;
+    b[n].is_null = &i.item_null;
     n++;
 
     // description_
@@ -238,6 +256,31 @@ namespace odb
           pgsql::id_smallint >::set_image (
         i.type_value, is_null, v);
       i.type_null = is_null;
+    }
+
+    // item_
+    //
+    {
+      ::std::shared_ptr< ::TimelineItem > const& v =
+        o.item_;
+
+      typedef object_traits< ::TimelineItem > obj_traits;
+      typedef odb::pointer_traits< ::std::shared_ptr< ::TimelineItem > > ptr_traits;
+
+      bool is_null (ptr_traits::null_ptr (v));
+      if (!is_null)
+      {
+        const obj_traits::id_type& id (
+          obj_traits::id (ptr_traits::get_ref (v)));
+
+        pgsql::value_traits<
+            obj_traits::id_type,
+            pgsql::id_bigint >::set_image (
+          i.item_value, is_null, id);
+        i.item_null = is_null;
+      }
+      else
+        i.item_null = true;
     }
 
     // description_
@@ -322,6 +365,37 @@ namespace odb
         i.type_null);
     }
 
+    // item_
+    //
+    {
+      ::std::shared_ptr< ::TimelineItem >& v =
+        o.item_;
+
+      typedef object_traits< ::TimelineItem > obj_traits;
+      typedef odb::pointer_traits< ::std::shared_ptr< ::TimelineItem > > ptr_traits;
+
+      if (i.item_null)
+        v = ptr_traits::pointer_type ();
+      else
+      {
+        obj_traits::id_type id;
+        pgsql::value_traits<
+            obj_traits::id_type,
+            pgsql::id_bigint >::set_value (
+          id,
+          i.item_value,
+          i.item_null);
+
+        // If a compiler error points to the line below, then
+        // it most likely means that a pointer used in a member
+        // cannot be initialized from an object pointer.
+        //
+        v = ptr_traits::pointer_type (
+          static_cast<pgsql::database*> (db)->load<
+            obj_traits::object_type > (id));
+      }
+    }
+
     // description_
     //
     {
@@ -370,16 +444,18 @@ namespace odb
   "INSERT INTO \"event\" "
   "(\"id\", "
   "\"type\", "
+  "\"item\", "
   "\"description\", "
   "\"location\") "
   "VALUES "
-  "(DEFAULT, $1, $2, $3) "
+  "(DEFAULT, $1, $2, $3, $4) "
   "RETURNING \"id\"";
 
   const char access::object_traits_impl< ::Event, id_pgsql >::find_statement[] =
   "SELECT "
   "\"event\".\"id\", "
   "\"event\".\"type\", "
+  "\"event\".\"item\", "
   "\"event\".\"description\", "
   "\"event\".\"location\" "
   "FROM \"event\" "
@@ -389,21 +465,24 @@ namespace odb
   "UPDATE \"event\" "
   "SET "
   "\"type\"=$1, "
-  "\"description\"=$2, "
-  "\"location\"=$3 "
-  "WHERE \"id\"=$4";
+  "\"item\"=$2, "
+  "\"description\"=$3, "
+  "\"location\"=$4 "
+  "WHERE \"id\"=$5";
 
   const char access::object_traits_impl< ::Event, id_pgsql >::erase_statement[] =
   "DELETE FROM \"event\" "
   "WHERE \"id\"=$1";
 
   const char access::object_traits_impl< ::Event, id_pgsql >::query_statement[] =
-  "SELECT "
-  "\"event\".\"id\", "
-  "\"event\".\"type\", "
-  "\"event\".\"description\", "
-  "\"event\".\"location\" "
-  "FROM \"event\"";
+  "SELECT\n"
+  "\"event\".\"id\",\n"
+  "\"event\".\"type\",\n"
+  "\"event\".\"item\",\n"
+  "\"event\".\"description\",\n"
+  "\"event\".\"location\"\n"
+  "FROM \"event\"\n"
+  "LEFT JOIN \"timelineitem\" AS \"item\" ON \"item\".\"id\"=\"event\".\"item\"";
 
   const char access::object_traits_impl< ::Event, id_pgsql >::erase_query_statement[] =
   "DELETE FROM \"event\"";
@@ -751,7 +830,7 @@ namespace odb
     std::string text (query_statement);
     if (!q.empty ())
     {
-      text += " ";
+      text += "\n";
       text += q.clause ();
     }
 
@@ -761,7 +840,7 @@ namespace odb
         sts.connection (),
         query_statement_name,
         text,
-        false,
+        true,
         true,
         q.parameter_types (),
         q.parameter_count (),

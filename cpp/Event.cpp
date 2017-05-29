@@ -3,6 +3,7 @@
 // Constructor
 Event::Event(short int type, string description, string location) :
     type_(type),
+    item_(NULL),
     description_(description),
     location_(location)
     {}
@@ -27,6 +28,10 @@ string Event::getLocation() {
 // Setters
 void Event::setType(short int type) {
     this->type_ = type;
+}
+
+void Event::setTimelineItem(shared_ptr<TimelineItem> item) {
+    this->item_ = item;
 }
 
 void Event::setDescription(string description) {

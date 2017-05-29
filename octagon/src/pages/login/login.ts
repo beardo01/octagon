@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidateUser } from '../../providers/validate-user';
 import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
 import { AlertController } from 'ionic-angular';
+import { EventData } from '../../providers/event-data';
 //import { CreateFormValidator } from '../../validators/createForm';
 
 
@@ -26,7 +27,7 @@ export class LoginPage {
   invalid: boolean;
 
   constructor(public navCtrl: NavController, public builder: FormBuilder, public validateUser: ValidateUser, public localColoursAndLabels: LocalColoursAndLabels, 
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController, public eventData: EventData) {
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     }
@@ -67,7 +68,7 @@ export class LoginPage {
     var sendValue = this.loginForm.value;
     sendValue.ip = this.ip;
 
-    this.validateUser.loginUser(sendValue).toPromise().then( response => {
+    this.validateUser.loginUser(sendValue).subscribe( response => {
       if (response.success) {
       // Succesfully logged in. Get users data
         this.validateUser.setLocalClientKey(response.data.client_key);
@@ -88,7 +89,7 @@ export class LoginPage {
             
 
             // READ IN NEK 10 DAYS OF BLOODY EVENTS m8
-
+            this.eventData.requestEventData()
             // REDIRECT New user
             this.navCtrl.setRoot(TabsPage);
           } else {

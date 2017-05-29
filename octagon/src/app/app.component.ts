@@ -27,12 +27,10 @@ export class MyApp {
 
       this.syncData.syncColours();
       this.syncData.syncLabels();
-      console.log('trying to get events')
       this.eventData.requestEventData();
        
       
       //this.clearStorage.clearLocalStorage();
-      this.storage.set('client_key', "mcbmnsdjbknb123123123");
       // Redirect to login screen if cant find value 
       this.validUser.requestLocalClientKey();
 
@@ -50,11 +48,11 @@ export class MyApp {
       //      this.localEvents.setLocalStorageEvents(this.eventData.getEvents())
       //   }
       // })
-
+      //console.log('localstoragessdasdasd', this.localEvents.getProviderEvents())
       // get local data
       this.localColoursAndLabels.requestLocalLabels();
       this.localColoursAndLabels.requestLocalColours();
-      this.localEvents.requestLocalEvents();
+//      this.localEvents.requestLocalEvents();
 
       Splashscreen.hide();
     });

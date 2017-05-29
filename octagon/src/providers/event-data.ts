@@ -3,6 +3,7 @@ import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
 import * as moment from 'moment';
 import { LocalEvents } from '../providers/local-events'
+import { ValidateUser } from '../providers/validate-user';
 
 @Injectable()
 export class EventData {
@@ -33,6 +34,7 @@ export class EventData {
         this.events = data
 
         this.localEvents.setLocalStorageEvents(data);
+        this.localEvents.requestLocalEvents();
         console.log("response from server", data)
       })
   }

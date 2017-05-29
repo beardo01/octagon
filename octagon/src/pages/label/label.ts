@@ -37,40 +37,40 @@ export class LabelPage {
       'label3': [this.label3, Validators.compose([Validators.maxLength(15), Validators.pattern('[a-zA-Z ]*'), Validators.minLength(3),Validators.required])]
     })
     // Call Web API
-    this.requestColoursAndLabels();
-}
+    //this.requestColoursAndLabels();
+  }
 
   ionViewDidLoad() {
     
   }
 
-  /**
-   * Make a call to the coloursAndLabels provider if success update local variables and local storage
-   * 
-   */
-  requestColoursAndLabels() {
-    this.coloursAndLabels.requestColoursAndLabels()
-    .subscribe(
-      response => {
-        this.colours = this.coloursAndLabels.getColours();
-        var labels = this.coloursAndLabels.getLabels();
+  // /**
+  //  * Make a call to the coloursAndLabels provider if success update local variables and local storage
+  //  * 
+  //  */
+  // requestColoursAndLabels() {
+  //   this.coloursAndLabels.requestColoursAndLabels()
+  //   .subscribe(
+  //     response => {
+  //       this.colours = this.coloursAndLabels.getColours();
+  //       var labels = this.coloursAndLabels.getLabels();
 
-        this.label1 = labels[0];
-        this.labelForm.controls['label1'].setValue(this.label1);
+  //       this.label1 = labels[0];
+  //       this.labelForm.controls['label1'].setValue(this.label1);
         
-        this.label2 = labels[1];
-        this.labelForm.controls['label2'].setValue(this.label2);
+  //       this.label2 = labels[1];
+  //       this.labelForm.controls['label2'].setValue(this.label2);
         
-        this.label3 = labels[2];
-        this.labelForm.controls['label3'].setValue(this.label3);
+  //       this.label3 = labels[2];
+  //       this.labelForm.controls['label3'].setValue(this.label3);
 
-        this.setLocalStorage();
-      },
-      error => {
-        console.log(error);
-        }
-      );
-  } 
+  //       this.setLocalStorage();
+  //     },
+  //     error => {
+  //       console.log(error);
+  //       }
+  //     );
+  // } 
 
   /**
    * Update colours and labels in local storage and provider
@@ -105,6 +105,17 @@ export class LabelPage {
     if(!this.labelForm.valid){
       console.log("tried to submit invalid form")
     } else {
+      // query api if failed set to storage then push
+
+      /*
+      if (this.coloursAndLabels.setLabels(this.labelForm.response is GOOOD) )
+          exit
+          if shit
+          set unsynced flag
+          add to syn colours 
+
+          set local
+      */
         this.coloursAndLabels.setLabels(this.labelForm.value);
         this.setLocalStorage();
         this.navCtrl.pop();

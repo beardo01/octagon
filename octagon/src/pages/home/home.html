@@ -9,7 +9,7 @@
   </ion-navbar>
 
   <div id="dayDateArea">
-    
+
     <h2 id="dayDay">{{weekday_header}}</h2>
 
     <span id="dayDates">
@@ -25,7 +25,9 @@
     <div id="timeBar">
       <div id="bubbles-container">
         <div *ngFor="let bubble of bubbles[selected_date]">
-          <a href="#{{bubble[9]}}"><div class="bubble tl-{{bubble[6]}} {{bubble[9]}}" [ngStyle]="{'margin-left': bubble[0]}"></div></a>
+          <a href="#{{bubble[9]}}">
+            <div class="bubble tl-{{bubble[6]}} {{bubble[9]}}" [ngStyle]="{'margin-left': bubble[0]}"></div>
+          </a>
         </div>
       </div>
     </div>
@@ -34,8 +36,8 @@
 
 <ion-content>
   <section id="tl" class="tl-container">
-    <div *ngFor="let bubble_detail of bubbles[selected_date]">
-      <div class="tl-block" id="{{bubble_detail[9]}}">
+    <div *ngFor="let bubble_detail of bubbles[selected_date] let i = index">
+      <div class="tl-block" id="{{bubble_detail[9]}}" (press)="delete(i)">
         <div class="tl-colour tl-{{bubble_detail[6]}}"></div>
         <div class="tl-content">
           <h5 class="tl-title">{{bubble_detail[1]}}</h5>

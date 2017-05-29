@@ -25,6 +25,7 @@ export class ValidateUser {
         var response = res.json();
 
         this.validated(response)
+        return response
       })
   }
 
@@ -37,7 +38,7 @@ export class ValidateUser {
       this.storage.set('client_key', this.clientKey);
     }
   } 
-  
+
   setLocalClientKey(key){
     this.clientKey = key;
     this.storage.set('client_key', key);

@@ -7,6 +7,7 @@ import { ColoursAndLabels } from '../../providers/colours-and-labels';
 import { EventData } from '../../providers/event-data';
 import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
 import { LocalEvents } from '../../providers/local-events';
+import { ActionSheetController } from 'ionic-angular'
 
 
 @Component({
@@ -29,6 +30,7 @@ export class HomePage {
   colours: string[];
   labels: string[];
 
+  actionSheet;
   parameter1: number;
 
   // bubbles = [[timebar_location,labels,start,end,description,location,colour]]
@@ -38,7 +40,7 @@ export class HomePage {
   // Sets up dates in the header of homepage.
   constructor(public navCtrl: NavController, http: Http, public coloursAndLabels: ColoursAndLabels,
     public eventData: EventData, public localCLStorage: LocalColoursAndLabels, public localEventStorage: LocalEvents,
-    private navParams: NavParams) {
+    private navParams: NavParams, public actionSheetCtrl: ActionSheetController) {
 
     this.parameter1 = navParams.get('param1');
     console.log(this.parameter1);
@@ -51,8 +53,8 @@ export class HomePage {
     // set labels data field from values stored in provider for local
     this.labels = this.getProviderLabels();
     this.initaliseBubbles();
-
   }
+
   initaliseBubbles() {
     for (var day = 0; day != 5; day++) {
       this.bubbles.push([]);
@@ -310,6 +312,29 @@ export class HomePage {
     for (var date = 0; date < 5; date++) {
       this.display_days[date] = this.giveDay(date) + " " + this.months[this.giveMonth(date)];
     }
+  }
+
+  delete(bubble : number) {
+    this.actionSheet = this.actionSheetCtrl.create({
+      title: 'Delete Event?',
+      buttons: [
+        {
+          text: 'Delete',
+          role: 'delete',
+          handler: () => {
+            console.log('Delete clicked | Day |',this.selected_date, 'Bubble',  bubble);
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    this.actionSheet.present();
   }
 
 }

@@ -49,7 +49,6 @@ export class WeekPage {
   }
 
   reinitalizeView() {
-    console.log("rein reinitalizeView() called - week page")
     this.colours = this.getProviderColours();
     this.labels = this.getProviderLabels();
 
@@ -75,38 +74,6 @@ export class WeekPage {
       this.bubbles_week.push([]);
     }
   }
-  //     /**
-  //  * Make a call to the coloursAndLabels provider that requests data from the api.
-  //  * If sucessfull set variables accordinly. If it fails get data from local storage.
-  //  * 
-  //  */
-  //   requestColoursAndLabels() {
-  //     this.coloursAndLabels.requestColoursAndLabels()
-  //       .subscribe(
-  //       response => {
-  //         this.colours = this.coloursAndLabels.getColours();
-  //         this.labels = this.coloursAndLabels.getLabels();
-
-  //         // Update Local storage
-  //         if (this.storage.colours != this.colours || this.storage.labels != this.labels) {
-  //           this.setLocalStorage();
-  //         }
-  //       },
-  //       error => {
-  //         console.log(error);
-  //       }
-  //       );
-  //   }
-  //     /**
-  //  * Update colours and labels in local storage and provider
-  //  */
-  //   setLocalStorage() {
-  //     this.storage.setProviderColours(this.colours);
-  //     this.storage.setStorageColours(this.colours);
-  //     this.storage.setProviderLabels(this.labels);
-  //     this.storage.setStorageLabels(this.labels);
-  //   }
-  /*
 
   /**
    * Process data requested from the provider and push to array
@@ -135,27 +102,7 @@ export class WeekPage {
       }
     }
   }
-  //   /**
-  //  * Request data from provider.
-  //  */
-  // requestEventData() {
-  //   this.eventData.requestEventData()
-  //     .subscribe(
-  //     response => {
-  //       //console.log(this.eventData.getEvents().length);
-  //       //console.log(this.eventData.getEvents());
 
-  //       // Executes when we have recieved data from the web API
-  //       this.input_data_days = new Array();
-  //       this.parseEvents(this.eventData.getEvents());
-  //       this.filterData();
-  //     },
-  //     error => {
-  //       console.log(error);
-  //       this.filterData();
-  //       // Can't connect to network, use what's in local storage
-  //     });
-  // }
   // Works out the date in 5 days
   addDays(dateObj, numDays) {
     dateObj.setDate(dateObj.getDate() + numDays);

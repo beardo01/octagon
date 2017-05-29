@@ -86,7 +86,6 @@ export class CreatePage {
     this.repeatEndDate = this.dateEnds;
     this.description = "";
 
-    this.getTimes();
 
     this.createForm = this.builder.group({
       'label': [this.label, Validators.compose([Validators.required, CreateFormValidator.validLabel])],
@@ -149,10 +148,10 @@ export class CreatePage {
       .map(res => res.json())
       .subscribe(data => {
         console.log("response from server", data)
+        this.navCtrl.popToRoot();
       })
 
 
-        //this.navCtrl.popToRoot();
     } else {
       console.log("FAILED");
     }
@@ -161,24 +160,6 @@ export class CreatePage {
   }
   getLabels() {
     // Make a call to plugin to set the labels
-  }
-
-  getTimes() {
-    var timeStarts = this.date.getHours() + ':';
-    if (this.date.getHours() < 10) { timeStarts = '0' + timeStarts; }
-    if (this.date.getMinutes() < 10) {
-      timeStarts = timeStarts + '0' + this.date.getMinutes();
-    } else {
-      timeStarts = timeStarts + this.date.getMinutes();
-    }
-    var timeEnds = (this.date.getHours() + 1) + ':';
-    if (this.date.getHours() < 10) { timeEnds = '0' + timeEnds; }
-    if (this.date.getMinutes() < 10) {
-      timeEnds = timeEnds + '0' + this.date.getMinutes();
-    } else {
-      timeEnds = timeEnds + this.date.getMinutes();
-    }
-    return new Array(timeStarts, timeEnds);
   }
 
   ionViewDidLoad() {

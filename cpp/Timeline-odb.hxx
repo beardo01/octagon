@@ -15,7 +15,6 @@
 
 #include "Timeline.hpp"
 
-#include "Event-odb.hxx"
 #include "TimelineItem-odb.hxx"
 
 #include <memory>

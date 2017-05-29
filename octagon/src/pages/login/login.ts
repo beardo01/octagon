@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController} from 'ionic-angular';
 import { JoinPage } from '../join/join';
+import { TabsPage } from '../tabs/tabs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ValidateUser } from '../../providers/validate-user';
 import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
@@ -89,20 +90,14 @@ export class LoginPage {
             // READ IN NEK 10 DAYS OF BLOODY EVENTS m8
 
             // REDIRECT New user
-            this.navCtrl.popToRoot();
-            this.navCtrl.parent.select(0);
+            this.navCtrl.setRoot(TabsPage);
           } else {
             // Display error message from server
             this.presentAlert(response.data)
           }
         })
     }
-
-  /** This method pops to the root of the tab then switches to the home tab. */
-  homePage() {
-    this.navCtrl.popToRoot();
-    this.navCtrl.parent.select(0);
-  }
+    
   presentAlert(errorMessage: string) {
     let alert = this.alertCtrl.create({
       title: 'Error during registration',

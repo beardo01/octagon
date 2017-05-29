@@ -7,7 +7,8 @@ import { EventData } from '../providers/event-data';
 import { LocalColoursAndLabels } from '../providers/local-colours-and-labels';
 import { ColoursAndLabels } from '../providers/colours-and-labels';
 import { ValidateUser } from '../providers/validate-user';
-import { TabsPage } from '../pages/tabs/tabs';
+//import { TabsPage } from '../pages/tabs/tabs';
+import { LoginPage } from '../pages/login/login';
 import { Storage } from '@ionic/storage';
 import { ClearLocalStorage } from '../providers/clear-local-storage';
 import { SyncData } from '../providers/sync-data';
@@ -17,7 +18,7 @@ import { SyncData } from '../providers/sync-data';
   providers: [StatusBar, ]
 })
 export class MyApp {
-  rootPage = TabsPage;
+  rootPage = LoginPage;
 
   constructor(platform: Platform, statusBar: StatusBar, public localColoursAndLabels: LocalColoursAndLabels, 
               public localEvents: LocalEvents, public coloursAndLabels: ColoursAndLabels, public eventData: EventData, 

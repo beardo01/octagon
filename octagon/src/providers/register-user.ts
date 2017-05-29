@@ -10,9 +10,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class RegisterUser {
 
-  constructor(public http: Http) {
-    console.log('Hello RegisterUser Provider');
-  }
+  constructor(public http: Http) {}
 /*
  "username" : "oliver",
  "email"	: "oliver@gmail.com",
@@ -20,6 +18,23 @@ export class RegisterUser {
  "rpassword": "password",
  "ip"		: "127.0.0.1"
 
+
+{
+  "success": true,
+  "data": {
+    "client_key": "47bUWIYJe3BgnpRik7gz",
+    "colours": {
+      "colour_one": "red",
+      "colour_three": "blue",
+      "colour_two": "green"
+    },
+    "labels": {
+      "label_one": "Meeting",
+      "label_three": "Event",
+      "label_two": "Assignment"
+    }
+  }
+}
 */
   registerUser(userObject) {
     // post to server and set new colour strings
@@ -33,15 +48,15 @@ export class RegisterUser {
       'rpassword': userObject.rpassword,
       'ip': userObject.ip
     };
-    console.log("JSON userData Obj from register USer")
-    console.log(JSON.stringify(userData))
-    return this.http.post('https://api.simpalapps.com/driver/get/user', JSON.stringify(userData), {headers: headers})
+    return this.http.post('https://api.simpalapps.com/driver/create/user', JSON.stringify(userData), {headers: headers})
       .map(res => {
         var response = res.json();
         console.log("RESPONSE FROM register USER POST");
         console.log(response);
+        return response;
         //this.validated(response)
       })
   }
+
 
 }

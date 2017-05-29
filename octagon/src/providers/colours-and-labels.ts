@@ -67,9 +67,11 @@ export class ColoursAndLabels {
    return this.http.post('https://api.simpalapps.com/driver/set/colours', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(data => {
-        console.log(data);
+        console.log('WHAT U GOT SENT', data);
       });
   }
+
+
     setLabels(labelArr) {
     // post to server and set new colour strings
     let headers: Headers =  new Headers();
@@ -83,10 +85,11 @@ export class ColoursAndLabels {
       "label_three": labelArr.label3
     };
     console.log('data sent in body setLabels()', JSON.stringify(body));
-   return this.http.post('https://api.simpalapps.com/driver/set/labels', JSON.stringify(body), {headers: headers})
+    return this.http.post('https://api.simpalapps.com/driver/set/labels', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(data => {
-        console.log(data);
+        console.log('data from labelArr');
+        console.log(data)
       });
   }
 } // end class

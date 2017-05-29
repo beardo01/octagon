@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, RequestOptions } from '@angular/http';
 import 'rxjs/add/operator/map';
+import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class ValidateUser {
-  clientKey: string;
-  valid: boolean;
+  public clientKey: string;
+  public valid: boolean;
 
-  constructor(public http: Http) { }
+  constructor(public http: Http, public storage: Storage) {}
 
   loginUser(userObject) {
     // post to server and set new colour strings
@@ -33,8 +34,21 @@ export class ValidateUser {
     } else {
       this.valid = true;
       this.clientKey = response.data.client_key;
+      this.storage.set('client_key', this.clientKey);
     }
   } 
+  
+  setLocalClientKey(key){
+    this.clientKey = key;
+    this.storage.set('client_key', key);
+  }
+
+  requestLocalClientKey() {
+     return this.storage.get('client_key').then((val) => {
+        this.clientKey = val;
+        return val;
+    })
+  }
 
   getClientKey() {
     return this.clientKey;

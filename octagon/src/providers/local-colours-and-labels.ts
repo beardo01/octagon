@@ -13,8 +13,8 @@ export class LocalColoursAndLabels {
   labels: string [] = [];
 
   constructor(public storage: Storage) {
-      this.requestLocalColours();
-      this.requestLocalLabels();
+      // this.requestLocalColours();
+      // this.requestLocalLabels();
   }
 
   /**

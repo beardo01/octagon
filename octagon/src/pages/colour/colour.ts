@@ -31,7 +31,7 @@ export class ColourPage {
     this.labels = this.getProviderLabels();
     this.getAvailableColours();
     // Call Web API
-    this.requestColoursAndLabels();
+    // this.requestColoursAndLabels();
   }
 /**
  * When view is loaded we call helper function to set the class names of available colours.
@@ -39,30 +39,30 @@ export class ColourPage {
   ionViewDidLoad() {
   }
 
-  /**
-   * Make a call to the coloursAndLabels provider that requests data from the api.
-   * If sucessfull set variables accordinly. If it fails get data from local storage.
-   * 
-   */
-  requestColoursAndLabels() {
-    this.coloursAndLabels.requestColoursAndLabels()
-    .subscribe(
-      response => {
-        this.inUseColours = this.coloursAndLabels.getColours();
-        console.log("getCOlours from WEBAPI");
-        console.log(this.coloursAndLabels.getColours());
-        this.labels = this.coloursAndLabels.getLabels();
-        this.getAvailableColours();
+  // /**
+  //  * Make a call to the coloursAndLabels provider that requests data from the api.
+  //  * If sucessfull set variables accordinly. If it fails get data from local storage.
+  //  * 
+  //  */
+  // requestColoursAndLabels() {
+  //   this.coloursAndLabels.requestColoursAndLabels()
+  //   .subscribe(
+  //     response => {
+  //       this.inUseColours = this.coloursAndLabels.getColours();
+  //       console.log("getCOlours from WEBAPI");
+  //       console.log(this.coloursAndLabels.getColours());
+  //       this.labels = this.coloursAndLabels.getLabels();
+  //       this.getAvailableColours();
 
-        // Check if we need to update local storage
-        if (this.storage.colours != this.inUseColours) {
-          this.setLocalStorage();
-        }
-      },
-      error => {
-        console.log(error);
-      });
-  } 
+  //       // Check if we need to update local storage
+  //       if (this.storage.colours != this.inUseColours) {
+  //         this.setLocalStorage();
+  //       }
+  //     },
+  //     error => {
+  //       console.log(error);
+  //     });
+  // } 
 
   /**
    * Update colours in local storage

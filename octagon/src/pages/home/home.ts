@@ -7,6 +7,7 @@ import { ColoursAndLabels } from '../../providers/colours-and-labels';
 import { EventData } from '../../providers/event-data';
 import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
 import { LocalEvents } from '../../providers/local-events';
+import { ValidateUser } from '../../providers/validate-user';
 
 
 @Component({
@@ -35,7 +36,7 @@ export class HomePage {
 
   // Sets up dates in the header of homepage.
   constructor(public navCtrl: NavController, http: Http, public coloursAndLabels: ColoursAndLabels,
-    public eventData: EventData, public localCLStorage: LocalColoursAndLabels, public localEventStorage: LocalEvents) {
+    public eventData: EventData, public localCLStorage: LocalColoursAndLabels, public localEventStorage: LocalEvents, public validUser: ValidateUser) {
 
     this.date = new Date();
     // set header to the current day name from days array.
@@ -47,13 +48,34 @@ export class HomePage {
     this.initaliseBubbles();
     
   }
+  // set entry conditions
+  ionViewCanEnter():any {
+    //console.log("can enter", this.validUser.getClientKey())
+    // Found client key, load page..
+    if (this.validUser.clientKey) {
+      console.log( "ionViewCanEnter Found client key")
+      return true;
+    }
+    return this.validUser.requestLocalClientKey().then( clientKey => {
+        if( clientKey == undefined ) {
+          console.log('val is undefined')
+          return false;
+        } else {
+          console.log("ionViewCanEnter found correct client key: ", clientKey)
+          return true;
+        }
+    })
+  }
+
   initaliseBubbles() {
    for (var day = 0; day != 5; day++) {
       this.bubbles.push([]); 
     }
   }
   ionViewWillEnter() {
+    
     this.reinitalizeView();
+    
   }
 
   
@@ -128,26 +150,26 @@ export class HomePage {
   // /**
   //  * Request data from provider.
   //  */
-  requestEventData() {
-    this.eventData.requestEventData()
-      .subscribe(
-      response => {
-        console.log(this.eventData.getEvents().length);
-        console.log(this.eventData.getEvents());
+  // requestEventData() {
+  //   this.eventData.requestEventData()
+  //     .subscribe(
+  //     response => {
+  //       console.log(this.eventData.getEvents().length);
+  //       console.log(this.eventData.getEvents());
 
-        // Executes when we have recieved data from the web API
-        this.input_data = new Array();
-        this.parseEvents(this.eventData.getEvents());
-        this.filterData();
-        this.displayWeekDays();
-      },
-      error => {
-        console.log(error);
-        this.filterData();
-        this.displayWeekDays();
-        // Can't connect to network, use what's in local storage
-      });
-  }
+  //       // Executes when we have recieved data from the web API
+  //       this.input_data = new Array();
+  //       this.parseEvents(this.eventData.getEvents());
+  //       this.filterData();
+  //       this.displayWeekDays();
+  //     },
+  //     error => {
+  //       console.log(error);
+  //       this.filterData();
+  //       this.displayWeekDays();
+  //       // Can't connect to network, use what's in local storage
+  //     });
+  // }
 
   /**
    * Process data requested from the provider and push to array

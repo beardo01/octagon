@@ -43,14 +43,14 @@ export class LoginPage {
     }
   }
 
-  ionViewDidLoad(){
+/*  ionViewDidLoad(){
 
     /// play around with this to get user auto logging in
     if (this.localStorage.clientKey != null || this.localStorage.clientKey != undefined) {
       // if we have a client key user doesnt need to re log in so get their data and redirect
       this.getEvents()
     }
-  }
+  }*/
 
 
   /** Shows the nav bar when leaving the page. */

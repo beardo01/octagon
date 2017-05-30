@@ -6,7 +6,7 @@ import { AlertController } from 'ionic-angular';
 import { ClearLocalStorage } from '../../providers/clear-local-storage';
 import { UserLocalStorage } from '../../providers/user-local-storage';
 import { Http, Headers } from '@angular/http';
-//import { TabPage } from '../tabs/tabs'
+//import { TabsPage } from '../tabs/tabs';
 
 @Component({
   selector: 'page-join',
@@ -28,6 +28,7 @@ export class JoinPage {
 
   constructor(public navCtrl: NavController, public builder: FormBuilder, public http: Http, 
               public alertCtrl: AlertController, public localStorage: UserLocalStorage, public clearStorage: ClearLocalStorage) {
+    
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     }
@@ -86,7 +87,7 @@ export class JoinPage {
                 this.localStorage.setClientKey(response.data.client_key);
                 this.localStorage.setLocalColours(response.data.colours);
                 this.localStorage.setLocalLabels(response.data.labels);
-                this.navCtrl.popToRoot();
+                this.navCtrl.pop();
               } else {
                 this.presentAlert(response.data);
               }

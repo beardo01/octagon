@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { HomePage } from '../home/home';
+<<<<<<< HEAD
 import { UserLocalStorage } from '../../providers/user-local-storage';
+=======
+import * as moment from 'moment';
+>>>>>>> c58bfda1756caccf4cd8c10a2e1f4afaca4b236c
 
 @Component({
   selector: 'page-week',
@@ -9,18 +13,10 @@ import { UserLocalStorage } from '../../providers/user-local-storage';
 })
 export class WeekPage {
 
-  months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep',
-    'Oct', 'Nov', 'Dec',];
-
-  date: Date;
-  date_range: string;
-  in5Day: string;
-  in5Month: string;
-
-  display_days: string[];
-
-  // Holds all filtered days.
+  // Holds all filtered array of days.
   bubbles_week: any[][][] = new Array();
+  date_range: string;
+  display_days: string[] = new Array();
 
   // Arrays filled by http
   //Holds all input data of each day.
@@ -28,12 +24,21 @@ export class WeekPage {
   colours: string[];
   labels: string[];
 
+<<<<<<< HEAD
   constructor(public navCtrl: NavController, public localStorage: UserLocalStorage ) {
     this.date = new Date();
     this.display_days = new Array();
 
     this.colours = this.localStorage.parseColoursToArray();
     this.labels = this.localStorage.parseColoursToArray();
+=======
+  constructor(public navCtrl: NavController, http: Http, public coloursAndLabels: ColoursAndLabels,
+    public eventData: EventData, public storage: LocalColoursAndLabels, public localEventStorage: LocalEvents) {
+    // Set colour data field from values stored in provider
+    this.colours = this.getProviderColours();
+    // set labels data field from values stored in provider
+    this.labels = this.getProviderLabels();
+>>>>>>> c58bfda1756caccf4cd8c10a2e1f4afaca4b236c
     this.initaliseBubbles();
   }
 
@@ -49,7 +54,12 @@ export class WeekPage {
     this.bubbles_week = new Array();
 
     this.initaliseBubbles();
+<<<<<<< HEAD
     this.parseEvents(this.localStorage.events);
+=======
+    this.parseEvents(this.localEventStorage.getProviderEvents());
+    this.loadHeaderDates();
+>>>>>>> c58bfda1756caccf4cd8c10a2e1f4afaca4b236c
     this.filterData();
   }
 
@@ -66,6 +76,7 @@ export class WeekPage {
    * @param eventArr Array containing events from provider
    */
   parseEvents(eventArr) {
+<<<<<<< HEAD
         eventArr.forEach(eventObj => {
             var outerArr = [];
             if (eventObj != "No items today"){
@@ -83,112 +94,59 @@ export class WeekPage {
           this.input_data_days.push(outerArr);
           outerArr = [];
         });
+=======
+    eventArr.data.forEach(eventObj => {
+      var outerArr = [];
+      if (eventObj != "No items today") {
+        eventObj.forEach(element => {
+          var arr = [];
+          arr.push(element.id);
+          arr.push(element.type);
+          arr.push(element.start);
+          arr.push(element.end);
+          arr.push(element.description);
+          arr.push(element.location);
+          outerArr.push(arr);
+        })
+>>>>>>> c58bfda1756caccf4cd8c10a2e1f4afaca4b236c
       }
-
-  // Works out the date in 5 days
-  addDays(dateObj, numDays) {
-    dateObj.setDate(dateObj.getDate() + numDays);
-    return dateObj;
+      this.input_data_days.push(outerArr);
+      outerArr = [];
+    });
   }
 
   filterData() {
     //Setup bubbles array
     for (var day = 0; day < this.input_data_days.length; day++) {
-
       for (var bubble_selected = 0; bubble_selected < this.input_data_days[day].length; bubble_selected++) {
+        
         var filtered = new Array();
-
         var type = this.input_data_days[day][bubble_selected][1];
-        var time_start_24 = this.input_data_days[day][bubble_selected][2];
-        var time_end_24 = this.input_data_days[day][bubble_selected][3];
+        var input_start_time = this.input_data_days[day][bubble_selected][2];
+        var input_end_time = this.input_data_days[day][bubble_selected][3];
+        var colour = this.colours[type];
+        var start_time = moment.unix(input_start_time).format("HHmm");
+        var end_time = moment.unix(input_end_time).format("HHmm");
 
-        var timebar_location = '';
-        var timebar_start = 0;
-        var timebar_end = 0;
-        var height = 0;
-        var colour = '';
+        // ((first time / heightest possible time) * highest bubble location) + padding.
+        var timebar_location = ((parseInt(start_time) / 2359) * 104) + 2 + '%';
 
-        // Writes the correct colour depending on type.
-        if (type === 0) {
-          colour = this.colours[0]
-        } else if (type === 1) {
-          colour = this.colours[1]
-        } else if (type === 2) {
-          colour = this.colours[2]
-        }
-
-        // Writes a formatted time from UNIX to 24 hours.
-        var start_hours_24 = new Date(this.input_data_days[day][bubble_selected][2] * 1000).getHours().toString();
-        var start_mins_24 = new Date(this.input_data_days[day][bubble_selected][2] * 1000).getMinutes().toString();
-        var end_hours_24 = new Date(this.input_data_days[day][bubble_selected][3] * 1000).getHours().toString();
-        var end_mins_24 = new Date(this.input_data_days[day][bubble_selected][3] * 1000).getMinutes().toString();
-
-        if (start_hours_24.length <= 1) {
-          start_hours_24 = '0' + start_hours_24;
-        }
-
-        if (start_mins_24.length <= 1) {
-          start_mins_24 = '0' + start_mins_24;
-        }
-
-        if (end_hours_24.length <= 1) {
-          end_hours_24 = '0' + end_hours_24;
-        }
-
-        if (end_mins_24.length <= 1) {
-          end_mins_24 = '0' + end_mins_24;
-        }
-
-        time_start_24 = start_hours_24 + start_mins_24;
-        time_end_24 = end_hours_24 + end_mins_24;
-
-        // time_start_24 is the first time.
-        // 2359 is the heighest time on the bar.
-        // 104 is where the heighest bubble can go.
-        // +2 is the padding for start and end.
-
-        timebar_start = ((time_start_24 / 2359) * 104) + 2;
-        timebar_end = ((time_end_24 / 2359) * 104) + 2;
-        timebar_location = timebar_start + '%';
-        height = (timebar_end - timebar_start) - 14;
-        if (height === 0) {
-          height = 7;
-        }
         // Fill filtered array with data.
-        filtered.push(timebar_location); // [0]
-        filtered.push(colour);           // [1]
-        filtered.push(time_start_24);    // [2]
-        filtered.push(time_end_24);      // [3]
-        filtered.push(height + '%');     // [4]
-        // Push filtered bubble to bubbles.
+        filtered.push(timebar_location, colour, start_time, end_time);
+        // Push filtered array to the week in the selected day.
         this.bubbles_week[day].push(filtered);
       }
     }
   }
 
-  giveDay(numberOfDays) {
-    var day: number = this.addDays(new Date(), numberOfDays).getDate();
-    return day;
-  }
-
-  giveMonth(numberOfDays) {
-    var month: number = this.addDays(new Date(), numberOfDays).getMonth();
-    return month;
-  }
-
-  ionViewDidLoad() {
-    // First date of the date range.
-    this.date_range = (this.date.getDate()).toString() + " " +
-      this.months[(this.date.getMonth())];
-    // Second date of the date range.
-    this.date_range += " - " + this.giveDay(4) + " " + this.months[this.giveMonth(4)];
+  loadHeaderDates() {
+    // Top dates in weeks page
+    this.date_range = moment().format("D MMM") + " - " + moment().add(4, "days").format("D MMM");
 
     // Adds 5 dates to the page.
     for (var i = 0; i < 5; i++) {
-      this.display_days[i] = this.giveDay(i) + " " + this.months[this.giveMonth(i)];
+      this.display_days[i] = moment().add(i, "days").format("D MMM");
     }
-
-    this.filterData();
   }
 
   select_day(number: Number) {

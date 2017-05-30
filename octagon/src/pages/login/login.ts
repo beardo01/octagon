@@ -3,11 +3,11 @@ import { NavController} from 'ionic-angular';
 import { JoinPage } from '../join/join';
 import { TabsPage } from '../tabs/tabs';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ValidateUser } from '../../providers/validate-user';
-import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
 import { AlertController } from 'ionic-angular';
-import { EventData } from '../../providers/event-data';
-//import { CreateFormValidator } from '../../validators/createForm';
+
+import { UserLocalStorage } from '../../providers/user-local-storage';
+import { Http, Headers } from '@angular/http';
+import * as moment from 'moment';
 
 
 @Component({
@@ -17,17 +17,15 @@ import { EventData } from '../../providers/event-data';
 export class LoginPage {
 
   loginForm: FormGroup;
-
   submitAttempt: boolean = false;
-
   tabBarElement: any;
   id: string;
   password: string;
   ip: string;
   invalid: boolean;
 
-  constructor(public navCtrl: NavController, public builder: FormBuilder, public validateUser: ValidateUser, public localColoursAndLabels: LocalColoursAndLabels, 
-              public alertCtrl: AlertController, public eventData: EventData) {
+  constructor(public navCtrl: NavController, public builder: FormBuilder, public alertCtrl: AlertController, 
+              public localStorage: UserLocalStorage , public http: Http ) {
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     }
@@ -36,12 +34,6 @@ export class LoginPage {
       'id' : [this.id,Validators.compose([Validators.required])],
       'password' : [this.password, Validators.compose([Validators.minLength(6), Validators.required])]
     });
-
-    this.getIP();
-  }
-
-  getIP(){
-    this.ip = "127.0.0.1";
   }
   /** This will stop the nav bar from showing when entering this page. */
   ionViewWillEnter() {
@@ -49,6 +41,16 @@ export class LoginPage {
       this.tabBarElement.style.display = 'none';
     }
   }
+
+  ionViewDidLoad(){
+
+    /// play around with this to get user auto logging in
+    if (this.localStorage.clientKey != null || this.localStorage.clientKey != undefined) {
+      // if we have a client key user doesnt need to re log in so get their data and redirect
+      this.getEvents()
+    }
+  }
+
 
   /** Shows the nav bar when leaving the page. */
   ionViewWillLeave() {
@@ -64,44 +66,74 @@ export class LoginPage {
 
   authenticate(){
     this.submitAttempt = true;
-    // add ip address - To implement!@!#R@#URGIO#UFVOUYEVH J
-    var sendValue = this.loginForm.value;
-    sendValue.ip = this.ip;
-
-    this.validateUser.loginUser(sendValue).subscribe( response => {
-      if (response.success) {
-      // Succesfully logged in. Get users data
-        this.validateUser.setLocalClientKey(response.data.client_key);
-        // colour array
-        var colourArr = []
-            colourArr.push(response.data.colours.colour_one);
-            colourArr.push(response.data.colours.colour_two);
-            colourArr.push(response.data.colours.colour_three);
-            this.localColoursAndLabels.setStorageColours(colourArr)
-            this.localColoursAndLabels.setProviderColours(colourArr);
-          // label array
-          var labelArr = []
-            labelArr.push(response.data.labels.label_one);
-            labelArr.push(response.data.labels.label_two);
-            labelArr.push(response.data.labels.label_three);
-            this.localColoursAndLabels.setStorageLabels(labelArr);
-            this.localColoursAndLabels.setProviderLabels(labelArr);
+   
+    let headers: Headers =  new Headers();
+    headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
+    headers.append('Content-Type', 'application/json');
+    let userData = {
+      'id': this.loginForm.value.id,
+      'password': this.loginForm.value.password,
+      'ip': '127.0.0.1'
+    };
+      this.http.post('https://api.simpalapps.com/driver/get/user', JSON.stringify(userData), {headers: headers})
+      .map(res => 
+        res.json())
+      .subscribe( response => {
+          if (response.success) {
+            this.localStorage.setClientKey(response.data.client_key);
+            this.localStorage.setLocalColours(response.data.colours);
+            this.localStorage.setLocalLabels(response.data.labels);
+            // call local method to read in the next 10 days of events
+            this.getEvents();
             
+        } else {
+        // display error message to user
+        this.presentAlert(response.data);
+      }
+      
+      },
+      err => {
+        console.log("Something went wrong with authenticate request")
+      })
+  }
+  /**
+   * Called when user successfully logs in
+   * send post request away to API and get users events
+   * 
+   */
+  getEvents() {
+  var start = moment().startOf('day').unix();
+  let eventHeaders: Headers =  new Headers();
+    eventHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
+    eventHeaders.append('client_key', this.localStorage.clientKey);
+    eventHeaders.append('Content-Type', 'application/json');
+    let body = {
+      'from': start
+    };
+    this.http.post('https://api.simpalapps.com/driver/get/events', JSON.stringify(body), {headers:eventHeaders})
+    .map(res => res.json())
+      .subscribe(response => {
+        if (response.success) {
+          this.localStorage.events = response.data;
+          this.localStorage.setLocalEvents(response.data);
+          this.navCtrl.setRoot(TabsPage);
+        } else {
+          // display error message to user
+          this.presentAlert(response.data)
+        }
+      },
+      err => {
+          console.log("Something went wrong with your getEvents request")
+      })
+    } 
 
-            // READ IN NEK 10 DAYS OF BLOODY EVENTS m8
-            this.eventData.requestEventData()
-            // REDIRECT New user
-            this.navCtrl.setRoot(TabsPage);
-          } else {
-            // Display error message from server
-            this.presentAlert(response.data)
-          }
-        })
-    }
-    
+  /**
+   * Alert user indicating their issue
+   * @param errorMessage, message to display
+   */    
   presentAlert(errorMessage: string) {
     let alert = this.alertCtrl.create({
-      title: 'Error during registration',
+      title: 'Login Failed',
       message: errorMessage,
       buttons: ['Dismiss']
     });

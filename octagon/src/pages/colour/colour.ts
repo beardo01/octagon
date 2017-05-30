@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Http } from '@angular/http';
-import { ColoursAndLabels } from '../../providers/colours-and-labels';
-import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
-import { SyncData } from '../../providers/sync-data';
+import { UserLocalStorage } from '../../providers/user-local-storage';
+import { Http, Headers, RequestOptions } from '@angular/http';
+import { AlertController } from 'ionic-angular';
 
 
 @Component({
@@ -25,11 +24,11 @@ export class ColourPage {
   toggle2 : boolean = false;
   toggle3 : boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, http: Http, public coloursAndLabels: ColoursAndLabels, 
-              public storage: LocalColoursAndLabels, public sync: SyncData) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public localStorage: UserLocalStorage,
+              public http: Http, public alertCtrl: AlertController) {
 
-    this.inUseColours = this.getProviderColours();
-    this.labels = this.getProviderLabels();
+    this.inUseColours = this.localStorage.parseColoursToArray();
+    this.labels = this.localStorage.parseLabelsToArray()
     this.getAvailableColours();
     // Call Web API
     // this.requestColoursAndLabels();
@@ -38,27 +37,6 @@ export class ColourPage {
  * When view is loaded we call helper function to set the class names of available colours.
  */
   ionViewDidLoad() {}
-
-  /**
-   * Update colours in local storage
-   */
-  setLocalStorage() {
-    this.storage.setProviderColours(this.inUseColours);
-    this.storage.setStorageColours(this.inUseColours);
-  }
-  /**
-   * Get variables from provider
-   */
-  getProviderColours() {
-    return this.storage.getProviderColours();
-  }
-
-  /**
-   * Get label variables from provider
-   */
-  getProviderLabels() {
-    return this.storage.getProviderLabels();
-  }
 
   /**
    * When a user clicks a colour button the value of the button stored in the availableColours array is swapped with
@@ -122,16 +100,57 @@ export class ColourPage {
     }
   }  
 
-  save() {
-    console.log(JSON.stringify(this.inUseColours))
+  /**
+   * If user has made valid choices, send a post request to the server with the new colour changes
+   * wait for response. 
+   * If unsuccessfull we alert the user.
+   * If successfull we pop to settings page.
+   * 
+   * @param colourArr, colours to send to the server and save in local storage
+   */
+    setColours(colourArr) {
+    // post to server and set new colour strings
+    let headers: Headers =  new Headers();
+    headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
+    headers.append('client_key', this.localStorage.clientKey);
+    headers.append('Content-Type', 'application/json');
 
-    this.coloursAndLabels.setColours(this.inUseColours).subscribe( response => {
-      if (!response.success) {
-        // failed to send colours. Need to setup storage till we reconnect.
-        this.sync.setSyncColours(this.inUseColours);
-      }
-    })
-    this.setLocalStorage();
-    this.navCtrl.pop();
+    let body = {
+      "colour_one": colourArr[0],
+      "colour_two": colourArr[1],
+      "colour_three": colourArr[2],
+    };
+    return this.http.post('https://api.simpalapps.com/driver/set/colours', JSON.stringify(body), {headers: headers})
+      .map(res => 
+       res.json()).subscribe ( response => {
+        if (response.success) {
+
+          this.localStorage.saveArrayOfColours(this.inUseColours);
+          this.navCtrl.pop();
+
+        } else {
+          this.presentAlert(response.data);
+        }
+      });
+    }
+
+  /**
+   * 
+   * @param errorMessage, message to display to user 
+   */
+  presentAlert(errorMessage: string) {
+    let alert = this.alertCtrl.create({
+      title: 'Error during registration',
+      message: errorMessage,
+      buttons: ['Dismiss']
+      });
+    alert.present();
+  }
+  
+  /**
+   * Called when user wants to save the settings
+   */
+  save() {
+    this.setColours(this.inUseColours);
   }
 } // end class

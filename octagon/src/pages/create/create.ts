@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController } from 'ionic-angular';
 import { CreateFormValidator } from '../../validators/createForm';
-import { Http, Headers, RequestOptions } from '@angular/http';
 import * as moment from 'moment';
-import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
+import { AlertController } from 'ionic-angular';
+import { Http, RequestOptions, Headers } from '@angular/http';
+import { UserLocalStorage } from '../../providers/user-local-storage';
 
 @Component({
   selector: 'page-create',
@@ -24,8 +25,6 @@ export class CreatePage {
   // list of label names
   labelNames: string[];
 
-  // List of colours
-  //colours: string [];
   // date object
   date: Date;
 
@@ -54,10 +53,11 @@ export class CreatePage {
   // Events description
   description: string;
 
-  constructor(public navCtrl: NavController, public builder: FormBuilder, public http: Http, public localColoursAndLabels: LocalColoursAndLabels) {
+  constructor(public navCtrl: NavController, public builder: FormBuilder, public http: Http, public localStorage: UserLocalStorage,
+              public alertCtrl: AlertController) {
     // initialise data fields
     this.date = new Date();
-    this.labelNames = this.localColoursAndLabels.getProviderLabels();
+    this.labelNames = this.localStorage.parseLabelsToArray();
     //   this.colours = [];
 
     this.padded_month = (this.date.getMonth()+1).toString();
@@ -118,8 +118,6 @@ export class CreatePage {
    */
   add() {
     this.submitAttempt = true;
-    console.log("time ends" ,this.createForm.value.timeEnds);
-    console.log("Date ends", this.createForm.value.dateEnds);
     if (this.createForm.valid) {
 
       var type = this.labelNames.indexOf(this.createForm.value.label);
@@ -132,7 +130,7 @@ export class CreatePage {
 
       let headers: Headers =  new Headers();
       headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
-      headers.append('client_key', 'Ym2fv0ZxMyJrnCiwmNDi');
+      headers.append('client_key', this.localStorage.clientKey);
       headers.append('Content-Type', 'application/json');
 
       let body = {
@@ -142,30 +140,65 @@ export class CreatePage {
         "start": start,
         "end": end
       };
-      console.log('data sent in add()', JSON.stringify(body));
-
       return this.http.post('https://api.simpalapps.com/driver/create/event', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
-      .subscribe(data => {
-        console.log("response from server", data)
-        this.navCtrl.popToRoot();
+      .subscribe(response => {
+        if(response.success) {
+          // reload events so user can see their new event in the views
+          this.getEvents()
+        } else {
+           this.presentAlert(response.data)
+        }
+      },
+      err =>{
+        console.log("Error while adding event");
       })
-
-
-    } else {
-      console.log("FAILED");
     }
-    console.log("Form Submission");
+  }
+    /**
+   * Called when user succesfully creates an event.
+   * send post request away to API and get users events
+   * 
+   */
+  getEvents() {
+  var start = moment().startOf('day').unix();
+  let eventHeaders: Headers =  new Headers();
+    eventHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
+    eventHeaders.append('client_key', this.localStorage.clientKey);
+    eventHeaders.append('Content-Type', 'application/json');
+    let body = {
+      'from': start
+    };
+    this.http.post('https://api.simpalapps.com/driver/get/events', JSON.stringify(body), {headers:eventHeaders})
+    .map(res => res.json())
+      .subscribe(response => {
+        if (response.success) {
+          this.localStorage.events = response.data
+          this.localStorage.setLocalEvents(response.data);
 
-  }
-  getLabels() {
-    // Make a call to plugin to set the labels
-  }
-
-  ionViewDidLoad() {
-    // check if we are editing the page or just making a new one. navaparams maybe?
-    //this.getLabels();
-  }
+          this.navCtrl.popToRoot();
+         //this.navCtrl.setRoot(TabsPage);
+        } else {
+          // display error message to user
+          this.presentAlert(response.data)
+        }
+      },
+      err => {
+          console.log("Something went wrong with your getEvents request")
+      })
+    } 
+      /**
+   * Alert user indicating their issue
+   * @param errorMessage, message to display
+   */    
+  presentAlert(errorMessage: string) {
+    let alert = this.alertCtrl.create({
+      title: 'Login Failed',
+      message: errorMessage,
+      buttons: ['Dismiss']
+    });
+    alert.present();
+}
 
   /*
    * Toggles if we display the repeatEndDate datepicker based on the value stored in repeatFreq  

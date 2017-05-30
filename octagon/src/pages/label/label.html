@@ -21,51 +21,51 @@
 <ion-content padding>
   <form id="labelNames" [formGroup]="labelForm" (ngSubmit)="save(labelForm.value)">
 
-    <ion-list class="event-label" [class.invalid]="!labelForm.controls.label1.valid && (labelForm.controls.label1.dirty || submitAttempt)">
+    <ion-list class="event-label" [class.invalid]="!labelForm.controls.label_one.valid && (labelForm.controls.label_one.dirty || submitAttempt)">
       <ion-item>
-        <ion-input clearOnEdit="true" formControlName="label1"></ion-input>
+        <ion-input clearOnEdit="true" formControlName="label_one"></ion-input>
         <ion-label>
           <div class="coloured-dot-wrapper">
             <div [ngClass]='colours[0]'></div>
           </div>
         </ion-label>
       </ion-item>
-      <ion-item *ngIf="!labelForm.controls.label1.valid && submitAttempt">
+      <ion-item *ngIf="!labelForm.controls.label_one.valid && submitAttempt">
         <small>Must be between 3 and 15 letters</small>
       </ion-item>
     </ion-list>
 
 
-    <ion-list class="event-label" [class.invalid]="!labelForm.controls.label2.valid && (labelForm.controls.label2.dirty || submitAttempt)">
+    <ion-list class="event-label" [class.invalid]="!labelForm.controls.label_two.valid && (labelForm.controls.label_two.dirty || submitAttempt)">
       <ion-item>
-        <ion-input clearOnEdit="true" formControlName="label2"></ion-input>
+        <ion-input clearOnEdit="true" formControlName="label_two"></ion-input>
         <ion-label>
           <div class="coloured-dot-wrapper">
             <div [ngClass]='colours[1]'></div>
           </div>
         </ion-label>
       </ion-item>
-      <ion-item *ngIf="!labelForm.controls.label2.valid && submitAttempt">
+      <ion-item *ngIf="!labelForm.controls.label_two.valid && submitAttempt">
         <small>Must be between 3 and 15 letters</small>
       </ion-item>
     </ion-list>
 
 
-    <ion-list class="event-label" [class.invalid]="!labelForm.controls.label3.valid && (labelForm.controls.label3.dirty || submitAttempt)">
+    <ion-list class="event-label" [class.invalid]="!labelForm.controls.label_three.valid && (labelForm.controls.label_three.dirty || submitAttempt)">
       <ion-item>
-        <ion-input clearOnEdit="true" formControlName="label3"></ion-input>
+        <ion-input clearOnEdit="true" formControlName="label_three"></ion-input>
         <ion-label>
           <div class="coloured-dot-wrapper">
             <div [ngClass]='colours[2]'></div>
           </div>
         </ion-label>
       </ion-item>
-      <ion-item *ngIf="!labelForm.controls.label3.valid && submitAttempt">
+      <ion-item *ngIf="!labelForm.controls.label_three.valid && submitAttempt">
         <small>Must be between 3 and 15 letters</small>
       </ion-item>
     </ion-list>
 
-    <!-- <ion-item *ngIf="!labelForm.controls.label2.valid && (labelForm.controls.label2.dirty || submitAttempt)" > -->
+    <!-- <ion-item *ngIf="!labelForm.controls.label_two.valid && (labelForm.controls.label_two.dirty || submitAttempt)" > -->
 
   </form>
 </ion-content>

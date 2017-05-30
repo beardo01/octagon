@@ -4,6 +4,8 @@ import { NavController } from 'ionic-angular';
 import { LoginPage } from '../login/login';
 import { ColourPage } from '../colour/colour';
 import { LabelPage } from '../label/label';
+import { Storage } from '@ionic/storage';
+import { UserLocalStorage } from '../../providers/user-local-storage';
 
 @Component({
   selector: 'page-settings',
@@ -11,15 +13,17 @@ import { LabelPage } from '../label/label';
 })
 export class SettingsPage {
 
-  constructor(public navCtrl: NavController) {
+  constructor(public navCtrl: NavController, public storage: Storage, public localStorage: UserLocalStorage) {
 
   }
 
   colourPage() {
     this.navCtrl.push(ColourPage);
   }
-
+  
   logout() {
+    this.storage.remove('client_key');
+    this.localStorage.clientKey = '';
     this.navCtrl.push(LoginPage);
   }
 

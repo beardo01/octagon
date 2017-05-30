@@ -27,8 +27,6 @@ export class RegisterUser {
     return this.http.post('https://api.simpalapps.com/driver/create/user', JSON.stringify(userData), {headers: headers})
       .map(res => {
         var response = res.json();
-        console.log("RESPONSE FROM register USER POST");
-        console.log(response);
         return response;
       })
   }

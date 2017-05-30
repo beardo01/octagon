@@ -5,6 +5,8 @@ import { RegisterUser } from '../../providers/register-user';
 import { ValidateUser } from '../../providers/validate-user';
 import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
 import { AlertController } from 'ionic-angular';
+import { UserLocalStorage } from '../../providers/user-local-storage'
+import { ClearLocalStorage } from '../../providers/clear-local-storage';
 //import { TabPage } from '../tabs/tabs'
 
 @Component({
@@ -26,7 +28,7 @@ export class JoinPage {
   password_same: boolean;
 
   constructor(public navCtrl: NavController, public builder: FormBuilder, public registerUser: RegisterUser, 
-              public validateUser: ValidateUser, public localColoursAndLabels: LocalColoursAndLabels, public alertCtrl: AlertController) {
+              public alertCtrl: AlertController, public localStorage: UserLocalStorage, public clearStorage: ClearLocalStorage) {
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     }
@@ -58,6 +60,7 @@ export class JoinPage {
   signInPage() {
     this.navCtrl.pop(JoinPage);
   }
+
   presentAlert(errorMessage: string) {
     let alert = this.alertCtrl.create({
       title: 'Error during registration',
@@ -69,27 +72,16 @@ export class JoinPage {
 
   /** This method pops to the root of the tab then switches to the home tab. */
   join() {
+    this.clearStorage.clearLocalStorage();
     this.submitAttempt = true;
     if (this.password === this.rpassword) {
       if (this.joinForm.valid) {
         this.registerUser.registerUser(this.joinForm.value).subscribe( response =>{
           if (response.success) {
             // Succesfully register user. Set local storage up!
-            this.validateUser.setLocalClientKey(response.data.client_key);
-            // colour array
-            var colourArr = []
-            colourArr.push(response.data.colours.colour_one);
-            colourArr.push(response.data.colours.colour_two);
-            colourArr.push(response.data.colours.colour_three);
-            this.localColoursAndLabels.setStorageColours(colourArr)
-            this.localColoursAndLabels.setProviderColours(colourArr);
-            // label array
-            var labelArr = []
-            labelArr.push(response.data.labels.label_one);
-            labelArr.push(response.data.labels.label_two);
-            labelArr.push(response.data.labels.label_three);
-            this.localColoursAndLabels.setStorageLabels(labelArr);
-            this.localColoursAndLabels.setProviderLabels(labelArr);
+            this.localStorage.setClientKey(response.data.client_key);
+            this.localStorage.setLocalColours(response.data.colours);
+            this.localStorage.setLocalLabels(response.data.labels);
         
             // REDIRECT New user
             //this.navCtrl.setRoot(TabPage);
@@ -101,11 +93,10 @@ export class JoinPage {
           } 
         })
       } else {
-        console.log("FAILED");
+
       }
     } else {
       this.password_same = false;
-      console.log("FAILED");
     }
   }
 

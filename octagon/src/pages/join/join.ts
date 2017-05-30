@@ -6,6 +6,7 @@ import { ValidateUser } from '../../providers/validate-user';
 import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
 import { AlertController } from 'ionic-angular';
 import { UserLocalStorage } from '../../providers/user-local-storage'
+import { ClearLocalStorage } from '../../providers/clear-local-storage';
 //import { TabPage } from '../tabs/tabs'
 
 @Component({
@@ -27,7 +28,7 @@ export class JoinPage {
   password_same: boolean;
 
   constructor(public navCtrl: NavController, public builder: FormBuilder, public registerUser: RegisterUser, 
-              public alertCtrl: AlertController, public localStorage: UserLocalStorage) {
+              public alertCtrl: AlertController, public localStorage: UserLocalStorage, public clearStorage: ClearLocalStorage) {
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     }
@@ -71,6 +72,7 @@ export class JoinPage {
 
   /** This method pops to the root of the tab then switches to the home tab. */
   join() {
+    this.clearStorage.clearLocalStorage();
     this.submitAttempt = true;
     if (this.password === this.rpassword) {
       if (this.joinForm.valid) {

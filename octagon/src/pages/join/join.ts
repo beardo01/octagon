@@ -1,12 +1,11 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { RegisterUser } from '../../providers/register-user';
-import { ValidateUser } from '../../providers/validate-user';
-import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
+
 import { AlertController } from 'ionic-angular';
-import { UserLocalStorage } from '../../providers/user-local-storage'
 import { ClearLocalStorage } from '../../providers/clear-local-storage';
+import { UserLocalStorage } from '../../providers/user-local-storage';
+import { Http, Headers } from '@angular/http';
 //import { TabPage } from '../tabs/tabs'
 
 @Component({
@@ -27,7 +26,7 @@ export class JoinPage {
   rpassword: string;
   password_same: boolean;
 
-  constructor(public navCtrl: NavController, public builder: FormBuilder, public registerUser: RegisterUser, 
+  constructor(public navCtrl: NavController, public builder: FormBuilder, public http: Http, 
               public alertCtrl: AlertController, public localStorage: UserLocalStorage, public clearStorage: ClearLocalStorage) {
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
@@ -61,43 +60,57 @@ export class JoinPage {
     this.navCtrl.pop(JoinPage);
   }
 
+  /** This method pops to the root of the tab then switches to the home tab. */
+  join() {
+    this.clearStorage.clearLocalStorage();
+
+    this.submitAttempt = true;
+    if (this.password === this.rpassword) {
+      if (this.joinForm.valid) {
+        let headers: Headers =  new Headers();
+        headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
+        headers.append('Content-Type', 'application/json');
+        let userData = {
+          'username': this.joinForm.value.name,
+          'email': this.joinForm.value.email,
+          'password': this.joinForm.value.password,
+          'rpassword': this.joinForm.value.rpassword,
+          'ip': '127.168.1.1'
+        };  
+          this.http.post('https://api.simpalapps.com/driver/create/user', JSON.stringify(userData), {headers: headers})
+          .map(res => 
+            res.json())
+            .subscribe( response => {
+
+              if (response.success) {
+                // Succesfully register user. Set local storage up!
+                this.localStorage.setClientKey(response.data.client_key);
+                this.localStorage.setLocalColours(response.data.colours);
+                this.localStorage.setLocalLabels(response.data.labels);
+                this.navCtrl.popToRoot();
+              } else {
+                this.presentAlert(response.data);
+              }
+            },
+            err => {
+                console.log('server return error when trying to register user')
+            })                 
+          } 
+      } else {
+        this.password_same = false;
+    }
+  }
+  
+    /**
+   * Alert user indicating their issue
+   * @param errorMessage, message to display
+   */    
   presentAlert(errorMessage: string) {
     let alert = this.alertCtrl.create({
-      title: 'Error during registration',
+      title: 'Login Failed',
       message: errorMessage,
       buttons: ['Dismiss']
     });
     alert.present();
-}
-
-  /** This method pops to the root of the tab then switches to the home tab. */
-  join() {
-    this.clearStorage.clearLocalStorage();
-    this.submitAttempt = true;
-    if (this.password === this.rpassword) {
-      if (this.joinForm.valid) {
-        this.registerUser.registerUser(this.joinForm.value).subscribe( response =>{
-          if (response.success) {
-            // Succesfully register user. Set local storage up!
-            this.localStorage.setClientKey(response.data.client_key);
-            this.localStorage.setLocalColours(response.data.colours);
-            this.localStorage.setLocalLabels(response.data.labels);
-        
-            // REDIRECT New user
-            //this.navCtrl.setRoot(TabPage);
-            this.navCtrl.popToRoot();
-          } else {
-            // Display error message from server
-            this.presentAlert(response.data)
-
-          } 
-        })
-      } else {
-
-      }
-    } else {
-      this.password_same = false;
-    }
   }
-
 }

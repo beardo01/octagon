@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { CreatePage } from '../create/create';
-
-import { Http } from '@angular/http';
+import { AlertController } from 'ionic-angular';
+import { Http, Headers } from '@angular/http';
 import { ActionSheetController } from 'ionic-angular';
 import * as moment from 'moment';
 import { UserLocalStorage } from '../../providers/user-local-storage';
@@ -36,8 +36,8 @@ export class HomePage {
   bubbles: any[][][] = new Array();
 
   // Sets up dates in the header of homepage.
-  constructor(public navCtrl: NavController, http: Http, private navParams: NavParams, public actionSheetCtrl: ActionSheetController, 
-              public localStorage: UserLocalStorage) {
+  constructor(public navCtrl: NavController, public  http: Http, private navParams: NavParams,
+               public actionSheetCtrl: ActionSheetController, public localStorage: UserLocalStorage, public alertCtrl: AlertController) {
 
     this.parameter1 = navParams.get('param1');
 
@@ -69,7 +69,9 @@ export class HomePage {
     this.reinitalizeView();
   }
 
-
+  /**
+   * the setup function
+   */
   reinitalizeView() {
     this.colours = this.localStorage.parseColoursToArray();
     this.labels = this.localStorage.parseLabelsToArray();
@@ -241,11 +243,14 @@ export class HomePage {
   delete(bubble : number) {
     this.actionSheet = this.actionSheetCtrl.create({
       title: 'Delete Event?',
+      enableBackdropDismiss: true,
       buttons: [
         {
           text: 'Delete',
           role: 'destructive',
           handler: () => {
+            // pass the item we want to delete to the deleteItem method
+            this.deleteItem(this.bubbles[this.selected_date][bubble][9]);
           }
         },
         {
@@ -258,5 +263,77 @@ export class HomePage {
     });
     this.actionSheet.present();
   }
+/**
+ * sends an id to the api to delete an item from the users
+ * timline.
+ * @param item, item to delete from timeline
+ */
+  deleteItem(item) {
+  let headers: Headers =  new Headers();
+    headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
+    headers.append('client_key', this.localStorage.clientKey);
+    headers.append('Content-Type', 'application/json');
 
-}
+    let body = {
+      'event_id': item
+    };
+    this.http.post('https://api.simpalapps.com/driver/delete/event', JSON.stringify(body), {headers:headers})
+    .map(res => res.json())
+      .subscribe(response => {
+        if (response.success) {
+          this.getEvents()
+
+        } else {
+          // display error message to user
+          this.presentAlert(response.data)
+        }
+      },
+      err => {
+          console.log("Something went wrong with your getEvents request")
+      })
+    } 
+
+    /**
+     * Alert user indicating their issue
+     * @param errorMessage, message to display
+     */    
+    presentAlert(errorMessage: string) {
+      let alert = this.alertCtrl.create({
+        title: 'Login Failed',
+        message: errorMessage,
+        buttons: ['Dismiss']
+      });
+      alert.present();
+   }
+  /**
+   * Called when user succesfully deletes an event.
+   * send post request away to API and get users events and call the initialisation function again
+   * 
+   */
+  getEvents() {
+  var start = moment().startOf('day').unix();
+  let eventHeaders: Headers =  new Headers();
+    eventHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
+    eventHeaders.append('client_key', this.localStorage.clientKey);
+    eventHeaders.append('Content-Type', 'application/json');
+    let body = {
+      'from': start
+    };
+    this.http.post('https://api.simpalapps.com/driver/get/events', JSON.stringify(body), {headers:eventHeaders})
+    .map(res => res.json())
+      .subscribe(response => {
+        if (response.success) {
+          this.localStorage.events = response.data
+          this.localStorage.setLocalEvents(response.data);
+          this.reinitalizeView();
+         //this.navCtrl.setRoot(TabsPage);
+        } else {
+          // display error message to user
+          this.presentAlert(response.data)
+        }
+      },
+      err => {
+          console.log("Something went wrong with your getEvents request")
+      })
+    } 
+  }

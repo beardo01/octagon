@@ -10,6 +10,7 @@ import { Http, Headers } from '@angular/http';
 import * as moment from 'moment';
 
 
+
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html'
@@ -114,6 +115,7 @@ export class LoginPage {
     .map(res => res.json())
       .subscribe(response => {
         if (response.success) {
+          
           this.localStorage.events = response.data;
           this.localStorage.setLocalEvents(response.data);
           this.navCtrl.setRoot(TabsPage);
@@ -139,5 +141,6 @@ export class LoginPage {
     });
     alert.present();
 }
+
 
 }

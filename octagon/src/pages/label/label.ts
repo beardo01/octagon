@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NavController, NavParams } from 'ionic-angular';
-import { ColoursAndLabels } from '../../providers/colours-and-labels';
-import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
-import { SyncData } from '../../providers/sync-data'
+import { Http, Headers, RequestOptions } from '@angular/http';
+import { AlertController } from 'ionic-angular';
+import { UserLocalStorage } from '../../providers/user-local-storage';
 
 
 @Component({
@@ -13,28 +13,28 @@ import { SyncData } from '../../providers/sync-data'
 export class LabelPage {
   // get these top 4 data fields from the cordova plugin or local storage.
   colours: string [] = [];
-  label1: string;
-  label2: string;
-  label3: string;
+  label_one: string;
+  label_two: string;
+  label_three: string;
   labelForm: FormGroup;
   submitAttempt: boolean = false;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public builder: FormBuilder, public coloursAndLabels: ColoursAndLabels,
-              public storage: LocalColoursAndLabels, public sync: SyncData) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public builder: FormBuilder,
+             public localStorage: UserLocalStorage, public http: Http, public alertCtrl: AlertController) {
     // Set the label and colour data fields to data we read in from the provider localColoursAndLabels
 
-    var labelArr: string[] = this.getProviderLabels();
-    this.label1 = labelArr[0];
-    this.label2 = labelArr[1];
-    this.label3 = labelArr[2];
+    var labelArr: string[] = this.localStorage.parseLabelsToArray()
+    this.label_one = labelArr[0];
+    this.label_two = labelArr[1];
+    this.label_three = labelArr[2];
 
-    this.colours = this.getLocalColours();
+    this.colours = this.localStorage.parseColoursToArray()
 
 
     this.labelForm = this.builder.group({
-      'label1': [this.label1, Validators.compose([Validators.maxLength(15), Validators.pattern('[a-zA-Z ]*'), Validators.minLength(3),Validators.required])],
-      'label2': [this.label2, Validators.compose([Validators.maxLength(15), Validators.pattern('[a-zA-Z ]*'), Validators.minLength(3),Validators.required])],
-      'label3': [this.label3, Validators.compose([Validators.maxLength(15), Validators.pattern('[a-zA-Z ]*'), Validators.minLength(3),Validators.required])]
+      'label_one': [this.label_one, Validators.compose([Validators.maxLength(15), Validators.pattern('[a-zA-Z ]*'), Validators.minLength(3),Validators.required])],
+      'label_two': [this.label_two, Validators.compose([Validators.maxLength(15), Validators.pattern('[a-zA-Z ]*'), Validators.minLength(3),Validators.required])],
+      'label_three': [this.label_three, Validators.compose([Validators.maxLength(15), Validators.pattern('[a-zA-Z ]*'), Validators.minLength(3),Validators.required])]
     })
     // Call Web API
     //this.requestColoursAndLabels();
@@ -45,28 +45,59 @@ export class LabelPage {
   /**
    * Update colours and labels in local storage and provider
    */
-  setLocalStorage() {
+  labelsToArray() {
     var labelArr: string[] = [];
-    labelArr.push(this.labelForm.controls['label1'].value);
-    labelArr.push(this.labelForm.controls['label2'].value);
-    labelArr.push(this.labelForm.controls['label3'].value);
-
-    this.storage.setProviderLabels(labelArr);
-    this.storage.setStorageLabels(labelArr);
+    labelArr.push(this.labelForm.controls['label_one'].value);
+    labelArr.push(this.labelForm.controls['label_two'].value);
+    labelArr.push(this.labelForm.controls['label_three'].value);
+    return labelArr;
+    
   }
+    
   /**
-   * Get colour values stored in local storage
+   * If user has made valid choices, send a post request to the server with the new colour changes
+   * wait for response. 
+   * If unsuccessfull we alert the user.
+   * If successfull we pop to settings page.
+   * 
+   * @param labelArr, colours to send to the server and save in local storage
    */
-  getLocalColours() {
-    return this.storage.getProviderColours();
-  }
-  /**
-   * Get label values stored in local storage and set the formbuilder values accordingly
-   */
-  getProviderLabels() {
-    return this.storage.getProviderLabels();
-  }
+    setLabels(labelArr) {
+    // post to server and set new colour strings
+    let headers: Headers =  new Headers();
+    headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
+    headers.append('client_key', this.localStorage.clientKey);
+    headers.append('Content-Type', 'application/json');
 
+    let body = {
+      "label_one": labelArr[0],
+      "label_two": labelArr[1],
+      "label_three": labelArr[2],
+    };
+    return this.http.post('https://api.simpalapps.com/driver/set/labels', JSON.stringify(body), {headers: headers})
+      .map(res => 
+       res.json()).subscribe ( response => {
+        if (response.success) {
+          // server recieved data
+          this.localStorage.saveArrayOfLabels(this.labelsToArray());
+          // pop to settings page
+          this.navCtrl.pop();
+
+        } else {
+          this.presentAlert(response.data);
+        }
+      });
+    }
+
+
+  presentAlert(errorMessage: string) {
+    let alert = this.alertCtrl.create({
+      title: 'Error during registration',
+      message: errorMessage,
+      buttons: ['Dismiss']
+      });
+    alert.present();
+    }
 /**
  * Send data to web based database and update local storage
  */
@@ -76,18 +107,10 @@ export class LabelPage {
     if(!this.labelForm.valid) {
       console.log("tried to submit invalid form")
     } else {
-      // query api if failed set to storage then push
-      this.coloursAndLabels.setLabels(this.labelForm.value).subscribe( response => {
-        if (!response.success) {
-        // failed to send colours. Need to setup storage till we reconnect.
-        console.log("need to push to labels offline");
-        this.sync.setSyncLabels(this.labelForm.value);
-        }
-      })
+      this.setLabels(this.labelsToArray());
 
-        this.coloursAndLabels.setLabels(this.labelForm.value);
-        this.setLocalStorage();
-        this.navCtrl.pop();
+      
+      
     }
   }
 }

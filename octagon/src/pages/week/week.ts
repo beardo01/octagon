@@ -1,11 +1,7 @@
 import { Component } from '@angular/core';
-import { Http } from '@angular/http';
 import { NavController } from 'ionic-angular';
-import { ColoursAndLabels } from '../../providers/colours-and-labels';
-import { EventData } from '../../providers/event-data';
-import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
-import { LocalEvents } from '../../providers/local-events';
 import { HomePage } from '../home/home';
+import { UserLocalStorage } from '../../providers/user-local-storage';
 
 @Component({
   selector: 'page-week',
@@ -32,42 +28,31 @@ export class WeekPage {
   colours: string[];
   labels: string[];
 
-  constructor(public navCtrl: NavController, http: Http, public coloursAndLabels: ColoursAndLabels,
-    public eventData: EventData, public storage: LocalColoursAndLabels, public localEventStorage: LocalEvents) {
+  constructor(public navCtrl: NavController, public localStorage: UserLocalStorage ) {
     this.date = new Date();
     this.display_days = new Array();
 
-    // Set colour data field from values stored in provider
-    this.colours = this.getProviderColours();
-    // set labels data field from values stored in provider
-    this.labels = this.getProviderLabels();
+    this.colours = this.localStorage.parseColoursToArray();
+    this.labels = this.localStorage.parseColoursToArray();
     this.initaliseBubbles();
   }
 
   ionViewWillEnter() {
     this.reinitalizeView();
   }
-
+  
   reinitalizeView() {
-    this.colours = this.getProviderColours();
-    this.labels = this.getProviderLabels();
+    this.colours = this.localStorage.parseColoursToArray();
+    this.labels = this.localStorage.parseLabelsToArray();
 
     this.input_data_days = new Array();
     this.bubbles_week = new Array();
 
     this.initaliseBubbles();
-    this.parseEvents(this.localEventStorage.getProviderEvents());
+    this.parseEvents(this.localStorage.events);
     this.filterData();
   }
 
-  // Values from local storage
-  getProviderColours() {
-    return this.storage.getProviderColours();
-  }
-  //values from local storage
-  getProviderLabels() {
-    return this.storage.getProviderLabels();
-  }
   // Set up bubbles array to hold spaces for inner arrays
   initaliseBubbles() {
     for (var day = 0; day != 5; day++) {
@@ -81,7 +66,7 @@ export class WeekPage {
    * @param eventArr Array containing events from provider
    */
   parseEvents(eventArr) {
-        eventArr.data.forEach(eventObj => {
+        eventArr.forEach(eventObj => {
             var outerArr = [];
             if (eventObj != "No items today"){
               eventObj.forEach(element => {

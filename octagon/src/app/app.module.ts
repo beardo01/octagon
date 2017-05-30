@@ -10,16 +10,11 @@ import { LoginPage } from '../pages/login/login';
 import { JoinPage } from '../pages/join/join';
 import { ColourPage } from '../pages/colour/colour';
 import { LabelPage } from '../pages/label/label';
-import { ColoursAndLabels } from '../providers/colours-and-labels';
-import { EventData } from '../providers/event-data';
 import { IonicStorageModule } from '@ionic/storage';
-import { LocalColoursAndLabels } from '../providers/local-colours-and-labels';
-import { LocalEvents } from '../providers/local-events';
-import { ValidateUser } from '../providers/validate-user';
 import { FormatDate } from '../pipes/format-date';
 import { ClearLocalStorage } from '../providers/clear-local-storage';
 import { RegisterUser } from '../providers/register-user';
-import { SyncData } from '../providers/sync-data';
+import { UserLocalStorage } from '../providers/user-local-storage';
 
 
 @NgModule({
@@ -53,7 +48,6 @@ import { SyncData } from '../providers/sync-data';
     ColourPage,
     LabelPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, ColoursAndLabels, EventData, LocalColoursAndLabels,
-              ValidateUser, LocalEvents, ClearLocalStorage, RegisterUser, SyncData ]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, ClearLocalStorage, RegisterUser, UserLocalStorage ]
 })
 export class AppModule {}

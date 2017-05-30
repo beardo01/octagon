@@ -3,13 +3,9 @@ import { NavController, NavParams } from 'ionic-angular';
 import { CreatePage } from '../create/create';
 
 import { Http } from '@angular/http';
-import { ColoursAndLabels } from '../../providers/colours-and-labels';
-import { EventData } from '../../providers/event-data';
-import { LocalColoursAndLabels } from '../../providers/local-colours-and-labels';
-import { LocalEvents } from '../../providers/local-events';
-import { ValidateUser } from '../../providers/validate-user';
 import { ActionSheetController } from 'ionic-angular';
 import * as moment from 'moment';
+import { UserLocalStorage } from '../../providers/user-local-storage';
 
 
 @Component({
@@ -40,40 +36,28 @@ export class HomePage {
   bubbles: any[][][] = new Array();
 
   // Sets up dates in the header of homepage.
-  constructor(public navCtrl: NavController, http: Http, public coloursAndLabels: ColoursAndLabels,
-    public eventData: EventData, public localCLStorage: LocalColoursAndLabels, public localEventStorage: LocalEvents,
-    private navParams: NavParams, public actionSheetCtrl: ActionSheetController, public validUser: ValidateUser) {
+  constructor(public navCtrl: NavController, http: Http, private navParams: NavParams, public actionSheetCtrl: ActionSheetController, 
+              public localStorage: UserLocalStorage) {
 
     this.parameter1 = navParams.get('param1');
-    console.log(this.parameter1);
 
 
     this.date = new Date();
     // set header to the current day name from days array.
     this.weekday_header = this.days[this.date.getDay()];
     // Set colour data field from values stored in provider for local
-    this.colours = this.getProviderColours();
-    // set labels data field from values stored in provider for local
-    this.labels = this.getProviderLabels();
+    this.colours = this.localStorage.parseColoursToArray();
+    this.labels = this.localStorage.parseColoursToArray();
     this.initaliseBubbles();
   }
   // set entry conditions
   ionViewCanEnter():any {
-    //console.log("can enter", this.validUser.getClientKey())
-    // Found client key, load page..
-    if (this.validUser.clientKey) {
-      console.log( "ionViewCanEnter Found client key")
+    if (this.localStorage.clientKey) {
       return true;
+    } else {
+      // redirect user to login page@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ TOMTOMT TOMTOTTMOTMOTMOTMOTOMTTMOTOMTMO
     }
-    return this.validUser.requestLocalClientKey().then( clientKey => {
-        if( clientKey == undefined ) {
-          console.log('val is undefined')
-          return false;
-        } else {
-          console.log("ionViewCanEnter found correct client key: ", clientKey)
-          return true;
-        }
-    })
+
   }
 
   initaliseBubbles() {
@@ -87,29 +71,18 @@ export class HomePage {
 
 
   reinitalizeView() {
-    this.colours = this.getProviderColours();
-    this.labels = this.getProviderLabels();
+    this.colours = this.localStorage.parseColoursToArray();
+    this.labels = this.localStorage.parseLabelsToArray();
 
     this.input_data = new Array();
     this.bubbles = new Array();
 
     this.initaliseBubbles();
-    console.log('local events home pages', this.localEventStorage.getProviderEvents())
-    this.parseEvents(this.localEventStorage.getProviderEvents());
+    this.parseEvents(this.localStorage.events);
     this.filterData();
     this.displayWeekDays();
 
   }
-
-
-  getProviderColours() {
-    return this.localCLStorage.getProviderColours();
-  }
-
-  getProviderLabels() {
-    return this.localCLStorage.getProviderLabels();
-  }
-
 
   /**
    * Process data requested from the provider and push to array
@@ -117,7 +90,7 @@ export class HomePage {
    * @param eventArr Array containing events from provider
    */
   parseEvents(eventArr) {
-        eventArr.data.forEach(eventObj => {
+        eventArr.forEach(eventObj => {
             var outerArr = [];
             if (eventObj != "No items today"){
               eventObj.forEach(element => {
@@ -225,7 +198,6 @@ export class HomePage {
   // Changes where the style of underlines goes for each date.
   // Number is the button that has been clicked.
   dateChange(newValue: number) {
-    console.log("CLICKED: ", newValue);
     if (this.selected_date !== newValue) {
       this.selected_date = newValue;
       this.weekday_header = this.days[this.addDays(new Date(), this.selected_date).getDay()];
@@ -274,14 +246,12 @@ export class HomePage {
           text: 'Delete',
           role: 'destructive',
           handler: () => {
-            console.log('Delete clicked | Day |',this.selected_date, 'Bubble',  bubble);
           }
         },
         {
           text: 'Cancel',
           role: 'cancel',
           handler: () => {
-            console.log('Cancel clicked');
           }
         }
       ]

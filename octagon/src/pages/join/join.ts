@@ -77,11 +77,12 @@ export class JoinPage {
           'rpassword': this.joinForm.value.rpassword,
           'ip': '127.168.1.1'
         };  
+        console.log(JSON.stringify(userData))
           this.http.post('https://api.simpalapps.com/driver/create/user', JSON.stringify(userData), {headers: headers})
           .map(res => 
             res.json())
             .subscribe( response => {
-
+              console.log(response);
               if (response.success) {
                 // Succesfully register user. Set local storage up!
                 this.localStorage.setClientKey(response.data.client_key);

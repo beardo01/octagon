@@ -4,7 +4,7 @@ import { NavController } from 'ionic-angular';
 import { CreateFormValidator } from '../../validators/createForm';
 import * as moment from 'moment';
 import { AlertController } from 'ionic-angular';
-import { Http, RequestOptions, Headers } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { UserLocalStorage } from '../../providers/user-local-storage';
 
 @Component({

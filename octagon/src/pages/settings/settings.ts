@@ -22,7 +22,7 @@ export class SettingsPage {
   }
   
   logout() {
-    this.storage.remove('client_key');
+    this.storage.clear();
     this.localStorage.clientKey = '';
     this.navCtrl.push(LoginPage);
   }

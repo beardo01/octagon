@@ -459,6 +459,62 @@ json setLabels(string client_key, string label_one, string label_two, string lab
 	return response;
 }
 
+json deleteEvent(string client_key, unsigned long event_id) {
+	json response;
+	try {
+
+        unique_ptr<odb::database> db(new odb::pgsql::database("postgres", "39HjaJPnMpta9WDu", 
+			"postgres", "db.simpalapps.com", 5432));
+            
+        typedef odb::query<User> query;
+		typedef odb::query<TimelineItem> timeline_item_query;
+
+		{
+			// Start the query
+			transaction t (db->begin ());
+			unique_ptr<User> curr_user(db->query_one<User> (query::client_key == client_key));
+
+			// Check if a user already exists
+			if (curr_user.get() != 0) {
+
+				// Timeline to update
+				unsigned long tl_id = curr_user->getTimelineID();
+				unique_ptr<Timeline> timeline(db->load<Timeline> (tl_id));
+
+				if(curr_user.get() != 0) {
+			
+					// Get the timeline items
+					//shared_ptr<TimelineItem> item(db->query_one<TimelineItem> (timeline_item_query::id == event_id));
+					auto item = timeline->getTimelineItem(event_id);
+					if (item->getDescription() != "Not found") {
+
+						timeline->deleteTimelineItem(item->getID());
+						db->erase(*item);
+						db->update(*timeline);
+
+						t.commit();
+
+						// Build JSON
+						response["data"] = "TimelineItem successfully deleted.";
+						response["success"] = true;
+						return response;
+					} else {
+						response["data"] = "Couldn't find TimelineItem for user.";
+					}
+				} else {
+					response["data"] = "Couldn't find Timeline for user.";
+				}
+			} else {
+				response["data"] = "Client authentication error. Client ID invalid.";
+			}
+		}
+	} catch (const odb::exception& e) {
+		response["data"] = e.what();
+	}
+	response["success"] = false;
+	return response;
+}
+
 int main(int argc, char *argv[]) {
 
 	string type = argv[1];
@@ -510,6 +566,13 @@ int main(int argc, char *argv[]) {
 			
 			if(subtype == "labels" && argc == 7) {
 				cout << setLabels(argv[3], argv[4], argv[5], argv[6]) << endl;
+				return 0;
+			}
+		} else if (type == "delete") {
+
+			// Event
+			if(subtype == "event" && argc == 5) {
+				cout << deleteEvent(argv[3], stol(argv[4])) << endl;
 				return 0;
 			}
 		}

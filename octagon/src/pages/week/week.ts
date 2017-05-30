@@ -42,6 +42,7 @@ export class WeekPage {
     this.bubbles_week = new Array();
     this.initaliseBubbles();
     this.parseEvents(this.localStorage.events);
+    this.loadHeaderDates();
     this.filterData();
   }
 

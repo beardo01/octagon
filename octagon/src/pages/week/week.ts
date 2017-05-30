@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { HomePage } from '../home/home';
-<<<<<<< HEAD
 import { UserLocalStorage } from '../../providers/user-local-storage';
-=======
 import * as moment from 'moment';
->>>>>>> c58bfda1756caccf4cd8c10a2e1f4afaca4b236c
+
 
 @Component({
   selector: 'page-week',
@@ -24,21 +22,11 @@ export class WeekPage {
   colours: string[];
   labels: string[];
 
-<<<<<<< HEAD
   constructor(public navCtrl: NavController, public localStorage: UserLocalStorage ) {
-    this.date = new Date();
     this.display_days = new Array();
 
     this.colours = this.localStorage.parseColoursToArray();
     this.labels = this.localStorage.parseColoursToArray();
-=======
-  constructor(public navCtrl: NavController, http: Http, public coloursAndLabels: ColoursAndLabels,
-    public eventData: EventData, public storage: LocalColoursAndLabels, public localEventStorage: LocalEvents) {
-    // Set colour data field from values stored in provider
-    this.colours = this.getProviderColours();
-    // set labels data field from values stored in provider
-    this.labels = this.getProviderLabels();
->>>>>>> c58bfda1756caccf4cd8c10a2e1f4afaca4b236c
     this.initaliseBubbles();
   }
 
@@ -52,14 +40,8 @@ export class WeekPage {
 
     this.input_data_days = new Array();
     this.bubbles_week = new Array();
-
     this.initaliseBubbles();
-<<<<<<< HEAD
     this.parseEvents(this.localStorage.events);
-=======
-    this.parseEvents(this.localEventStorage.getProviderEvents());
-    this.loadHeaderDates();
->>>>>>> c58bfda1756caccf4cd8c10a2e1f4afaca4b236c
     this.filterData();
   }
 
@@ -76,7 +58,6 @@ export class WeekPage {
    * @param eventArr Array containing events from provider
    */
   parseEvents(eventArr) {
-<<<<<<< HEAD
         eventArr.forEach(eventObj => {
             var outerArr = [];
             if (eventObj != "No items today"){
@@ -94,26 +75,7 @@ export class WeekPage {
           this.input_data_days.push(outerArr);
           outerArr = [];
         });
-=======
-    eventArr.data.forEach(eventObj => {
-      var outerArr = [];
-      if (eventObj != "No items today") {
-        eventObj.forEach(element => {
-          var arr = [];
-          arr.push(element.id);
-          arr.push(element.type);
-          arr.push(element.start);
-          arr.push(element.end);
-          arr.push(element.description);
-          arr.push(element.location);
-          outerArr.push(arr);
-        })
->>>>>>> c58bfda1756caccf4cd8c10a2e1f4afaca4b236c
-      }
-      this.input_data_days.push(outerArr);
-      outerArr = [];
-    });
-  }
+    }
 
   filterData() {
     //Setup bubbles array

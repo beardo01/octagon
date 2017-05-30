@@ -163,7 +163,6 @@ export class CreatePage {
   getEvents() {
   var start = moment().startOf('day').unix();
   let eventHeaders: Headers =  new Headers();
-  console.log('passing this client key', this.localStorage.clientKey)
     eventHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
     eventHeaders.append('client_key', this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');

@@ -123,7 +123,6 @@ export class ColourPage {
     return this.http.post('https://api.simpalapps.com/driver/set/colours', JSON.stringify(body), {headers: headers})
       .map(res => 
        res.json()).subscribe ( response => {
-         console.log('response from colour puuusususu',response);
         if (response.success) {
 
           this.localStorage.saveArrayOfColours(this.inUseColours);

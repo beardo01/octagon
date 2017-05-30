@@ -6,7 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController } from 'ionic-angular';
 
 import { UserLocalStorage } from '../../providers/user-local-storage';
-import { Http, RequestOptions, Headers } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import * as moment from 'moment';
 
 
@@ -46,7 +46,6 @@ export class LoginPage {
 
     /// play around with this to get user auto logging in
     if (this.localStorage.clientKey != null || this.localStorage.clientKey != undefined) {
-      console.log('calling get events')
       // if we have a client key user doesnt need to re log in so get their data and redirect
       this.getEvents()
     }
@@ -80,15 +79,14 @@ export class LoginPage {
       .map(res => 
         res.json())
       .subscribe( response => {
-        console.log(response)
-            if (response.success) {
+          if (response.success) {
             this.localStorage.setClientKey(response.data.client_key);
             this.localStorage.setLocalColours(response.data.colours);
             this.localStorage.setLocalLabels(response.data.labels);
             // call local method to read in the next 10 days of events
             this.getEvents();
             
-      } else {
+        } else {
         // display error message to user
         this.presentAlert(response.data);
       }
@@ -106,7 +104,6 @@ export class LoginPage {
   getEvents() {
   var start = moment().startOf('day').unix();
   let eventHeaders: Headers =  new Headers();
-  console.log('passing this client key', this.localStorage.clientKey)
     eventHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
     eventHeaders.append('client_key', this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
@@ -117,12 +114,8 @@ export class LoginPage {
     .map(res => res.json())
       .subscribe(response => {
         if (response.success) {
-          console.log(response)
-          this.localStorage.events = response.data
-          console.log(this.localStorage.events)
+          this.localStorage.events = response.data;
           this.localStorage.setLocalEvents(response.data);
-          //this.localStorage.requestLocalEvents();
-          console.log("response from server getEvents()", response)
           this.navCtrl.setRoot(TabsPage);
         } else {
           // display error message to user

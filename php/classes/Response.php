@@ -5,14 +5,15 @@
  */
 
 class Response {
-    private $message;
+    private $success;
+    private $data;
 
     public function __toString() {
-        return json_encode(array("status" => true, "message" => $this->message), JSON_PRETTY_PRINT);
+        return json_encode(array("success" => $this->success, "data" => $this->data), JSON_PRETTY_PRINT);
     }
 
-    public function __construct($message) {
-        $this->message = $message;
+    public function __construct($success, $data) {
+        $this->success = $success;
+        $this->data = $data;
     }
 }
-

@@ -4,11 +4,11 @@
   <form id="joinForm" [formGroup]="joinForm" (ngSubmit)="join(joinForm.value)">
   <ion-list>
     <ion-item class="accountInput" [class.invalid]="!joinForm.controls.name.valid && (submitAttempt)">
-      <ion-input type="text" maxlength="20" formControlName="name" [(ngModel)]="name" placeholder="Name"></ion-input>
+      <ion-input type="text" maxlength="20" formControlName="name" [(ngModel)]="name" placeholder="Name" autocapitalize="none"></ion-input>
     </ion-item>
 
     <ion-item class="accountInput" [class.invalid]="!joinForm.controls.email.valid && (submitAttempt)">
-      <ion-input type="text" maxlength="35" formControlName="email" [(ngModel)]="email" placeholder="Email"></ion-input>
+      <ion-input type="text" maxlength="35" formControlName="email" [(ngModel)]="email" placeholder="Email" autocapitalize="none"></ion-input>
     </ion-item>
 
     <ion-item class="accountInput" [class.invalid]="!joinForm.controls.password.valid && (submitAttempt)">

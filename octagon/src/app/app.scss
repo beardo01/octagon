@@ -115,3 +115,8 @@ ion-backdrop {
 // .picker-toolbar {
 //     background-color: rgba(255, 255, 255, 0.1);
 // }
+
+// Android list bottom shadow.
+.list-md .item-input:last-child {
+    box-shadow: none !important;
+}

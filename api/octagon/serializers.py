@@ -14,12 +14,11 @@ class TimelineSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Timeline
-        fields = ('id', 'colour_one', 'colour_two', 'colour_three', 'label_one', 'label_two', 'label_three')
-
+        fields = ('id', 'user', 'colour_one', 'colour_two', 'colour_three', 'label_one', 'label_two', 'label_three')
 
 
 class TimelineItemSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TimelineItem
-        fields = ('id', 'type', 'description', 'start', 'end')
+        fields = ('id', 'timeline', 'type', 'description', 'start', 'end')

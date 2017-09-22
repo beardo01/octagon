@@ -31,12 +31,12 @@ class Timeline(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
     # Details
-    colour_one = models.CharField(max_length=255)
-    colour_two = models.CharField(max_length=255)
-    colour_three = models.CharField(max_length=255)
-    label_one = models.CharField(max_length=255)
-    label_two = models.CharField(max_length=255)
-    label_three = models.CharField(max_length=255)
+    colour_one = models.CharField(max_length=10, default="red")
+    colour_two = models.CharField(max_length=10, default="green")
+    colour_three = models.CharField(max_length=10, default="blue")
+    label_one = models.CharField(max_length=15, default="Meeting")
+    label_two = models.CharField(max_length=15, default="Assignment")
+    label_three = models.CharField(max_length=15, default="Event")
 
 
 class TimelineItem(models.Model):
@@ -44,7 +44,7 @@ class TimelineItem(models.Model):
     timeline = models.ForeignKey(Timeline, on_delete=models.CASCADE)
 
     # Details
-    type = models.IntegerField(null=False, blank=False)
+    type = models.PositiveSmallIntegerField(null=False, blank=False)
     description = models.CharField(max_length=255)
     start = models.DateTimeField(null=False, blank=False)
     end = models.DateTimeField(null=False, blank=False)

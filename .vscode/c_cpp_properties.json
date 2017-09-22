@@ -12,9 +12,11 @@
                 "databaseFilename": "",
                 "path": [
                     "/Users/oreid/dev/uni/345/octagon/cpp",
-                    "/Users/oreid/dev/uni/345/octagon/cpp/libbcrypt/include/bcrypt"
+                    "/Users/oreid/dev/uni/345/octagon/cpp/libbcrypt/include/bcrypt",
+                    "${workspaceRoot}"
                 ]
-            }
+            },
+            "intelliSenseMode": "clang-x64"
         },
         {
             "name": "Linux",
@@ -27,9 +29,11 @@
                 "databaseFilename": "",
                 "path": [
                     "/usr/include",
-                    "/usr/local/include"
+                    "/usr/local/include",
+                    "${workspaceRoot}"
                 ]
-            }
+            },
+            "intelliSenseMode": "clang-x64"
         },
         {
             "name": "Win32",
@@ -40,9 +44,12 @@
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": "",
                 "path": [
-                    "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*"
+                    "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*",
+                    "${workspaceRoot}"
                 ]
-            }
+            },
+            "intelliSenseMode": "msvc-x64"
         }
-    ]
+    ],
+    "version": 2
 }

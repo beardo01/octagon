@@ -4,7 +4,7 @@
   <form id="loginForm" [formGroup]="loginForm" (ngSubmit)="authenticate(loginForm.value)">
   <ion-list>
     <ion-item class="accountInput" [class.invalid]="!loginForm.controls.id.valid && (submitAttempt)">
-      <ion-input type="text" maxlength="35" formControlName="id" [(ngModel)]="id" placeholder="Email/Username"></ion-input>
+      <ion-input type="text" maxlength="35" formControlName="id" [(ngModel)]="id" placeholder="Email/Username" autocapitalize="none" autocomplete="off"></ion-input>
     </ion-item>
 
     <ion-item class="accountInput" [class.invalid]="!loginForm.controls.password.valid && (submitAttempt)">

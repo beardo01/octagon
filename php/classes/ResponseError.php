@@ -5,13 +5,13 @@
  */
 
 class ResponseError {
-    private $message;
+    private $data;
 
     public function __toString() {
-        return json_encode(array("status" => false, "message" => $this->message), JSON_PRETTY_PRINT);
+        return json_encode(array("success" => false, "data" => $this->data), JSON_PRETTY_PRINT);
     }
 
-    public function __construct($message) {
-        $this->message = $message;
+    public function __construct($data) {
+        $this->data = $data;
     }
 }

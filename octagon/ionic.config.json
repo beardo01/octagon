@@ -1,6 +1,8 @@
 {
   "name": "octagon",
   "app_id": "7c41df3b",
-  "v2": true,
-  "typescript": true
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
 }

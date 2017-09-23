@@ -91,7 +91,39 @@ class EventRepeatViewSet(viewsets.ModelViewSet):
             timeline=Timeline.objects.get(user=self.request.user)).values('id'))
 
 
-# return Response({
+
+class ObtainAuthToken(APIView):
+    throttle_classes = ()
+    permission_classes = ()
+    parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
+    renderer_classes = (renderers.JSONRenderer,)
+    serializer_class = AuthTokenSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'success': True,
+            'data': {
+                'client_key': token.key,
+                'colours': {
+                    'colour_one': Timeline.objects.get(user=user).colour_one,
+                    'colour_two': Timeline.objects.get(user=user).colour_two,
+                    'colour_three': Timeline.objects.get(user=user).colour_three
+                },
+                'labels': {
+                    'label_one': Timeline.objects.get(user=user).label_one,
+                    'label_two': Timeline.objects.get(user=user).label_two,
+                    'label_three': Timeline.objects.get(user=user).label_three
+                }
+            }
+        })
+
+obtain_auth_token = ObtainAuthToken.as_view()
+
+        # return Response({
 #     'success': True,
 #     'data': {
 #         'client_key': token.key,

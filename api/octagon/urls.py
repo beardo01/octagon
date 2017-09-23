@@ -2,6 +2,7 @@ from django.conf.urls import url, include
 from .views import *
 from rest_framework.routers import DefaultRouter
 from rest_framework.authtoken import views
+from .views import *
 
 # Create a router and register our ViewSets
 router = DefaultRouter()

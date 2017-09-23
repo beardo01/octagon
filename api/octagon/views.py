@@ -1,36 +1,34 @@
-from rest_framework.permissions import IsAuthenticated
-
-from .models import *
-from .serializers import *
-from django.contrib.auth.models import User
 from rest_framework import viewsets
-from rest_framework.decorators import detail_route, list_route
-from datetime import datetime, timezone
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
-from rest_framework.reverse import reverse
-from rest_framework import viewsets, status
-from django.shortcuts import render
-from rest_framework import permissions
-from .permissions import *
+from datetime import timedelta
+from rest_framework.authtoken.models import Token
+from rest_framework import parsers, renderers
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from .permissions import *
+from .serializers import *
 
 
 class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
-    permission_classes = (IsAuthenticated, IsOwner)
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (AllowAny, )
 
     def get_queryset(self):
-        """
-        Not really sure if I want there here, just doing it because i did the others.
-
-        Maybe need to add 'timelineitem-list' in the urls.py
-        """
-        user = self.request.user
-        return User.objects.filter(username=user)
+        if self.request.user.is_superuser:
+            return User.objects.all()
+        else:
+            return User.objects.filter(id=self.request.user.id)
 
 
 class TimelineViewSet(viewsets.ModelViewSet):
     serializer_class = TimelineSerializer
+    authentication_classes = (TokenAuthentication, )
     permission_classes = (IsAuthenticated, IsOwner)
 
     def get_queryset(self):
@@ -41,47 +39,12 @@ class TimelineViewSet(viewsets.ModelViewSet):
 
 
 class EventViewSet(viewsets.ModelViewSet):
-    queryset = Event.objects.all()
     serializer_class = EventSerializer
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (IsAuthenticated, IsOwner)
 
     def get_queryset(self):
-        """
-        The queryset should be items the user owns
-        """
-        event = Event.objects.get(user=self.request.user)
-
-        return Event.objects.filter(timeline=event)
-    #
-    # def create_item_list(self, items):
-    #     all_items = []
-    #     for item in items:
-    #         json = {}
-    #         json.update({'id': item.id})
-    #         json.update({'type': item.type})
-    #         json.update({'start': item.start})
-    #         json.update({'end': item.end})
-    #         json.update({'description': item.description})
-    #         json.update({'location': item.location})
-    #         all_items.append(json)
-    #     return all_items
-    #
-    # @list_route(methods=['get'], url_name='get_week')
-    # def get_week(self, request):
-    #     """
-    #     Return 2 weeks of items to the user to fill up their local database with.
-    #     """
-    #     tl = Timeline.objects.get(user=request.user)
-    #     current_date = datetime.now(timezone.utc)
-    #
-    #     items = TimelineItem.objects.filter(timeline=tl, start__gte=current_date,
-    #                                        start__lte=current_date+timedelta(days=14))
-    #
-    #     future_items = self.create_item_list(items)
-    #
-    #     return Response({
-    #         'status': 'success',
-    #         'detail': future_items
-    #     })
+        return Event.objects.filter(timeline=Timeline.objects.get(user=self.request.user))
 
     def perform_create(self, serializer):
 
@@ -89,42 +52,58 @@ class EventViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serialized_event = serializer.validated_data
 
-            # Check to see if the event repeats
-            repeat_frequency = serialized_event.get('repeat_frequency')
-            if repeat_frequency is not None and repeat_frequency != 0:
+            # Ensure that the user is creating the event for their timeline
+            serializer.validated_data['timeline'] = Timeline.objects.get(id=self.request.auth.user.id)
 
-                # Get event information
-                start_date = serialized_event.get('repeat_start')
-                end_date = serialized_event.get('repeat_end')
+        event = serializer.save()
 
+        # Check to see if the event repeats
+        repeat_frequency = event.repeat_frequency
+        if repeat_frequency is not None and repeat_frequency != 0:
 
-        serializer.save()
+            # Get event information
+            start_date = event.repeat_start
+            end_date = event.repeat_end
 
+            # Get repeat frequency
+            if repeat_frequency == 1:
+                freq = 1
+            elif repeat_frequency == 2:
+                freq = 7
+            elif repeat_frequency == 3:
+                freq = 30
 
+            diff = (end_date - start_date).days
+            repeats = diff / freq
 
-    # def perform_update(self, serializer):
-    #     event = self.get_object()
-    #
-    #     # Check that the serializer is valid
-    #     if serializer.is_valid():
-    #
-    #         # Check to see if the event repeats
-    #         if event.repeat_frequency != 0:
-    #
-    #             # Get all items linked to the event
-    #             linked_items = EventRepeat.objects.filter(event=event)
-    #
-    #             # Update the entire queryset
-    #             for item in linked_items:
-    #                 item.type = serializer.validated_data['type']
-    #                 item.description = serializer.validated_data['description']
-    #                 item.location = serializer.validated_data['location']
-    #
-    #         else:
-    #             EventRepeat.objects.get(id=1)
+            for repeat in range(int(repeats)):
+                EventRepeat.objects.create(event=event, start=start_date + timedelta(freq * repeat),
+                                           end=end_date + timedelta(freq * repeat))
 
 
 class EventRepeatViewSet(viewsets.ModelViewSet):
-    queryset = EventRepeat.objects.all()
     serializer_class = EventRepeatSerializer
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (IsAuthenticated, IsOwner)
 
+    def get_queryset(self):
+        return EventRepeat.objects.filter(event__in=Event.objects.filter(
+            timeline=Timeline.objects.get(user=self.request.user)).values('id'))
+
+
+# return Response({
+#     'success': True,
+#     'data': {
+#         'client_key': token.key,
+#         'colours': {
+#             'colour_one': Timeline.objects.get(user=user).colour_one,
+#             'colour_two': Timeline.objects.get(user=user).colour_two,
+#             'colour_three': Timeline.objects.get(user=user).colour_three
+#         },
+#         'labels': {
+#             'label_one': Timeline.objects.get(user=user).label_one,
+#             'label_two': Timeline.objects.get(user=user).label_two,
+#             'label_three': Timeline.objects.get(user=user).label_three
+#         }
+#     }
+# })

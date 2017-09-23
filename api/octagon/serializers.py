@@ -39,7 +39,7 @@ class EventSerializer(serializers.ModelSerializer):
         model = Event
         fields = ('id', 'timeline', 'start', 'end', 'type', 'description', 'location', 'repeat_start', 'repeat_end',
                   'repeat_frequency')
-        read_only_fields = ('id',)
+        read_only_fields = ('id', 'timeline')
 
 
 class EventRepeatSerializer(serializers.ModelSerializer):

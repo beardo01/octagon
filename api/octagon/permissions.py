@@ -9,11 +9,13 @@ class IsOwner(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.user.is_superuser:
             return True
+        elif view.action in ['list', 'retrieve', 'destroy']:
+            return True
+        elif not request.data.get('user'):
+            return False
         elif view.action in ['create', 'update', 'partial_update'] and request.data['user'] == request.user.id:
             return True
         # White list that object level permissions should take care of.
-        elif view.action in ['list', 'retrieve', 'destroy']:
-            return True
         else:
             return False
 

@@ -4,11 +4,13 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.response import Response
 from datetime import timedelta
 from rest_framework.authtoken.models import Token
+from rest_framework.decorators import detail_route, list_route
 from rest_framework import parsers, renderers
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from django.utils import timezone
 
 from .permissions import *
 from .serializers import *
@@ -50,8 +52,6 @@ class EventViewSet(viewsets.ModelViewSet):
 
         # Check that the serializer is valid
         if serializer.is_valid():
-            serialized_event = serializer.validated_data
-
             # Ensure that the user is creating the event for their timeline
             serializer.validated_data['timeline'] = Timeline.objects.get(id=self.request.auth.user.id)
 
@@ -80,6 +80,40 @@ class EventViewSet(viewsets.ModelViewSet):
                 EventRepeat.objects.create(event=event, start=start_date + timedelta(freq * repeat),
                                            end=end_date + timedelta(freq * repeat))
 
+    @list_route(methods=['get'])
+    def list_events(self, request, **kwargs):
+
+        event_list = []
+
+        # Get all events
+        events = Event.objects.filter(timeline=Timeline.objects.get(user=self.request.user), start__gte=timezone.now(),
+                                      end__lte=timezone.now().date() + timedelta(days=10))
+        events.order_by('start')
+
+        for event in events:
+            json = {}
+            json.update({'type': event.type})
+            json.update({'start': event.start})
+            json.update({'end': event.end})
+            json.update({'description': event.description})
+            json.update({'location': event.location})
+            event_list.append(json)
+
+            repeat_events = EventRepeat.objects.filter(event=event, start__gte=timezone.now(),
+                                                       end__lte=timezone.now().date() + timedelta(days=10))
+            for repeat_event in repeat_events:
+                json = {}
+                json.update({'type': event.type})
+                json.update({'start': repeat_event.start})
+                json.update({'end': repeat_event.end})
+                json.update({'description': event.description})
+                json.update({'location': event.location})
+                event_list.append(json)
+
+        return Response({
+            'events': event_list
+        })
+
 
 class EventRepeatViewSet(viewsets.ModelViewSet):
     serializer_class = EventRepeatSerializer
@@ -89,7 +123,6 @@ class EventRepeatViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         return EventRepeat.objects.filter(event__in=Event.objects.filter(
             timeline=Timeline.objects.get(user=self.request.user)).values('id'))
-
 
 
 class ObtainAuthToken(APIView):

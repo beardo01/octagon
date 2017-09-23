@@ -107,6 +107,7 @@ class ObtainAuthToken(APIView):
         return Response({
             'success': True,
             'data': {
+                'user_id': user.id,
                 'client_key': token.key,
                 'colours': {
                     'colour_one': Timeline.objects.get(user=user).colour_one,

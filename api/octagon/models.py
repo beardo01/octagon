@@ -48,3 +48,4 @@ class TimelineItem(models.Model):
     description = models.CharField(max_length=255)
     start = models.DateTimeField(null=False, blank=False)
     end = models.DateTimeField(null=False, blank=False)
+    location = models.CharField(max_length=255)

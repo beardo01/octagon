@@ -1,14 +1,19 @@
 from django.conf.urls import url, include
-from django.contrib import admin
 from .views import *
 from rest_framework.routers import DefaultRouter
+from rest_framework.authtoken import views
 
 # Create a router and register our ViewSets
 router = DefaultRouter()
+
+
 router.register(r'users', UserViewSet, 'user-detail')
 router.register(r'timeline', TimelineViewSet, 'timeline-detail')
-router.register(r'timelineitem', TimelineItemViewSet, 'timelineitem-detail')
+router.register(r'event', EventViewSet, 'event-detail')
+router.register(r'eventrepeat', EventRepeatViewSet, 'eventrepeat-detail')
 
 urlpatterns = [
     url(r'^', include(router.urls)),
+    url(r'^auth/', views.obtain_auth_token),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]

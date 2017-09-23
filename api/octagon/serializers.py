@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
         fields = ('id', 'username', 'password', 'email', 'first_name', 'last_name')
@@ -23,15 +24,27 @@ class UserSerializer(serializers.ModelSerializer):
 
         return user
 
+
 class TimelineSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Timeline
         fields = ('id', 'user', 'colour_one', 'colour_two', 'colour_three', 'label_one', 'label_two', 'label_three')
+        read_only_fields = ('id',)
 
 
-class TimelineItemSerializer(serializers.ModelSerializer):
+class EventSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = TimelineItem
-        fields = ('id', 'timeline', 'type', 'description', 'start', 'end', 'location')
+        model = Event
+        fields = ('id', 'timeline', 'start', 'end', 'type', 'description', 'location', 'repeat_start', 'repeat_end',
+                  'repeat_frequency')
+        read_only_fields = ('id',)
+
+
+class EventRepeatSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = EventRepeat
+        fields = ('id', 'event', 'start', 'end')
+        read_only_fields = ('id',)

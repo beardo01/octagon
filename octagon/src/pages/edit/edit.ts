@@ -97,14 +97,21 @@ export class EditPage {
       .hour(this.bubble[8].slice(0,this.bubble[8].length/2))
       .minute(this.bubble[8].slice(this.bubble[8].length/2,this.bubble[8].length))
       .format("hh:mm");
-
-    this.repeat = false;
-    this.repeatFreq = 0;
-
+      
     this.description = this.bubble[4];
 
-    this.repeatStartDate = this.dateStarts;
-    this.repeatEndDate = moment().add(1, "day").format("YYYY-MM-DD");
+    
+
+    if (this.bubble[11] != "0"){
+      this.repeatFreq = this.bubble[11];
+      this.repeatStartDate = moment(this.bubble[9]*1000).format("YYYY-MM-DD");
+      this.repeatEndDate = moment(this.bubble[10]*1000).format("YYYY-MM-DD");
+    } else {
+      this.repeat = false;
+      this.repeatFreq = 0;
+      this.repeatStartDate = moment().format("YYYY-MM-DD");
+      this.repeatEndDate = moment().add(1, "day").format("YYYY-MM-DD");
+    }
 
     //Validate form setting form fields.
     this.editForm = this.builder.group({
@@ -116,8 +123,8 @@ export class EditPage {
       'timeEnds': [this.timeEnds, Validators.compose([Validators.required])],
       'repeatFrequency': [this.repeatFreq, Validators.compose([Validators.required])],
       'description': [this.description, Validators.compose([Validators.minLength(3), Validators.required])],
-      'repeatStartDate': [this.dateStarts, Validators.compose([Validators.required])],
-      'repeatEndDate': [this.dateEnds, Validators.compose([Validators.required])]
+      'repeatStartDate': [this.repeatStartDate, Validators.compose([Validators.required])],
+      'repeatEndDate': [this.repeatEndDate, Validators.compose([Validators.required])]
     },
     );
   }
@@ -142,25 +149,41 @@ export class EditPage {
     if (this.editForm.valid) {
 
       var type = this.labelNames.indexOf(this.editForm.value.label);
-      var description = this.editForm.value.description
-      var location = this.editForm.value.location
+      var description = this.editForm.value.description;
+      var location = this.editForm.value.location;
       var start = moment(this.editForm.value.dateStarts + " " + this.editForm.value.timeStarts).unix();
       var end = moment(this.editForm.value.dateEnds + " " + this.editForm.value.timeEnds).unix();
+      var repeat_start = moment(this.editForm.value.repeatStartDate).unix();
+      var repeat_end = moment(this.editForm.value.repeatEndDate).unix();
+      var repeat_freq = parseInt(this.editForm.value.repeatFreq);
       
-
-
       let headers: Headers =  new Headers();
       headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
       headers.append('client_key', this.localStorage.clientKey);
       headers.append('Content-Type', 'application/json');
 
-      let body = {
-        "type": type,
-        "description": description,
-        "location": location,
-        "start": start,
-        "end": end
-      };
+      let body = {}
+      if(repeat_freq == 0) {
+        body = {
+          "user": this.localStorage.id,
+          "type": type,
+          "description": description,
+          "location": location,
+          "start": start,
+          "end": end
+        };
+      } else {
+        body = {
+          "user": this.localStorage.id,
+          "type": type,
+          "description": description,
+          "location": location,
+          "start": start,
+          "end": end,
+          "repeat_start": repeat_start,
+          "repeat_end": repeat_end,
+          "repeat_freq": repeat_freq
+        };
       return this.http.post('https://api.simpalapps.com/driver/create/event', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
@@ -176,6 +199,7 @@ export class EditPage {
       })
     }
   }
+}
     /**
    * Called when user succesfully creates an event.
    * send post request away to API and get users events

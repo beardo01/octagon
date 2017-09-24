@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController } from 'ionic-angular';
+import { NavController,NavParams } from 'ionic-angular';
 import { CreateFormValidator } from '../../validators/createForm';
 import * as moment from 'moment';
 import { AlertController } from 'ionic-angular';
@@ -8,13 +8,13 @@ import { Http, Headers } from '@angular/http';
 import { UserLocalStorage } from '../../providers/user-local-storage';
 
 @Component({
-  selector: 'page-create',
-  templateUrl: 'create.html'
+  selector: 'page-edit',
+  templateUrl: 'edit.html'
 })
 
-export class CreatePage {
+export class EditPage {
   // form group
-  createForm: FormGroup;
+  editForm: FormGroup;
 
   submitAttempt: boolean = false;
 
@@ -49,17 +49,23 @@ export class CreatePage {
   repeat: boolean;
 
   // Frequency item repeats
-  repeatFreq: string;
+  repeatFreq: number;
 
   // Events description
   description: string;
 
+  //editting bubble
+  bubble : any[];
+
   constructor(public navCtrl: NavController, public builder: FormBuilder, public http: Http, public localStorage: UserLocalStorage,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController, public navParams : NavParams) {
     // initialise data fields
     this.date = new Date();
     this.labelNames = this.localStorage.parseLabelsToArray();
     //   this.colours = [];
+
+    this.bubble = this.navParams.data;
+    console.log(this.bubble)
 
     this.padded_month = (this.date.getMonth()+1).toString();
     this.padded_day = this.date.getDate().toString();
@@ -75,20 +81,33 @@ export class CreatePage {
     this.minDate = this.date.getFullYear() + '-' + this.padded_month + '-' + this.padded_day;
     this.maxDate = this.date.getFullYear() + 2;
 
-    this.dateStarts = moment().format("YYYY-MM-DD");
-    this.dateEnds = moment().add(1, "hour").format("YYYY-MM-DD");
-    this.timeStarts = moment().format("HH:MM");
-    this.timeEnds = moment().add(1, "hour").format("HH:MM");
+    // Form field setup
+    this.label = this.bubble[1];
+    this.location = this.bubble[5]
+
+    this.dateStarts = moment(this.bubble[2]*1000).format("YYYY-MM-DD");
+    this.dateEnds = moment(this.bubble[3]*1000).format("YYYY-MM-DD");
+
+    this.timeStarts = moment()
+      .hour(this.bubble[7].slice(0,this.bubble[7].length/2))
+      .minute(this.bubble[7].slice(this.bubble[7].length/2,this.bubble[8].length))
+      .format("hh:mm");
+    
+    this.timeEnds = moment()
+      .hour(this.bubble[8].slice(0,this.bubble[8].length/2))
+      .minute(this.bubble[8].slice(this.bubble[8].length/2,this.bubble[8].length))
+      .format("hh:mm");
 
     this.repeat = false;
-    this.repeatFreq = "Never";
-    // initalise repeat date to be set to end date to show a useful value when we need it
-    // logic should ignore this value if repeat variable set to false
-    this.repeatEndDate = this.dateEnds;
-    this.description = "";
+    this.repeatFreq = 0;
 
+    this.description = this.bubble[4];
 
-    this.createForm = this.builder.group({
+    this.repeatStartDate = this.dateStarts;
+    this.repeatEndDate = moment().add(1, "day").format("YYYY-MM-DD");
+
+    //Validate form setting form fields.
+    this.editForm = this.builder.group({
       'label': [this.label, Validators.compose([Validators.required, CreateFormValidator.validLabel])],
       'location': [this.location, Validators.compose([Validators.required])],
       'dateStarts': [this.dateStarts, Validators.compose([Validators.required])],
@@ -96,8 +115,9 @@ export class CreatePage {
       'timeStarts': [this.timeStarts, Validators.compose([Validators.required])],
       'timeEnds': [this.timeEnds, Validators.compose([Validators.required])],
       'repeatFrequency': [this.repeatFreq, Validators.compose([Validators.required])],
-      'repeatEndDate': [this.repeatEndDate, Validators.compose([Validators.required])],
-      'description': [this.description, Validators.compose([Validators.minLength(3), Validators.required])]
+      'description': [this.description, Validators.compose([Validators.minLength(3), Validators.required])],
+      'repeatStartDate': [this.dateStarts, Validators.compose([Validators.required])],
+      'repeatEndDate': [this.dateEnds, Validators.compose([Validators.required])]
     },
     );
   }
@@ -119,13 +139,13 @@ export class CreatePage {
    */
   add() {
     this.submitAttempt = true;
-    if (this.createForm.valid) {
+    if (this.editForm.valid) {
 
-      var type = this.labelNames.indexOf(this.createForm.value.label);
-      var description = this.createForm.value.description
-      var location = this.createForm.value.location
-      var start = moment(this.createForm.value.dateStarts + " " + this.createForm.value.timeStarts).unix();
-      var end = moment(this.createForm.value.dateEnds + " " + this.createForm.value.timeEnds).unix();
+      var type = this.labelNames.indexOf(this.editForm.value.label);
+      var description = this.editForm.value.description
+      var location = this.editForm.value.location
+      var start = moment(this.editForm.value.dateStarts + " " + this.editForm.value.timeStarts).unix();
+      var end = moment(this.editForm.value.dateEnds + " " + this.editForm.value.timeEnds).unix();
       
 
 
@@ -205,7 +225,7 @@ export class CreatePage {
    * Toggles if we display the repeatEndDate datepicker based on the value stored in repeatFreq  
    */
   repeatToggle() {
-    if (this.repeatFreq == "Never") {
+    if (this.repeatFreq == 0) {
       this.repeat = false;
     } else {
       this.repeat = true;

@@ -1,29 +1,29 @@
 <ion-header>
     <ion-navbar>
-        <ion-title>Create</ion-title>
+        <ion-title>Edit</ion-title>
         <ion-buttons end>
-            <button ion-button type="submit" form="createForm" [disabled]="!this.createForm.valid">
-        <ion-label>Add</ion-label>
-      </button>
+            <button ion-button type="submit" form="editForm" [disabled]="!this.editForm.valid">
+      <ion-label>Update</ion-label>
+    </button>
         </ion-buttons>
     </ion-navbar>
 </ion-header>
 
 <ion-content padding>
 
-    <form id="createForm" [formGroup]="createForm" (ngSubmit)="add(createForm.value)">
+    <form id="editForm" [formGroup]="editForm" (ngSubmit)="add(editForm.value)">
         <!--<ion-list>
-      <ion-item class="invalid" *ngIf="!createForm.controls.valid && submitAttempt">
-        <small>Fields have invalid entry</small>
-    </ion-item>
-    </ion-list>-->
+    <ion-item class="invalid" *ngIf="!editForm.controls.valid && submitAttempt">
+      <small>Fields have invalid entry</small>
+  </ion-item>
+  </ion-list>-->
         <ion-list>
             <ion-item>
                 <ion-label>Label</ion-label>
                 <ion-select formControlName="label">
-                    <ion-option>{{labelNames[0]}}</ion-option>
-                    <ion-option>{{labelNames[1]}}</ion-option>
-                    <ion-option>{{labelNames[2]}}</ion-option>
+                    <ion-option value={{labelNames[0]}}>{{labelNames[0]}}</ion-option>
+                    <ion-option value={{labelNames[1]}}>{{labelNames[1]}}</ion-option>
+                    <ion-option value={{labelNames[2]}}>{{labelNames[2]}}</ion-option>
                 </ion-select>
             </ion-item>
             <ion-item>

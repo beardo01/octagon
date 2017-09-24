@@ -1,18 +1,18 @@
 <ion-header no-bounce>
-  <ion-navbar>
-    <ion-title>Timeline</ion-title>
-    <ion-buttons end>
-      <button ion-button icon-only (click)="createPage()">
+    <ion-navbar>
+        <ion-title>Timeline</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="createPage()">
         <ion-icon name="add"></ion-icon>
       </button>
-    </ion-buttons>
-  </ion-navbar>
+        </ion-buttons>
+    </ion-navbar>
 
-  <div id="dayDateArea">
+    <div id="dayDateArea">
 
-    <h2 id="dayDay">{{weekday_header}}</h2>
+        <h2 id="dayDay">{{weekday_header}}</h2>
 
-    <span id="dayDates">
+        <span id="dayDates">
       <ion-buttons id="test">
         <button id="button0" (click)="dateChange(0)" [ngClass]="{'highlight_date': selected_date === 0}">{{display_days[0]}}</button>
         <button id="button1" (click)="dateChange(1)" [ngClass]="{'highlight_date': selected_date === 1}">{{display_days[1]}}</button>
@@ -22,33 +22,39 @@
     </ion-buttons>
     </span>
 
-    <div id="timeBar">
-      <div id="bubbles-container">
-        <div *ngFor="let bubble of bubbles[selected_date]">
-          <a href="#{{bubble[9]}}">
-            <div class="bubble tl-{{bubble[6]}} {{bubble[9]}}" [ngStyle]="{'margin-left': bubble[0]}"></div>
-          </a>
+        <div id="timeBar">
+            <div id="bubbles-container">
+                <div *ngFor="let bubble of bubbles[selected_date]">
+                    <a href="#{{bubble[9]}}">
+                        <div class="bubble tl-{{bubble[6]}} {{bubble[9]}}" [ngStyle]="{'margin-left': bubble[0]}"></div>
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </ion-header>
 
 <ion-content>
-  <section id="tl" class="tl-container">
-    <div *ngFor="let bubble_detail of bubbles[selected_date] let i = index">
-      <div class="tl-block" id="{{bubble_detail[9]}}" (press)="delete(i)">
-        <div class="tl-colour tl-{{bubble_detail[6]}}"></div>
-        <div class="tl-content">
-          <h5 class="tl-title">{{bubble_detail[1]}}</h5>
-          <p class="tl-description">{{bubble_detail[4]}}</p>
-          <p class="tl-location">
-            <ion-icon name="pin"></ion-icon> {{bubble_detail[5]}}</p>
-          <p class="tl-time">
-            <ion-icon name="time"></ion-icon> {{ bubble_detail[7] | formatDate }} to {{ bubble_detail[8] | formatDate }}</p>
-        </div>
-      </div>
+    <div class="empty" *ngIf="bubbles[selected_date].length <= 0">
+        <h4>Add Events</h4>
+        <button clear large ion-button icon-only (click)="createPage()">
+                <ion-icon class="emptyBtn" name="add"></ion-icon>
+        </button>
     </div>
+    <section id="tl" class="tl-container">
+        <div *ngFor="let bubble_detail of bubbles[selected_date] let i = index">
+            <div class="tl-block" id="{{bubble_detail[9]}}" (press)="delete(i)">
+                <div class="tl-colour tl-{{bubble_detail[6]}}"></div>
+                <div class="tl-content">
+                    <h5 class="tl-title">{{bubble_detail[1]}}</h5>
+                    <p class="tl-description">{{bubble_detail[4]}}</p>
+                    <p class="tl-location">
+                        <ion-icon name="pin"></ion-icon> {{bubble_detail[5]}}</p>
+                    <p class="tl-time">
+                        <ion-icon name="time"></ion-icon> {{ bubble_detail[7] | formatDate }} to {{ bubble_detail[8] | formatDate }}</p>
+                </div>
+            </div>
+        </div>
 
-  </section>
+    </section>
 </ion-content>

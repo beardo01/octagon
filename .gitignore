@@ -95,7 +95,7 @@ ENV/
 # Rope project settings
 .ropeproject
 
-.idea/dataSources.local.xml
-.idea/inspectionProfiles/
-.idea/typescript-compiler.xml
-.idea/workspace.xml
+.idea
+db.sqlite3
+.idea/dataSources/
+api/octagon/migrations/00*

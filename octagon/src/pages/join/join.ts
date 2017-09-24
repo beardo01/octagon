@@ -69,24 +69,25 @@ export class JoinPage {
     if (this.password === this.rpassword) {
       if (this.joinForm.valid) {
         let headers: Headers =  new Headers();
-        headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
-        headers.append('Content-Type', 'application/json');
+        headers.set('Content-Type', 'application/json');
         let userData = {
           'username': this.joinForm.value.name,
           'email': this.joinForm.value.email,
           'password': this.joinForm.value.password,
-          'rpassword': this.joinForm.value.rpassword,
-          'ip': '127.168.1.1'
+          'first_name': "",
+          'last_name': ""
         };  
-          this.http.post('https://api.simpalapps.com/driver/create/user', JSON.stringify(userData), {headers: headers})
+          this.http.post('http://0.0.0.0:8000/users/', JSON.stringify(userData), {headers: headers})
           .map(res => 
             res.json())
             .subscribe( response => {
               if (response.success) {
                 // Succesfully register user. Set local storage up!
-                this.localStorage.setClientKey(response.data.client_key);
+                //this.localStorage.setClientKey(response.data.client_key);
                 this.localStorage.setLocalColours(response.data.colours);
                 this.localStorage.setLocalLabels(response.data.labels);
+                this.localStorage.setLocalID(response.data.id);
+                this.localStorage.setUsername(response.data.username);
                 this.navCtrl.pop();
               } else {
                 this.presentAlert(response.data);

@@ -92,6 +92,7 @@ export class HomePage {
    * @param eventArr Array containing events from provider
    */
   parseEvents(eventArr) {
+        console.log(eventArr)
         eventArr.forEach(eventObj => {
             var outerArr = [];
             if (eventObj != "No items today"){
@@ -109,6 +110,7 @@ export class HomePage {
           this.input_data.push(outerArr);
           outerArr = [];
         });
+        console.log("parse events done.")
       }
 
 

@@ -41,6 +41,9 @@ export class LoginPage {
     if (this.tabBarElement) {
       this.tabBarElement.style.display = 'none';
     }
+    if(this.localStorage.username != null) {
+      this.id = this.localStorage.username;
+    }
   }
 
 /*  ionViewDidLoad(){
@@ -69,18 +72,18 @@ export class LoginPage {
     this.submitAttempt = true;
    
     let headers: Headers =  new Headers();
-    headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
     headers.append('Content-Type', 'application/json');
     let userData = {
-      'id': this.loginForm.value.id,
-      'password': this.loginForm.value.password,
-      'ip': '127.0.0.1'
+      'username': this.loginForm.value.id,
+      'password': this.loginForm.value.password
     };
-      this.http.post('https://api.simpalapps.com/driver/get/user', JSON.stringify(userData), {headers: headers})
+      this.http.post('http://0.0.0.0:8000/auth/', JSON.stringify(userData), {headers: headers})
       .map(res => 
         res.json())
       .subscribe( response => {
           if (response.success) {
+            //console.log("inside login trying to auth user")
+            //console.log("logging response", response)
             this.localStorage.setClientKey(response.data.client_key);
             this.localStorage.setLocalColours(response.data.colours);
             this.localStorage.setLocalLabels(response.data.labels);
@@ -105,19 +108,16 @@ export class LoginPage {
   getEvents() {
   var start = moment().startOf('day').unix();
   let eventHeaders: Headers =  new Headers();
-    eventHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
-    eventHeaders.append('client_key', this.localStorage.clientKey);
+    eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    let body = {
-      'from': start
-    };
-    this.http.post('https://api.simpalapps.com/driver/get/events', JSON.stringify(body), {headers:eventHeaders})
+    this.http.get('http://127.0.0.1:8000/event/list_events/', {headers:eventHeaders})
     .map(res => res.json())
       .subscribe(response => {
         if (response.success) {
-          
-          this.localStorage.events = response.data;
-          this.localStorage.setLocalEvents(response.data);
+          console.log("get events")
+          console.log(response)
+          //this.localStorage.events = response.data;
+          this.localStorage.setLocalEvents(response.detail);
           this.navCtrl.setRoot(TabsPage);
         } else {
           // display error message to user

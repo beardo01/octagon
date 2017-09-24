@@ -1,0 +1,175 @@
+// Ionic Variables and Theming. For more info, please see:
+// http://ionicframework.com/docs/v2/theming/
+$font-path: "../assets/fonts";
+
+@import "ionic.globals";
+
+
+// Shared Variables
+// --------------------------------------------------
+// To customize the look and feel of this app, you can override
+// the Sass variables found in Ionic's source scss files.
+// To view all the possible Ionic variables, see:
+// http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
+$tabs-background: (
+  rgba(255, 255, 255, 0.3)
+);
+
+$toolbar-background: (
+  transparent
+);
+
+$text-color: (
+  #E7E7E7
+);
+
+$list-background-color: (
+  rgba(255, 255, 255, 0.3)
+);
+
+$backdrop-color: (
+  rgba(0,0,0, 0.7)
+);
+
+$text-input-placeholder-color: (
+  #BDC3C7
+);
+
+// Named Color Variables
+// --------------------------------------------------
+// Named colors makes it easy to reuse colors on various components.
+// It's highly recommended to change the default colors
+// to match your app's branding. Ionic uses a Sass map of
+// colors so you can add, rename and remove colors as needed.
+// The "primary" color is the only required color in the map.
+
+$colors: (
+  primary:    #E7E7E7,
+  secondary:  #B9BEC1,
+  red: 	    #E74C3C,
+  purple:   #C357EF,
+  grey: 	  #BDC3C7,
+  yellow:   #F1C40F,
+  blue:	    #3498DB,
+  green:	  #2ECC71
+);
+
+
+// App iOS Variables
+// --------------------------------------------------
+// iOS only Sass variables can go here
+$toolbar-ios-border-color: (
+  transparent
+);
+
+$tabs-ios-tab-color-inactive: white;
+
+$button-ios-background-color: (
+  rgba(255, 255, 255, 0.3)
+);
+
+$alert-ios-background: (
+ rgba(160, 160, 160, 0.5)
+);
+
+$alert-ios-radio-label-text-color: (
+  #FFFFFF
+);
+
+$action-sheet-ios-background: (
+  rgba(140, 140, 140, 0.9)
+);
+
+$action-sheet-ios-button-cancel-background: (
+  rgba(140, 140, 140, 0.9)
+);
+
+$action-sheet-ios-button-background-activated: (
+  rgba(140, 140, 140, 0.4)
+);
+
+$action-sheet-ios-button-destructive-text-color: (
+  white
+);
+
+$action-sheet-ios-title-color: (
+  white
+);
+
+$action-sheet-ios-button-text-color: (
+  white
+);
+
+// App Material Design Variables
+// --------------------------------------------------
+// Material Design only Sass variables can go here
+
+$toolbar-md-border-color: (
+  transparent
+);
+
+$tabs-md-tab-color-inactive: white;
+
+$button-md-background-color: (
+  rgba(255, 255, 255, 0.3)
+);
+
+$alert-md-background-color: (
+ rgba(160, 160, 160, 0.5)
+);
+
+$alert-md-radio-label-text-color: (
+  #FFFFFF
+);
+
+$action-sheet-md-background-color: (
+  rgba(140, 140, 140, 0.9)
+);
+
+$action-sheet-md-button-cancel-background-color: (
+  rgba(140, 140, 140, 0.9)
+);
+
+$action-sheet-md-button-background-color-activated: (
+  rgba(140, 140, 140, 0.4)
+);
+
+$action-sheet-md-button-destructive-text-color: (
+  white
+);
+
+$action-sheet-md-title-color: (
+  white
+);
+
+
+// App Windows Variables
+// --------------------------------------------------
+// Windows only Sass variables can go here
+
+
+
+
+// App Theme
+// --------------------------------------------------
+// Ionic apps can have different themes applied, which can
+// then be future customized. This import comes last
+// so that the above variables are used and Ionic's
+// default are overridden.
+
+@import "ionic.theme.default";
+
+
+// Ionicons
+// --------------------------------------------------
+// The premium icon font for Ionic. For more info, please see:
+// http://ionicframework.com/docs/v2/ionicons/
+
+@import "ionic.ionicons";
+
+
+// Fonts
+// --------------------------------------------------
+
+@import "roboto";
+@import "noto-sans";

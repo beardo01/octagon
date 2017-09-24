@@ -82,11 +82,7 @@ export class JoinPage {
             res.json())
             .subscribe( response => {
               if (response.username) {
-                // Succesfully register user. Set local storage up!
-                //this.localStorage.setClientKey(response.data.client_key);
-                // this.localStorage.setLocalColours(response.data.colours);
-                // this.localStorage.setLocalLabels(response.data.labels);
-                // this.localStorage.setLocalID(response.id);
+                // Succesfully register user. set username in provider
                 this.localStorage.setUsername(response.username);
                 this.navCtrl.pop();
               } else {
@@ -94,7 +90,7 @@ export class JoinPage {
               }
             },
             err => {
-                console.log('server return error when trying to register user')
+                this.presentAlert("Server is taking a nap, please try again.");
             })
           }
       } else {

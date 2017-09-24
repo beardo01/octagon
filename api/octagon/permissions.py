@@ -25,7 +25,7 @@ class IsOwner(permissions.BasePermission):
         """
         Check if the request.user has permission to access the object.
         """
-        if request.method in permissions.SAFE_METHODS:
-            return obj.user == request.user
+        # if request.method in permissions.SAFE_METHODS:
+        return obj.user == request.user
 
-        return False
+        # return False

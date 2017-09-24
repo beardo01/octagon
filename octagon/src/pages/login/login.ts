@@ -92,22 +92,20 @@ export class LoginPage {
             this.getEvents();
 
         } else {
-        // display error message to user
-        this.presentAlert(response.data);
+          // display error message to user
+          this.presentAlert(response.data);
       }
-
       },
       err => {
-        console.log("Something went wrong with authenticate request")
+        this.presentAlert("Sever error. Please try again.")
       })
   }
   /**
    * Called when user successfully logs in
    * send post request away to API and get users events
-   *
+   * var start = moment().startOf('day').unix();
    */
   getEvents() {
-  var start = moment().startOf('day').unix();
   let eventHeaders: Headers =  new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
@@ -126,7 +124,7 @@ export class LoginPage {
         }
       },
       err => {
-          console.log("Something went wrong with your getEvents request")
+          this.presentAlert("Couldn't fetch events, please relogin")
       })
     }
 

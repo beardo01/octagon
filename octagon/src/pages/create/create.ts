@@ -197,7 +197,7 @@ export class CreatePage {
           }
         },
         err => {
-          console.log("Something went wrong with your getEvents request")
+          this.presentAlert("Failed to connect to server.");
         })
   }
       /**
@@ -206,7 +206,7 @@ export class CreatePage {
    */
   presentAlert(errorMessage: string) {
     let alert = this.alertCtrl.create({
-      title: 'Login Failed',
+      title: 'Failed to update',
       message: errorMessage,
       buttons: ['Dismiss']
     });

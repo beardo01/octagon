@@ -103,8 +103,8 @@ class EventViewSet(viewsets.ModelViewSet):
                 for event in days_events:
                     json = {}
                     json.update({'type': event.type})
-                    json.update({'start': event.start})
-                    json.update({'end': event.end})
+                    json.update({'start': event.start.timestamp()})
+                    json.update({'end': event.end.timestamp()})
                     json.update({'description': event.description})
                     json.update({'location': event.location})
                     json.update({'id': event.id})
@@ -117,16 +117,14 @@ class EventViewSet(viewsets.ModelViewSet):
                     for repeat_event in days_repeat_events:
                         repeat = {}
                         repeat.update({'type': event.type})
-                        repeat.update({'start': repeat_event.start})
-                        repeat.update({'end': repeat_event.end})
+                        repeat.update({'start': repeat_event.start.timestamp()})
+                        repeat.update({'end': repeat_event.end.timestamp()})
                         repeat.update({'description': event.description})
                         repeat.update({'location': event.location})
                         repeat.update({'id': event.id})
 
                         day.append(repeat)
                         count += 1
-
-                print(day)
 
                 event_list.append(day)
 

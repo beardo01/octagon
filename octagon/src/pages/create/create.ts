@@ -126,10 +126,10 @@ export class CreatePage {
       var type = this.labelNames.indexOf(this.createForm.value.label);
       var description = this.createForm.value.description;
       var location = this.createForm.value.location;
-      var start = moment(this.createForm.value.dateStarts + " " + this.createForm.value.timeStarts).unix();
-      var end = moment(this.createForm.value.dateEnds + " " + this.createForm.value.timeEnds).unix();
-      var repeat_start = moment(this.createForm.value.repeatStartDate).unix();
-      var repeat_end = moment(this.createForm.value.repeatEndDate).unix();
+      var start = moment(this.createForm.value.dateStarts + " " + this.createForm.value.timeStarts).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
+      var end = moment(this.createForm.value.dateEnds + " " + this.createForm.value.timeEnds).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
+      var repeat_start = moment(this.createForm.value.repeatStartDate).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
+      var repeat_end = moment(this.createForm.value.repeatEndDate).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
       var repeat_freq = parseInt(this.createForm.value.repeatFreq);
 
       let headers: Headers =  new Headers();
@@ -160,7 +160,7 @@ export class CreatePage {
         };
       }
 
-      return this.http.post('http://0.0.0.0/event/', JSON.stringify(body), {headers: headers})
+      return this.http.post('http://0.0.0.0:8000/event/', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
         if(response.id) {

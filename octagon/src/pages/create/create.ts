@@ -37,6 +37,7 @@ export class CreatePage {
   dateEnds: string;
   timeStarts: string;
   timeEnds: string;
+  repeatStartDate: string;
   repeatEndDate: string;
 
   padded_month: string;

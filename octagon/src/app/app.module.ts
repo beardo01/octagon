@@ -6,6 +6,7 @@ import { SettingsPage } from '../pages/settings/settings';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
 import { CreatePage } from '../pages/create/create';
+import { EditPage } from '../pages/edit/edit';
 import { LoginPage } from '../pages/login/login';
 import { JoinPage } from '../pages/join/join';
 import { ColourPage } from '../pages/colour/colour';
@@ -20,6 +21,7 @@ import { UserLocalStorage } from '../providers/user-local-storage';
   declarations: [
     MyApp,
     CreatePage,
+    EditPage,
     WeekPage,
     SettingsPage,
     HomePage,
@@ -38,6 +40,7 @@ import { UserLocalStorage } from '../providers/user-local-storage';
   entryComponents: [
     MyApp,
     CreatePage,
+    EditPage,
     WeekPage,
     SettingsPage,
     HomePage,

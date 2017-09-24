@@ -2,7 +2,7 @@
     <ion-navbar>
         <ion-title>Create</ion-title>
         <ion-buttons end>
-            <button ion-button type="submit" form="createForm">
+            <button ion-button type="submit" form="createForm" [disabled]="!this.createForm.valid">
         <ion-label>Add</ion-label>
       </button>
         </ion-buttons>

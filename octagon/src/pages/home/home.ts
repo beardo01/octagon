@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { CreatePage } from '../create/create';
+import { EditPage } from '../edit/edit';
 import { AlertController } from 'ionic-angular';
 import { Http, Headers } from '@angular/http';
 import { ActionSheetController } from 'ionic-angular';
@@ -31,8 +32,8 @@ export class HomePage {
   actionSheet;
   parameter1: number;
 
-  // bubbles = [[timebar_location,labels,start,end,description,location,colour]]
-  //                  [0]           [1]   [2]   [3]   [4]         [5]     [6]
+  // bubbles = [[timebar_location (size) ,labels ,start_d ,end_d ,description ,location ,colour ,time_s ,
+  //            time_e ,id ,repeatYN ,repeat_freq ,repeatDate_S ,repeatDate_E]]
   bubbles: any[][][] = new Array();
 
   // Sets up dates in the header of homepage.
@@ -132,6 +133,11 @@ export class HomePage {
         var location = this.input_data[day][bubble_selected][5];
         var id = this.input_data[day][bubble_selected][0];
 
+        // var repeatYN = this.input_data[day][bubble_selected][];
+        // var repeat_freq = ;
+        // var repeatDate_S = ;
+        // var repeatDate_E = ;
+
         // Writes the correct colour depending on type.
         if (type === 0) {
           colour = this.colours[0]
@@ -213,6 +219,10 @@ export class HomePage {
     this.navCtrl.push(CreatePage);
   }
 
+  editPage(bubble) {
+    this.navCtrl.push(EditPage,bubble);
+  }
+
   ionViewDidLoad() {
   }
 
@@ -244,9 +254,22 @@ export class HomePage {
 
   delete(bubble : number) {
     this.actionSheet = this.actionSheetCtrl.create({
-      title: 'Delete Event?',
+      title: 'Edit or Delete event?',
       enableBackdropDismiss: true,
       buttons: [
+        {
+          text: 'Edit',
+          role: 'open',
+          handler: () => {
+            this.editPage(this.bubbles[this.selected_date][bubble])
+          }
+        },
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+          }
+        },
         {
           text: 'Delete',
           role: 'destructive',

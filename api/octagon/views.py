@@ -87,10 +87,10 @@ class EventViewSet(viewsets.ModelViewSet):
     def list_events(self, request, **kwargs):
         # Ugly methods to check waaaaay tumeke stuff, should be optimised
 
-        event_list = {}
+        event_list = []
         day_counter = 0
         while day_counter < 10:
-            day = {}
+            day = []
 
             days_events = Event.objects.filter(timeline=Timeline.objects.get(user=self.request.user),
                                                start__day=(timezone.now() + timedelta(days=day_counter)).day)
@@ -98,9 +98,7 @@ class EventViewSet(viewsets.ModelViewSet):
 
             count = 0
             if days_events.count() == 0:
-                event_list.update({
-                    day_counter: "No items today"
-                })
+                event_list.append("No items today")
             else:
                 for event in days_events:
                     json = {}
@@ -109,16 +107,28 @@ class EventViewSet(viewsets.ModelViewSet):
                     json.update({'end': event.end})
                     json.update({'description': event.description})
                     json.update({'location': event.location})
-                    json.update({'id':event.id})
+                    json.update({'id': event.id})
 
-                    day.update({
-                        count: json
-                    })
+                    day.append(json)
                     count += 1
 
-                event_list.update({
-                    day_counter: day
-                })
+                    days_repeat_events = EventRepeat.objects.filter(event=event, start__day=(timezone.now() + timedelta(days=day_counter)).day)
+
+                    for repeat_event in days_repeat_events:
+                        repeat = {}
+                        repeat.update({'type': event.type})
+                        repeat.update({'start': repeat_event.start})
+                        repeat.update({'end': repeat_event.end})
+                        repeat.update({'description': event.description})
+                        repeat.update({'location': event.location})
+                        repeat.update({'id': event.id})
+
+                        day.append(repeat)
+                        count += 1
+
+                print(day)
+
+                event_list.append(day)
 
             day_counter += 1
 

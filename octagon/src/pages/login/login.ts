@@ -97,13 +97,13 @@ export class LoginPage {
         }
       },
       err => {
-        console.log("Something went wrong with authenticate request")
+        this.presentAlert("Sever error. Please try again.")
       })
   }
   /**
    * Called when user successfully logs in
    * send post request away to API and get users events
-   *
+   * var start = moment().startOf('day').unix();
    */
   getEvents() {
   let eventHeaders: Headers =  new Headers();
@@ -124,7 +124,7 @@ export class LoginPage {
         }
       },
       err => {
-          console.log("Something went wrong with your getEvents request")
+          this.presentAlert("Couldn't fetch events, please relogin")
       })
     }
 

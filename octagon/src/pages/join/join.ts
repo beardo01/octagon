@@ -90,7 +90,7 @@ export class JoinPage {
               }
             },
             err => {
-                this.presentAlert("Server is taking a nap, please try again.");
+                this.presentAlert("Server error. Please try again.");
             })
           }
       } else {
@@ -104,7 +104,7 @@ export class JoinPage {
    */
   presentAlert(errorMessage: string) {
     let alert = this.alertCtrl.create({
-      title: 'Login Failed',
+      title: 'Join Failed',
       message: errorMessage,
       buttons: ['Dismiss']
     });

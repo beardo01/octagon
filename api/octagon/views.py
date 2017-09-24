@@ -109,6 +109,10 @@ class EventViewSet(viewsets.ModelViewSet):
                     json.update({'location': event.location})
                     json.update({'id': event.id})
 
+                    json.update({'repeat_frequency': event.repeat_frequency})
+                    json.update({'repeat_start': event.repeat_end})
+                    json.update({'repeat_end': event.repeat_start})
+
                     day.append(json)
                     count += 1
 

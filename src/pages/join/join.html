@@ -1,0 +1,34 @@
+<ion-content padding no-bounce>
+  <div class="accountLogo"></div>
+
+  <form id="joinForm" [formGroup]="joinForm" (ngSubmit)="join(joinForm.value)">
+  <ion-list>
+    <ion-item class="accountInput" [class.invalid]="!joinForm.controls.name.valid && (submitAttempt)">
+      <ion-input type="text" maxlength="20" formControlName="name" [(ngModel)]="name" placeholder="Name" autocapitalize="none" autocomplete="off"></ion-input>
+    </ion-item>
+
+    <ion-item class="accountInput" [class.invalid]="!joinForm.controls.email.valid && (submitAttempt)">
+      <ion-input type="text" maxlength="35" formControlName="email" [(ngModel)]="email" placeholder="Email" autocapitalize="none" autocomplete="off"></ion-input>
+    </ion-item>
+
+    <ion-item class="accountInput" [class.invalid]="!joinForm.controls.password.valid && (submitAttempt)">
+      <ion-input type="password" formControlName="password" [(ngModel)]="password" placeholder="Password"></ion-input>
+    </ion-item>
+
+    <ion-item class="accountInput" [class.invalid]="!joinForm.controls.rpassword.valid && (submitAttempt)">
+      <ion-input type="password" formControlName="rpassword" [(ngModel)]="rpassword" placeholder="Re-enter Password"></ion-input>
+    </ion-item>
+  </ion-list>
+  </form>
+
+  <div class="row">
+    <div class="col actionButton">
+      <button ion-button class="accountActionButton" type="submit" form="joinForm">Join</button>
+    </div>
+  </div>
+
+  <div class="linkText text-center">
+    <p (click)="signInPage()">Have an account? Sign In</p>
+  </div>
+
+</ion-content>

@@ -1,0 +1,64 @@
+page-colour {
+    /*
+    This is the list of all possable colours the user can select from.
+    The values stored in the arrays in colour.ts used to assosiate these css colours with
+    the colours displayed to the user.
+    */
+    .red {
+        background: color($colors, red);
+    }
+
+    .green {
+        background: color($colors, green);
+    }
+
+    .yellow {
+        background: color($colors, yellow);
+    }
+
+    .blue {
+        background: color($colors, blue);
+    }
+
+    .purple {
+        background: color($colors, purple);
+    }
+
+    .grey {
+        background: color($colors, grey);
+    }   
+    /*
+    The event buttons css starts here.
+
+    
+    */
+    .item-container {
+        color: $text-color;
+        font-size: 17px;
+        border-radius: 10px;
+        height: 60px;
+        text-transform: none;
+        p {
+            margin-right:auto;
+            padding-left: 10px;
+        }
+        .inner-list {
+            width:20px;
+            display:-webkit-flex;
+            display:flex;
+            list-style-type:none;
+            padding:0;
+            justify-content:flex-end;
+            button {
+                /* Coloured buttons */
+                width: 25px;
+                height: 25px;
+                border-radius: 12.5px;
+                float: right;
+                margin: 0 7.5px;
+                z-index: 5;
+                font-size: 0px; // stops button becoming oval
+            }
+        }
+    }
+}

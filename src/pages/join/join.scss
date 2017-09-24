@@ -1,0 +1,9 @@
+/** All CSS for this page is found in the app folder*/
+page-join {
+    .invalid {
+        color: red;
+    }
+    .invalid ::-webkit-input-placeholder {
+        color: red;
+    }
+}

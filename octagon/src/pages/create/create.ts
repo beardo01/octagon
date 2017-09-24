@@ -49,7 +49,7 @@ export class CreatePage {
   repeat: boolean;
 
   // Frequency item repeats
-  repeatFreq: string;
+  repeatFreq: number;
 
   // Events description
   description: string;
@@ -81,10 +81,11 @@ export class CreatePage {
     this.timeEnds = moment().add(1, "hour").format("HH:MM");
 
     this.repeat = false;
-    this.repeatFreq = "Never";
+    this.repeatFreq = 0;
     // initalise repeat date to be set to end date to show a useful value when we need it
     // logic should ignore this value if repeat variable set to false
-    this.repeatEndDate = this.dateEnds;
+    this.repeatStartDate = moment().format("YYYY-MM-DD");
+    this.repeatEndDate = moment().add(1, "hour").format("YYYY-MM-DD");
     this.description = "";
 
 
@@ -95,7 +96,8 @@ export class CreatePage {
       'dateEnds': [this.dateEnds, Validators.compose([Validators.required])],
       'timeStarts': [this.timeStarts, Validators.compose([Validators.required])],
       'timeEnds': [this.timeEnds, Validators.compose([Validators.required])],
-      'repeatFrequency': [this.repeatFreq, Validators.compose([Validators.required])],
+      'repeatFreq': [this.repeatFreq, Validators.compose([Validators.required])],
+      'repeatStartDate': [this.repeatStartDate, Validators.compose([Validators.required])],
       'repeatEndDate': [this.repeatEndDate, Validators.compose([Validators.required])],
       'description': [this.description, Validators.compose([Validators.minLength(3), Validators.required])]
     },
@@ -122,30 +124,46 @@ export class CreatePage {
     if (this.createForm.valid) {
 
       var type = this.labelNames.indexOf(this.createForm.value.label);
-      var description = this.createForm.value.description
-      var location = this.createForm.value.location
+      var description = this.createForm.value.description;
+      var location = this.createForm.value.location;
       var start = moment(this.createForm.value.dateStarts + " " + this.createForm.value.timeStarts).unix();
       var end = moment(this.createForm.value.dateEnds + " " + this.createForm.value.timeEnds).unix();
-
-
+      var repeat_start = moment(this.createForm.value.repeatStartDate).unix();
+      var repeat_end = moment(this.createForm.value.repeatEndDate).unix();
+      var repeat_freq = parseInt(this.createForm.value.repeatFreq);
 
       let headers: Headers =  new Headers();
-      headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
       headers.append('Authorization', 'Token ' + this.localStorage.clientKey);
       headers.append('Content-Type', 'application/json');
 
-      let body = {
-        "type": type,
-        "description": description,
-        "location": location,
-        "start": start,
-        "end": end
-      };
+      let body = {}
+      if(repeat_freq == 0) {
+        body = {
+          "user": this.localStorage.id,
+          "type": type,
+          "description": description,
+          "location": location,
+          "start": start,
+          "end": end
+        };
+      } else {
+        body = {
+          "user": this.localStorage.id,
+          "type": type,
+          "description": description,
+          "location": location,
+          "start": start,
+          "end": end,
+          "repeat_start": repeat_start,
+          "repeat_end": repeat_end,
+          "repeat_freq": repeat_freq
+        };
+      }
 
-      return this.http.post('http://0.0.0.0/', JSON.stringify(body), {headers: headers})
+      return this.http.post('http://0.0.0.0/event/', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
-        if(response.success) {
+        if(response.id) {
           // reload events so user can see their new event in the views
           this.getEvents()
         } else {
@@ -157,38 +175,31 @@ export class CreatePage {
       })
     }
   }
-    /**
-   * Called when user succesfully creates an event.
+  /**
+   * Called when user successfully logs in
    * send post request away to API and get users events
    *
    */
   getEvents() {
-  var start = moment().startOf('day').unix();
-  let eventHeaders: Headers =  new Headers();
-    eventHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
-    eventHeaders.append('client_key', this.localStorage.clientKey);
+    let eventHeaders: Headers = new Headers();
+    eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    let body = {
-      'from': start
-    };
-    this.http.post('https://api.simpalapps.com/driver/get/events', JSON.stringify(body), {headers:eventHeaders})
-    .map(res => res.json())
+    this.http.get('http://127.0.0.1:8000/event/list_events/', {headers: eventHeaders})
+      .map(res => res.json())
       .subscribe(response => {
-        if (response.success) {
-          this.localStorage.events = response.data
-          this.localStorage.setLocalEvents(response.data);
-
-          this.navCtrl.popToRoot();
-         //this.navCtrl.setRoot(TabsPage);
-        } else {
-          // display error message to user
-          this.presentAlert(response.data)
-        }
-      },
-      err => {
+          if (response.success) {
+            //this.localStorage.events = response.data;
+            this.localStorage.setLocalEvents(response.detail);
+            this.navCtrl.popToRoot();
+          } else {
+            // display error message to user
+            this.presentAlert(response.data)
+          }
+        },
+        err => {
           console.log("Something went wrong with your getEvents request")
-      })
-    }
+        })
+  }
       /**
    * Alert user indicating their issue
    * @param errorMessage, message to display
@@ -206,7 +217,7 @@ export class CreatePage {
    * Toggles if we display the repeatEndDate datepicker based on the value stored in repeatFreq
    */
   repeatToggle() {
-    if (this.repeatFreq == "Never") {
+    if (this.repeatFreq == 0) {
       this.repeat = false;
     } else {
       this.repeat = true;

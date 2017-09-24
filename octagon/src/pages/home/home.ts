@@ -38,7 +38,7 @@ export class HomePage {
 
   // Sets up dates in the header of homepage.
   constructor(public navCtrl: NavController, public  http: Http, private navParams: NavParams,
-               public actionSheetCtrl: ActionSheetController, public localStorage: UserLocalStorage, public alertCtrl: AlertController) {
+              public actionSheetCtrl: ActionSheetController, public localStorage: UserLocalStorage, public alertCtrl: AlertController) {
 
     this.parameter1 = navParams.get('param1');
 
@@ -51,8 +51,9 @@ export class HomePage {
     this.labels = this.localStorage.parseColoursToArray();
     this.initaliseBubbles();
   }
+
   // set entry conditions
-  ionViewCanEnter():any {
+  ionViewCanEnter(): any {
     if (this.localStorage.clientKey) {
       return true;
     } else {
@@ -66,6 +67,7 @@ export class HomePage {
       this.bubbles.push([]);
     }
   }
+
   ionViewWillEnter() {
     this.reinitalizeView();
   }
@@ -89,30 +91,30 @@ export class HomePage {
 
   /**
    * Process data requested from the provider and push to array
-   * 
+   *
    * @param eventArr Array containing events from provider
    */
   parseEvents(eventArr) {
-        console.log(eventArr)
-        eventArr.forEach(eventObj => {
-            var outerArr = [];
-            if (eventObj != "No items today"){
-              eventObj.forEach(element => {
-                var arr = [];
-                arr.push(element.id);
-                arr.push(element.type);
-                arr.push(element.start);
-                arr.push(element.end);
-                arr.push(element.description);
-                arr.push(element.location);
-                outerArr.push(arr);
-              })
-            }
-          this.input_data.push(outerArr);
-          outerArr = [];
-        });
-        console.log("parse events done.")
+    console.log(eventArr)
+    eventArr.forEach(eventObj => {
+      var outerArr = [];
+      if (eventObj != "No items today") {
+        eventObj.forEach(element => {
+          var arr = [];
+          arr.push(element.id);
+          arr.push(element.type);
+          arr.push(element.start);
+          arr.push(element.end);
+          arr.push(element.description);
+          arr.push(element.location);
+          outerArr.push(arr);
+        })
       }
+      this.input_data.push(outerArr);
+      outerArr = [];
+    });
+    console.log("parse events done.")
+  }
 
 
   filterData() {
@@ -220,7 +222,7 @@ export class HomePage {
   }
 
   editPage(bubble) {
-    this.navCtrl.push(EditPage,bubble);
+    this.navCtrl.push(EditPage, bubble);
   }
 
   ionViewDidLoad() {
@@ -252,7 +254,7 @@ export class HomePage {
     }
   }
 
-  delete(bubble : number) {
+  delete(bubble: number) {
     this.actionSheet = this.actionSheetCtrl.create({
       title: 'Edit or Delete event?',
       enableBackdropDismiss: true,
@@ -288,13 +290,14 @@ export class HomePage {
     });
     this.actionSheet.present();
   }
-/**
- * sends an id to the api to delete an item from the users
- * timline.
- * @param item, item to delete from timeline
- */
+
+  /**
+   * sends an id to the api to delete an item from the users
+   * timline.
+   * @param item, item to delete from timeline
+   */
   deleteItem(item) {
-  let headers: Headers =  new Headers();
+    let headers: Headers = new Headers();
     headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
     headers.append('client_key', this.localStorage.clientKey);
     headers.append('Content-Type', 'application/json');
@@ -302,63 +305,59 @@ export class HomePage {
     let body = {
       'event_id': item
     };
-    this.http.post('https://api.simpalapps.com/driver/delete/event', JSON.stringify(body), {headers:headers})
-    .map(res => res.json())
+    this.http.post('https://api.simpalapps.com/driver/delete/event', JSON.stringify(body), {headers: headers})
+      .map(res => res.json())
       .subscribe(response => {
-        if (response.success) {
-          this.getEvents()
+          if (response.success) {
+            this.getEvents()
 
-        } else {
-          // display error message to user
-          this.presentAlert(response.data)
-        }
-      },
-      err => {
+          } else {
+            // display error message to user
+            this.presentAlert(response.data)
+          }
+        },
+        err => {
           console.log("Something went wrong with your getEvents request")
-      })
-    } 
+        })
+  }
 
-    /**
-     * Alert user indicating their issue
-     * @param errorMessage, message to display
-     */    
-    presentAlert(errorMessage: string) {
-      let alert = this.alertCtrl.create({
-        title: 'Login Failed',
-        message: errorMessage,
-        buttons: ['Dismiss']
-      });
-      alert.present();
-   }
   /**
-   * Called when user succesfully deletes an event.
-   * send post request away to API and get users events and call the initialisation function again
-   * 
+   * Alert user indicating their issue
+   * @param errorMessage, message to display
+   */
+  presentAlert(errorMessage: string) {
+    let alert = this.alertCtrl.create({
+      title: 'Login Failed',
+      message: errorMessage,
+      buttons: ['Dismiss']
+    });
+    alert.present();
+  }
+
+  /**
+   * Called when user successfully logs in
+   * send post request away to API and get users events
+   *
    */
   getEvents() {
-  var start = moment().startOf('day').unix();
-  let eventHeaders: Headers =  new Headers();
-    eventHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
-    eventHeaders.append('client_key', this.localStorage.clientKey);
+    var start = moment().startOf('day').unix();
+    let eventHeaders: Headers = new Headers();
+    eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    let body = {
-      'from': start
-    };
-    this.http.post('https://api.simpalapps.com/driver/get/events', JSON.stringify(body), {headers:eventHeaders})
-    .map(res => res.json())
+    this.http.get('http://127.0.0.1:8000/event/list_events/', {headers: eventHeaders})
+      .map(res => res.json())
       .subscribe(response => {
-        if (response.success) {
-          this.localStorage.events = response.data
-          this.localStorage.setLocalEvents(response.data);
-          this.reinitalizeView();
-         //this.navCtrl.setRoot(TabsPage);
-        } else {
-          // display error message to user
-          this.presentAlert(response.data)
-        }
-      },
-      err => {
+          if (response.success) {
+            //this.localStorage.events = response.data;
+            this.localStorage.setLocalEvents(response.detail);
+            this.reinitalizeView();
+          } else {
+            // display error message to user
+            this.presentAlert(response.data)
+          }
+        },
+        err => {
           console.log("Something went wrong with your getEvents request")
-      })
-    } 
+        })
   }
+}

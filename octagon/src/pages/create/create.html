@@ -54,11 +54,11 @@
 
             <ion-item>
                 <ion-label>Repeat</ion-label>
-                <ion-select formControlName="repeatFrequency" [(ngModel)]="repeatFreq" (ionChange)="repeatToggle()">
-                    <ion-option>Never</ion-option>
-                    <ion-option>Daily</ion-option>
-                    <ion-option>Weekly</ion-option>
-                    <ion-option>Monthly</ion-option>
+                <ion-select formControlName="repeatFreq" [(ngModel)]="repeatFreq" (ionChange)="repeatToggle()">
+                    <ion-option value="0">Never</ion-option>
+                    <ion-option value="1">Daily</ion-option>
+                    <ion-option value="2">Weekly</ion-option>
+                    <ion-option value="3">Monthly</ion-option>
                 </ion-select>
             </ion-item>
 

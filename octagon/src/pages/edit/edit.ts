@@ -92,22 +92,23 @@ export class EditPage {
       .hour(this.bubble[7].slice(0,this.bubble[7].length/2))
       .minute(this.bubble[7].slice(this.bubble[7].length/2,this.bubble[8].length))
       .format("hh:mm");
-    
+
     this.timeEnds = moment()
       .hour(this.bubble[8].slice(0,this.bubble[8].length/2))
       .minute(this.bubble[8].slice(this.bubble[8].length/2,this.bubble[8].length))
       .format("hh:mm");
-      
+
     this.description = this.bubble[4];
 
-    
+
 
     if (this.bubble[11] != "0"){
-      this.repeatFreq = this.bubble[11];
-      this.repeatStartDate = moment(this.bubble[9]*1000).format("YYYY-MM-DD");
-      this.repeatEndDate = moment(this.bubble[10]*1000).format("YYYY-MM-DD");
-    } else {
       this.repeat = false;
+      this.repeatFreq = this.bubble[10];
+      this.repeatStartDate = moment(this.bubble[11]*1000).format("YYYY-MM-DD");
+      this.repeatEndDate = moment(this.bubble[12]*1000).format("YYYY-MM-DD");
+    } else {
+      this.repeat = true;
       this.repeatFreq = 0;
       this.repeatStartDate = moment().format("YYYY-MM-DD");
       this.repeatEndDate = moment().add(1, "day").format("YYYY-MM-DD");
@@ -121,19 +122,19 @@ export class EditPage {
       'dateEnds': [this.dateEnds, Validators.compose([Validators.required])],
       'timeStarts': [this.timeStarts, Validators.compose([Validators.required])],
       'timeEnds': [this.timeEnds, Validators.compose([Validators.required])],
-      'repeatFrequency': [this.repeatFreq, Validators.compose([Validators.required])],
+      'repeatFreq': [this.repeatFreq],
       'description': [this.description, Validators.compose([Validators.minLength(3), Validators.required])],
       'repeatStartDate': [this.repeatStartDate, Validators.compose([Validators.required])],
       'repeatEndDate': [this.repeatEndDate, Validators.compose([Validators.required])]
     },
     );
   }
-  /* 
+  /*
    * Called when submitting the form.
-   * 
+   *
    * Returns an object with this format Note: - YYYY-MM-DD
    *                                          - 24hour timeformat
-   * 
+   *
    * dateEnds: "2017-07-19"
    * dateStarts: "2017-05-19"
    * description: "Yeah mate should be good."
@@ -151,21 +152,22 @@ export class EditPage {
       var type = this.labelNames.indexOf(this.editForm.value.label);
       var description = this.editForm.value.description;
       var location = this.editForm.value.location;
-      var start = moment(this.editForm.value.dateStarts + " " + this.editForm.value.timeStarts).unix();
-      var end = moment(this.editForm.value.dateEnds + " " + this.editForm.value.timeEnds).unix();
-      var repeat_start = moment(this.editForm.value.repeatStartDate).unix();
-      var repeat_end = moment(this.editForm.value.repeatEndDate).unix();
+      var start = moment(this.editForm.value.dateStarts + " " + this.editForm.value.timeStarts).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
+      var end = moment(this.editForm.value.dateEnds + " " + this.editForm.value.timeEnds).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
+      var repeat_start = moment(this.editForm.value.repeatStartDate).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
+      var repeat_end = moment(this.editForm.value.repeatEndDate).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
       var repeat_freq = parseInt(this.editForm.value.repeatFreq);
-      
+
       let headers: Headers =  new Headers();
-      headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
-      headers.append('client_key', this.localStorage.clientKey);
+
+      headers.append('Authorization', 'Token ' + this.localStorage.clientKey);
       headers.append('Content-Type', 'application/json');
 
       let body = {}
       if(repeat_freq == 0) {
         body = {
           "user": this.localStorage.id,
+          "timeline": this.localStorage.id,
           "type": type,
           "description": description,
           "location": location,
@@ -175,6 +177,7 @@ export class EditPage {
       } else {
         body = {
           "user": this.localStorage.id,
+          "timeline": this.localStorage.id,
           "type": type,
           "description": description,
           "location": location,
@@ -182,12 +185,14 @@ export class EditPage {
           "end": end,
           "repeat_start": repeat_start,
           "repeat_end": repeat_end,
-          "repeat_freq": repeat_freq
+          "repeat_frequency": repeat_freq
         };
-      return this.http.post('https://api.simpalapps.com/driver/create/event', JSON.stringify(body), {headers: headers})
+      }
+
+      return this.http.patch('http://0.0.0.0:8000/event/' + this.bubble[9] + '/', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
-        if(response.success) {
+        if(response.id) {
           // reload events so user can see their new event in the views
           this.getEvents()
         } else {
@@ -199,30 +204,24 @@ export class EditPage {
       })
     }
   }
-}
     /**
    * Called when user succesfully creates an event.
    * send post request away to API and get users events
-   * 
+   *
    */
-  getEvents() {
-  var start = moment().startOf('day').unix();
+getEvents() {
   let eventHeaders: Headers =  new Headers();
-    eventHeaders.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
-    eventHeaders.append('client_key', this.localStorage.clientKey);
+    eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    let body = {
-      'from': start
-    };
-    this.http.post('https://api.simpalapps.com/driver/get/events', JSON.stringify(body), {headers:eventHeaders})
+    this.http.get('http://127.0.0.1:8000/event/list_events/', {headers:eventHeaders})
     .map(res => res.json())
       .subscribe(response => {
         if (response.success) {
-          this.localStorage.events = response.data
-          this.localStorage.setLocalEvents(response.data);
-
+          console.log("get events")
+          console.log(response)
+          //this.localStorage.events = response.data;
+          this.localStorage.setLocalEvents(response.detail);
           this.navCtrl.popToRoot();
-         //this.navCtrl.setRoot(TabsPage);
         } else {
           // display error message to user
           this.presentAlert(response.data)
@@ -231,11 +230,11 @@ export class EditPage {
       err => {
           console.log("Something went wrong with your getEvents request")
       })
-    } 
+    }
       /**
    * Alert user indicating their issue
    * @param errorMessage, message to display
-   */    
+   */
   presentAlert(errorMessage: string) {
     let alert = this.alertCtrl.create({
       title: 'Login Failed',
@@ -246,7 +245,7 @@ export class EditPage {
 }
 
   /*
-   * Toggles if we display the repeatEndDate datepicker based on the value stored in repeatFreq  
+   * Toggles if we display the repeatEndDate datepicker based on the value stored in repeatFreq
    */
   repeatToggle() {
     if (this.repeatFreq == 0) {

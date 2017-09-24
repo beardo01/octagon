@@ -137,6 +137,7 @@ export class CreatePage {
       headers.append('Content-Type', 'application/json');
 
       let body = {}
+
       if(repeat_freq == 0) {
         body = {
           "user": this.localStorage.id,
@@ -156,7 +157,7 @@ export class CreatePage {
           "end": end,
           "repeat_start": repeat_start,
           "repeat_end": repeat_end,
-          "repeat_freq": repeat_freq
+          "repeat_frequency": repeat_freq
         };
       }
 

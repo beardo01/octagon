@@ -26,6 +26,7 @@ class Timeline(models.Model):
 
 class Event(models.Model):
     # Relationships
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     timeline = models.ForeignKey(Timeline, on_delete=models.CASCADE)
 
     # Details

@@ -60,6 +60,31 @@ class EventViewSet(viewsets.ModelViewSet):
 
         event = serializer.save()
 
+        # Generate repeats
+        self.generate_repeats(event)
+
+    def perform_update(self, serializer):
+        # Check that the serializer is valid
+        if serializer.is_valid():
+            # Ensure that the user is creating the event for their timeline
+            serializer.validated_data['timeline'] = Timeline.objects.get(id=self.request.auth.user.id)
+
+        event = serializer.save()
+
+        # Delete old repeats
+        EventRepeat.objects.filter(event=event).delete()
+
+        # Generate repeats
+        self.generate_repeats(event)
+
+    def perform_destroy(self, instance):
+        # Delete repeated events
+        EventRepeat.objects.filter(event=instance).delete()
+
+        # Delete event
+        instance.delete()
+
+    def generate_repeats(self, event):
         # Check to see if the event repeats
         repeat_frequency = event.repeat_frequency
         if repeat_frequency is not None and repeat_frequency != 0:
@@ -94,10 +119,11 @@ class EventViewSet(viewsets.ModelViewSet):
 
             days_events = Event.objects.filter(timeline=Timeline.objects.get(user=self.request.user),
                                                start__day=(timezone.now() + timedelta(days=day_counter)).day)
+            days_repeat_events = EventRepeat.objects.filter(start__day=(timezone.now() + timedelta(days=day_counter)).day)
             days_events.order_by('start')
 
             count = 0
-            if days_events.count() == 0:
+            if days_events.count() == 0 and days_repeat_events == 0:
                 event_list.append("No items today")
             else:
                 for event in days_events:
@@ -115,20 +141,21 @@ class EventViewSet(viewsets.ModelViewSet):
 
                     day.append(json)
                     count += 1
+                for repeat_event in days_repeat_events:
+                    repeat = {}
+                    repeat.update({'type': repeat_event.event.type})
+                    repeat.update({'start': repeat_event.start.timestamp()})
+                    repeat.update({'end': repeat_event.end.timestamp()})
+                    repeat.update({'description': repeat_event.event.description})
+                    repeat.update({'location': repeat_event.event.location})
+                    repeat.update({'id': repeat_event.event.id})
 
-                    days_repeat_events = EventRepeat.objects.filter(event=event, start__day=(timezone.now() + timedelta(days=day_counter)).day)
+                    repeat.update({'repeat_frequency': repeat_event.event.repeat_frequency})
+                    repeat.update({'repeat_start': repeat_event.event.repeat_end})
+                    repeat.update({'repeat_end': repeat_event.event.repeat_start})
 
-                    for repeat_event in days_repeat_events:
-                        repeat = {}
-                        repeat.update({'type': event.type})
-                        repeat.update({'start': repeat_event.start.timestamp()})
-                        repeat.update({'end': repeat_event.end.timestamp()})
-                        repeat.update({'description': event.description})
-                        repeat.update({'location': event.location})
-                        repeat.update({'id': event.id})
-
-                        day.append(repeat)
-                        count += 1
+                    day.append(repeat)
+                    count += 1
 
                 event_list.append(day)
 

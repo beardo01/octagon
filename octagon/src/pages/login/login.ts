@@ -92,10 +92,9 @@ export class LoginPage {
             this.getEvents();
 
         } else {
-        // display error message to user
-        this.presentAlert(response.data);
-      }
-
+          // display error message to user
+          this.presentAlert("Username or password is incorrect.");
+        }
       },
       err => {
         console.log("Something went wrong with authenticate request")
@@ -107,7 +106,6 @@ export class LoginPage {
    *
    */
   getEvents() {
-  var start = moment().startOf('day').unix();
   let eventHeaders: Headers =  new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');

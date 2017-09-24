@@ -13,9 +13,10 @@ class IsOwner(permissions.BasePermission):
             return True
         elif view.action in ['list_events']:
             return True
-        elif not request.data.get('user'):
+        elif not request.data.get('user') and not request.data.get('user_id'):
             return False
-        elif view.action in ['create', 'update', 'partial_update'] and request.data['user'] == request.user.id:
+        elif view.action in ['create', 'update', 'partial_update'] and request.data.get('user') == request.user.id or \
+                        request.data.get('user_id') == request.user.id:
             return True
         # White list that object level permissions should take care of.
         else:

@@ -107,6 +107,9 @@ export class HomePage {
           arr.push(element.end);
           arr.push(element.description);
           arr.push(element.location);
+          arr.push(element.repeat_frequency);
+          arr.push(element.repeat_start);
+          arr.push(element.repeat_end);
           outerArr.push(arr);
         })
       }
@@ -135,10 +138,9 @@ export class HomePage {
         var location = this.input_data[day][bubble_selected][5];
         var id = this.input_data[day][bubble_selected][0];
 
-        // var repeatYN = this.input_data[day][bubble_selected][];
-        // var repeat_freq = ;
-        // var repeatDate_S = ;
-        // var repeatDate_E = ;
+        var repeat_freq = this.input_data[day][bubble_selected][6];
+        var repeatDate_start = this.input_data[day][bubble_selected][7];
+        var repeatDate_end = this.input_data[day][bubble_selected][8];
 
         // Writes the correct colour depending on type.
         if (type === 0) {
@@ -200,6 +202,9 @@ export class HomePage {
         filtered.push(time_start_24);    // [7]
         filtered.push(time_end_24);      // [8]
         filtered.push(id);               // [9]
+        filtered.push(repeat_freq);      // [10]
+        filtered.push(repeatDate_start); // [11]
+        filtered.push(repeatDate_end);   // [12]
         // Push filtered bubble to bubbles.
         this.bubbles[day].push(filtered);
 
@@ -298,22 +303,20 @@ export class HomePage {
    */
   deleteItem(item) {
     let headers: Headers = new Headers();
-    headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
-    headers.append('client_key', this.localStorage.clientKey);
+
+    headers.append('Authorization', 'Token ' + this.localStorage.clientKey);
     headers.append('Content-Type', 'application/json');
 
-    let body = {
-      'event_id': item
-    };
-    this.http.post('https://api.simpalapps.com/driver/delete/event', JSON.stringify(body), {headers: headers})
+    this.http.delete('http://0.0.0.0:8000/event/' + item + '/', {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
-          if (response.success) {
+        console.log("response: " + response)
+          if (response == null) {
             this.getEvents()
 
           } else {
             // display error message to user
-            this.presentAlert(response.data)
+            this.presentAlert("Error deleting event.")
           }
         },
         err => {

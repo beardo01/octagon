@@ -25,7 +25,7 @@ export class LoginPage {
   ip: string;
   invalid: boolean;
 
-  constructor(public navCtrl: NavController, public builder: FormBuilder, public alertCtrl: AlertController, 
+  constructor(public navCtrl: NavController, public builder: FormBuilder, public alertCtrl: AlertController,
               public localStorage: UserLocalStorage , public http: Http ) {
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
@@ -70,7 +70,7 @@ export class LoginPage {
 
   authenticate(){
     this.submitAttempt = true;
-   
+
     let headers: Headers =  new Headers();
     headers.append('Content-Type', 'application/json');
     let userData = {
@@ -78,7 +78,7 @@ export class LoginPage {
       'password': this.loginForm.value.password
     };
       this.http.post('http://0.0.0.0:8000/auth/', JSON.stringify(userData), {headers: headers})
-      .map(res => 
+      .map(res =>
         res.json())
       .subscribe( response => {
           if (response.success) {
@@ -87,14 +87,15 @@ export class LoginPage {
             this.localStorage.setClientKey(response.data.client_key);
             this.localStorage.setLocalColours(response.data.colours);
             this.localStorage.setLocalLabels(response.data.labels);
+            this.localStorage.setLocalID(response.data.user_id);
             // call local method to read in the next 10 days of events
             this.getEvents();
-            
+
         } else {
         // display error message to user
         this.presentAlert(response.data);
       }
-      
+
       },
       err => {
         console.log("Something went wrong with authenticate request")
@@ -103,7 +104,7 @@ export class LoginPage {
   /**
    * Called when user successfully logs in
    * send post request away to API and get users events
-   * 
+   *
    */
   getEvents() {
   var start = moment().startOf('day').unix();
@@ -127,12 +128,12 @@ export class LoginPage {
       err => {
           console.log("Something went wrong with your getEvents request")
       })
-    } 
+    }
 
   /**
    * Alert user indicating their issue
    * @param errorMessage, message to display
-   */    
+   */
   presentAlert(errorMessage: string) {
     let alert = this.alertCtrl.create({
       title: 'Login Failed',

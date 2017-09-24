@@ -15,7 +15,7 @@ export class ColourPage {
   inUseColours: string [] = [];
   //array of available colours
   allColours: string [] = ["red", "blue", "yellow", "green", "grey", "purple"];
-  //placeholder defaults  
+  //placeholder defaults
   availableColours: string [] = [];
 
   labels:  string [] = [];
@@ -42,7 +42,7 @@ export class ColourPage {
    * When a user clicks a colour button the value of the button stored in the availableColours array is swapped with
    * the value in the inUseColours array. The ng model take care of displaying the correct values.
    * @param colour; class name of colour passed.
-   * @param arrayPosition; 
+   * @param arrayPosition;
    */
   setEventColour(colour, arrayPosition) {
     if (this.availableColours.indexOf(colour) > -1 ) {
@@ -55,7 +55,7 @@ export class ColourPage {
 /**
  * Checks allColours array against the inUseColours array. if a colour isn't being used it will be pushed to a new
  * array that is used to replace the availableColours array.
- * 
+ *
  * We call this in viewDidload to initalise the correct values in the hidden colour buttons.
  */
   getAvailableColours() {
@@ -98,45 +98,51 @@ export class ColourPage {
           this.toggle2 = false;
       }
     }
-  }  
+  }
 
   /**
    * If user has made valid choices, send a post request to the server with the new colour changes
-   * wait for response. 
+   * wait for response.
    * If unsuccessfull we alert the user.
    * If successfull we pop to settings page.
-   * 
+   *
    * @param colourArr, colours to send to the server and save in local storage
    */
     setColours(colourArr) {
     // post to server and set new colour strings
     let headers: Headers =  new Headers();
-    headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
-    headers.append('client_key', this.localStorage.clientKey);
+
+    headers.append('Authorization', 'Token ' + this.localStorage.clientKey);
     headers.append('Content-Type', 'application/json');
+    console.log(this.localStorage.clientKey, this.localStorage.id);
 
     let body = {
+      "user": this.localStorage.id,
       "colour_one": colourArr[0],
       "colour_two": colourArr[1],
       "colour_three": colourArr[2],
     };
-    return this.http.post('https://api.simpalapps.com/driver/set/colours', JSON.stringify(body), {headers: headers})
-      .map(res => 
+    return this.http.patch('http://0.0.0.0:8000/timeline/' + this.localStorage.id + '/',
+      JSON.stringify(body), {headers: headers})
+      .map(res =>
        res.json()).subscribe ( response => {
-        if (response.success) {
+         console.log(response)
+
+        if (response.id) {
 
           this.localStorage.saveArrayOfColours(this.inUseColours);
           this.navCtrl.pop();
 
         } else {
-          this.presentAlert(response.data);
+          this.presentAlert(response);
         }
       });
+
     }
 
   /**
-   * 
-   * @param errorMessage, message to display to user 
+   *
+   * @param errorMessage, message to display to user
    */
   presentAlert(errorMessage: string) {
     let alert = this.alertCtrl.create({
@@ -146,7 +152,7 @@ export class ColourPage {
       });
     alert.present();
   }
-  
+
   /**
    * Called when user wants to save the settings
    */

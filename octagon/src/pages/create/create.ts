@@ -101,12 +101,12 @@ export class CreatePage {
     },
     );
   }
-  /* 
+  /*
    * Called when submitting the form.
-   * 
+   *
    * Returns an object with this format Note: - YYYY-MM-DD
    *                                          - 24hour timeformat
-   * 
+   *
    * dateEnds: "2017-07-19"
    * dateStarts: "2017-05-19"
    * description: "Yeah mate should be good."
@@ -126,12 +126,12 @@ export class CreatePage {
       var location = this.createForm.value.location
       var start = moment(this.createForm.value.dateStarts + " " + this.createForm.value.timeStarts).unix();
       var end = moment(this.createForm.value.dateEnds + " " + this.createForm.value.timeEnds).unix();
-      
+
 
 
       let headers: Headers =  new Headers();
       headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
-      headers.append('client_key', this.localStorage.clientKey);
+      headers.append('Authorization', 'Token ' + this.localStorage.clientKey);
       headers.append('Content-Type', 'application/json');
 
       let body = {
@@ -141,7 +141,8 @@ export class CreatePage {
         "start": start,
         "end": end
       };
-      return this.http.post('https://api.simpalapps.com/driver/create/event', JSON.stringify(body), {headers: headers})
+
+      return this.http.post('http://0.0.0.0/', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
         if(response.success) {
@@ -159,7 +160,7 @@ export class CreatePage {
     /**
    * Called when user succesfully creates an event.
    * send post request away to API and get users events
-   * 
+   *
    */
   getEvents() {
   var start = moment().startOf('day').unix();
@@ -187,11 +188,11 @@ export class CreatePage {
       err => {
           console.log("Something went wrong with your getEvents request")
       })
-    } 
+    }
       /**
    * Alert user indicating their issue
    * @param errorMessage, message to display
-   */    
+   */
   presentAlert(errorMessage: string) {
     let alert = this.alertCtrl.create({
       title: 'Login Failed',
@@ -202,7 +203,7 @@ export class CreatePage {
 }
 
   /*
-   * Toggles if we display the repeatEndDate datepicker based on the value stored in repeatFreq  
+   * Toggles if we display the repeatEndDate datepicker based on the value stored in repeatFreq
    */
   repeatToggle() {
     if (this.repeatFreq == "Never") {

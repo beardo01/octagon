@@ -26,9 +26,9 @@ export class JoinPage {
   rpassword: string;
   password_same: boolean;
 
-  constructor(public navCtrl: NavController, public builder: FormBuilder, public http: Http, 
+  constructor(public navCtrl: NavController, public builder: FormBuilder, public http: Http,
               public alertCtrl: AlertController, public localStorage: UserLocalStorage, public clearStorage: ClearLocalStorage) {
-    
+
     if (document.querySelector('.tabbar')) {
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     }
@@ -76,18 +76,18 @@ export class JoinPage {
           'password': this.joinForm.value.password,
           'first_name': "",
           'last_name': ""
-        };  
+        };
           this.http.post('http://0.0.0.0:8000/users/', JSON.stringify(userData), {headers: headers})
-          .map(res => 
+          .map(res =>
             res.json())
             .subscribe( response => {
-              if (response.success) {
+              if (response.username) {
                 // Succesfully register user. Set local storage up!
                 //this.localStorage.setClientKey(response.data.client_key);
-                this.localStorage.setLocalColours(response.data.colours);
-                this.localStorage.setLocalLabels(response.data.labels);
-                this.localStorage.setLocalID(response.data.id);
-                this.localStorage.setUsername(response.data.username);
+                // this.localStorage.setLocalColours(response.data.colours);
+                // this.localStorage.setLocalLabels(response.data.labels);
+                // this.localStorage.setLocalID(response.id);
+                this.localStorage.setUsername(response.username);
                 this.navCtrl.pop();
               } else {
                 this.presentAlert(response.data);
@@ -95,17 +95,17 @@ export class JoinPage {
             },
             err => {
                 console.log('server return error when trying to register user')
-            })                 
-          } 
+            })
+          }
       } else {
         this.password_same = false;
     }
   }
-  
+
     /**
    * Alert user indicating their issue
    * @param errorMessage, message to display
-   */    
+   */
   presentAlert(errorMessage: string) {
     let alert = this.alertCtrl.create({
       title: 'Login Failed',

@@ -51,33 +51,33 @@ export class LabelPage {
     labelArr.push(this.labelForm.controls['label_two'].value);
     labelArr.push(this.labelForm.controls['label_three'].value);
     return labelArr;
-    
+
   }
-    
+
   /**
    * If user has made valid choices, send a post request to the server with the new colour changes
-   * wait for response. 
+   * wait for response.
    * If unsuccessfull we alert the user.
    * If successfull we pop to settings page.
-   * 
+   *
    * @param labelArr, colours to send to the server and save in local storage
    */
     setLabels(labelArr) {
     // post to server and set new colour strings
     let headers: Headers =  new Headers();
-    headers.set('auth_key', '9C73815A3C9AA677B379EB69BDF19');
-    headers.append('client_key', this.localStorage.clientKey);
+    headers.append('Authorization', 'Token ' + this.localStorage.clientKey);
     headers.append('Content-Type', 'application/json');
 
     let body = {
+      "user": this.localStorage.id,
       "label_one": labelArr[0],
       "label_two": labelArr[1],
       "label_three": labelArr[2],
     };
-    return this.http.post('https://api.simpalapps.com/driver/set/labels', JSON.stringify(body), {headers: headers})
-      .map(res => 
+    return this.http.patch('http://0.0.0.0:8000/timeline/' + this.localStorage.id + '/', JSON.stringify(body), {headers: headers})
+      .map(res =>
        res.json()).subscribe ( response => {
-        if (response.success) {
+        if (response.id) {
           // server recieved data
           this.localStorage.saveArrayOfLabels(this.labelsToArray());
           // pop to settings page
@@ -109,8 +109,8 @@ export class LabelPage {
     } else {
       this.setLabels(this.labelsToArray());
 
-      
-      
+
+
     }
   }
 }

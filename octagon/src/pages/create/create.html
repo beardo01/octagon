@@ -1,0 +1,85 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title>Create</ion-title>
+        <ion-buttons end>
+            <button ion-button type="submit" form="createForm" [disabled]="!this.createForm.valid">
+        <ion-label>Add</ion-label>
+      </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+
+    <form id="createForm" [formGroup]="createForm" (ngSubmit)="add(createForm.value)">
+        <!--<ion-list>
+      <ion-item class="invalid" *ngIf="!createForm.controls.valid && submitAttempt">
+        <small>Fields have invalid entry</small>
+    </ion-item>
+    </ion-list>-->
+        <ion-list>
+            <ion-item>
+                <ion-label>Label</ion-label>
+                <ion-select formControlName="label">
+                    <ion-option>{{labelNames[0]}}</ion-option>
+                    <ion-option>{{labelNames[1]}}</ion-option>
+                    <ion-option>{{labelNames[2]}}</ion-option>
+                </ion-select>
+            </ion-item>
+            <ion-item>
+                <ion-input placeholder="Location" formControlName="location" [(ngModel)]="location"></ion-input>
+            </ion-item>
+        </ion-list>
+
+        <ion-list>
+            <ion-item>
+                <ion-label>Start Date</ion-label>
+                <ion-datetime displayFormat="DD MMMM YYYY" min="{{minDate}}" max="{{maxDate}}" formControlName="dateStarts" [(ngModel)]="dateStarts"></ion-datetime>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>End Date</ion-label>
+                <ion-datetime displayFormat="DD MMMM YYYY" min="{{minDate}}" max="{{maxDate}}" formControlName="dateEnds" [(ngModel)]="dateEnds"></ion-datetime>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Start Time</ion-label>
+                <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" formControlName="timeStarts" [(ngModel)]="timeStarts"></ion-datetime>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>End Time</ion-label>
+                <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" formControlName="timeEnds" [(ngModel)]="timeEnds"></ion-datetime>
+            </ion-item>
+
+            <ion-item>
+                <ion-label>Repeat</ion-label>
+                <ion-select formControlName="repeatFrequency" [(ngModel)]="repeatFreq" (ionChange)="repeatToggle()">
+                    <ion-option>Never</ion-option>
+                    <ion-option>Daily</ion-option>
+                    <ion-option>Weekly</ion-option>
+                    <ion-option>Monthly</ion-option>
+                </ion-select>
+            </ion-item>
+
+            <ion-item *ngIf="repeat">
+                <ion-label>Repeat Start</ion-label>
+                <ion-datetime displayFormat="DD MMMM YYYY" max="{{maxDate}}" min="{{minDate}}" formControlName="repeatStartDate" [(ngModel)]="repeatStartDate"></ion-datetime>
+            </ion-item>
+
+            <ion-item *ngIf="repeat">
+                <ion-label>Repeat End</ion-label>
+                <ion-datetime displayFormat="DD MMMM YYYY" max="{{maxDate}}" min="{{minDate}}" formControlName="repeatEndDate" [(ngModel)]="repeatEndDate"></ion-datetime>
+            </ion-item>
+
+        </ion-list>
+
+
+        <ion-list>
+            <ion-item>
+                <ion-textarea maxlength="50" formControlName="description" [(ngModel)]="description" placeholder="Description"></ion-textarea>
+            </ion-item>
+        </ion-list>
+
+    </form>
+</ion-content>

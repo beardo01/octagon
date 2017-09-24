@@ -1,0 +1,8 @@
+{
+  "name": "octagon",
+  "app_id": "7c41df3b",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

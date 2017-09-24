@@ -1,0 +1,20 @@
+<ion-content no-bounce>
+  <div id="weekDateArea">
+    <h2 id="weekDay">{{date_range}}</h2>
+    <span id="weekDates">
+      <div>{{display_days[0]}}</div>
+      <div>{{display_days[1]}}</div>
+      <div>{{display_days[2]}}</div>
+      <div>{{display_days[3]}}</div>
+      <div>{{display_days[4]}}</div>
+    </span>
+  </div>
+
+  <div id="tl-container">
+    <div class="tl-line" (press)="select_day(i)" *ngFor="let bubble of bubbles_week let i = index">
+      <div *ngFor="let bubble_day of bubble">
+        <div class="bubble_week tl-{{bubble_day[1]}}" [ngStyle]="{'margin-top': bubble_day[0]}"></div>
+      </div>
+    </div>
+  </div>
+</ion-content>

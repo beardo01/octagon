@@ -1,0 +1,12 @@
+/** All CSS for this page is found in the app folder*/
+page-login {
+
+    .invalid ::-webkit-input-placeholder {
+        color: red;
+    }
+
+    .invalid {
+        color: red;
+    }
+
+}

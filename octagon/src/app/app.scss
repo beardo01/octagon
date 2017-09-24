@@ -1,0 +1,124 @@
+// http://ionicframework.com/docs/v2/theming/
+
+
+// App Global Sass
+// --------------------------------------------------
+// Put style rules here that you want to apply globally. These
+// styles are for the entire app and not just one component.
+// Additionally, this file can be also used as an entry point
+// to import other Sass files to be included in the output CSS.
+//
+// Shared Sass variables, which can be used to adjust Ionic's
+// default Sass variables, belong in "theme/variables.scss".
+//
+// To declare rules for a specific mode, create a child rule
+// for the .md, .ios, or .wp mode classes. The mode class is
+// automatically applied to the <body> element in the app.
+
+.content {
+    background: url('../assets/background.png');
+    background-size: cover;
+    z-index: -1;
+}
+
+.no-scroll .scroll-content{
+    overflow: hidden;
+}
+
+.list > .item-block:first-child {
+    border-radius: 10px 10px 0px 0px;
+    border: none;
+}
+
+.list > .item-block:last-child {
+    border-radius: 0px 0px 10px 10px;
+    border: none;
+}
+
+.list > .item-block:last-child:only-child {
+    border-radius: 10px;
+}
+
+// Login and join pages
+.accountLogo {
+    background-image: url('../assets/Test.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center; 
+    display: block;
+    height: 130px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.accountInput {
+    padding-right: 16px;
+    background: transparent;
+}
+
+.accountInput:first-child {
+    border-top: 0;
+    margin-top: 20px;
+}
+
+.actionButton, .actionButton > button {
+    color: white;
+    text-align: center;
+}
+
+.accountActionButton {
+    padding-left: 50px;
+    padding-right: 50px;
+}
+
+.linkText {
+    text-align: center;
+    position: absolute;
+    width: 100%;
+    margin-left: -16px;
+    overflow: hidden;
+}
+
+// Create Page
+
+ion-select {
+    background-color: transparent;
+}
+
+// Backdrop opactity
+ion-backdrop {
+    opacity: 1 !important;
+}
+
+.alert-title {
+    color: white;
+}
+
+.picker-above-highlight {
+    background: linear-gradient(to bottom, grey 20%, rgba(0, 0, 0, 0.1) 90%) !important;
+    border-bottom: 0px !important;
+}
+
+.picker-below-highlight {
+    background: linear-gradient(to top, grey 30%, rgba(0, 0, 0, 0.1) 90%) !important;
+    border-top: 0px !important;
+}
+
+.alert-wrapper {
+    background-color: rbga(162, 162, 162, .1) !important;
+}
+.picker-wrapper {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
+// .picker-toolbar {
+//     background-color: rgba(255, 255, 255, 0.1);
+// }
+
+// Android list bottom shadow.
+.list-md .item-input:last-child {
+    box-shadow: none !important;
+}
+
+// Change

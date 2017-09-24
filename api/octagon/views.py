@@ -11,6 +11,9 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from django.utils import timezone
+from datetime import datetime
+from collections import defaultdict
+import json
 
 from .permissions import *
 from .serializers import *
@@ -82,36 +85,46 @@ class EventViewSet(viewsets.ModelViewSet):
 
     @list_route(methods=['get'])
     def list_events(self, request, **kwargs):
+        # Ugly methods to check waaaaay tumeke stuff, should be optimised
 
-        event_list = []
+        event_list = {}
+        day_counter = 0
+        while day_counter < 10:
+            day = {}
 
-        # Get all events
-        events = Event.objects.filter(timeline=Timeline.objects.get(user=self.request.user), start__gte=timezone.now(),
-                                      end__lte=timezone.now().date() + timedelta(days=10))
-        events.order_by('start')
+            days_events = Event.objects.filter(timeline=Timeline.objects.get(user=self.request.user),
+                                               start__day=(timezone.now() + timedelta(days=day_counter)).day)
+            days_events.order_by('start')
 
-        for event in events:
-            json = {}
-            json.update({'type': event.type})
-            json.update({'start': event.start})
-            json.update({'end': event.end})
-            json.update({'description': event.description})
-            json.update({'location': event.location})
-            event_list.append(json)
+            count = 0
+            if days_events.count() == 0:
+                event_list.update({
+                    day_counter: "No items today"
+                })
+            else:
+                for event in days_events:
+                    json = {}
+                    json.update({'type': event.type})
+                    json.update({'start': event.start})
+                    json.update({'end': event.end})
+                    json.update({'description': event.description})
+                    json.update({'location': event.location})
+                    json.update({'id':event.id})
 
-            repeat_events = EventRepeat.objects.filter(event=event, start__gte=timezone.now(),
-                                                       end__lte=timezone.now().date() + timedelta(days=10))
-            for repeat_event in repeat_events:
-                json = {}
-                json.update({'type': event.type})
-                json.update({'start': repeat_event.start})
-                json.update({'end': repeat_event.end})
-                json.update({'description': event.description})
-                json.update({'location': event.location})
-                event_list.append(json)
+                    day.update({
+                        count: json
+                    })
+                    count += 1
+
+                event_list.update({
+                    day_counter: day
+                })
+
+            day_counter += 1
 
         return Response({
-            'events': event_list
+            'success': True,
+            'detail': event_list
         })
 
 

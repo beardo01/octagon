@@ -307,7 +307,7 @@ export class HomePage {
     headers.append('Authorization', 'Token ' + this.localStorage.clientKey);
     headers.append('Content-Type', 'application/json');
 
-    this.http.delete('http://0.0.0.0:8000/event/' + item + '/', {headers: headers})
+    this.http.delete('http://10.112.124.235:8000/event/' + item + '/', {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
         console.log("response: " + response)
@@ -347,7 +347,7 @@ export class HomePage {
     let eventHeaders: Headers = new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    this.http.get('http://127.0.0.1:8000/event/list_events/', {headers: eventHeaders})
+    this.http.get('http://10.112.124.235:8000/event/list_events/', {headers: eventHeaders})
       .map(res => res.json())
       .subscribe(response => {
           if (response.success) {

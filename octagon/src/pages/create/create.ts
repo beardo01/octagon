@@ -161,7 +161,7 @@ export class CreatePage {
         };
       }
 
-      return this.http.post('http://0.0.0.0:8000/event/', JSON.stringify(body), {headers: headers})
+      return this.http.post('http://10.112.124.235:8000/event/', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
         if(response.id) {
@@ -185,7 +185,7 @@ export class CreatePage {
     let eventHeaders: Headers = new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    this.http.get('http://127.0.0.1:8000/event/list_events/', {headers: eventHeaders})
+    this.http.get('http://10.112.124.235:8000/event/list_events/', {headers: eventHeaders})
       .map(res => res.json())
       .subscribe(response => {
           if (response.success) {

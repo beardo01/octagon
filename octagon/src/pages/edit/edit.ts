@@ -83,6 +83,7 @@ export class EditPage {
 
     // Form field setup
     this.label = this.bubble[1];
+    console.log(this.label)
     this.location = this.bubble[5]
 
     this.dateStarts = moment(this.bubble[2]*1000).format("YYYY-MM-DD");
@@ -101,19 +102,19 @@ export class EditPage {
     this.description = this.bubble[4];
 
 
-
-    if (this.bubble[11] != "0"){
-      this.repeat = false;
+    if (this.bubble[10] != 0){
+      this.repeat = true;
       this.repeatFreq = this.bubble[10];
       this.repeatStartDate = moment(this.bubble[11]*1000).format("YYYY-MM-DD");
+      console.log(this.repeatStartDate)
+      console.log(this.dateStarts)
       this.repeatEndDate = moment(this.bubble[12]*1000).format("YYYY-MM-DD");
     } else {
-      this.repeat = true;
-      this.repeatFreq = 0;
-      this.repeatStartDate = moment().format("YYYY-MM-DD");
-      this.repeatEndDate = moment().add(1, "day").format("YYYY-MM-DD");
+      this.repeat = false;
+      this.repeatFreq = this.bubble[10];
+      this.repeatStartDate = this.dateStarts;
+      this.repeatEndDate = this.dateEnds;
     }
-
     //Validate form setting form fields.
     this.editForm = this.builder.group({
       'label': [this.label, Validators.compose([Validators.required, CreateFormValidator.validLabel])],
@@ -167,7 +168,6 @@ export class EditPage {
       if(repeat_freq == 0) {
         body = {
           "user": this.localStorage.id,
-          "timeline": this.localStorage.id,
           "type": type,
           "description": description,
           "location": location,
@@ -177,7 +177,6 @@ export class EditPage {
       } else {
         body = {
           "user": this.localStorage.id,
-          "timeline": this.localStorage.id,
           "type": type,
           "description": description,
           "location": location,
@@ -189,7 +188,7 @@ export class EditPage {
         };
       }
 
-      return this.http.patch('http://0.0.0.0:8000/event/' + this.bubble[9] + '/', JSON.stringify(body), {headers: headers})
+      return this.http.patch('http://10.112.124.235:8000/event/' + this.bubble[9] + '/', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
         if(response.id) {
@@ -213,7 +212,7 @@ getEvents() {
   let eventHeaders: Headers =  new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    this.http.get('http://127.0.0.1:8000/event/list_events/', {headers:eventHeaders})
+    this.http.get('http://10.112.124.235:8000/event/list_events/', {headers:eventHeaders})
     .map(res => res.json())
       .subscribe(response => {
         if (response.success) {

@@ -65,7 +65,6 @@ export class EditPage {
     //   this.colours = [];
 
     this.bubble = this.navParams.data;
-    console.log(this.bubble)
 
     this.padded_month = (this.date.getMonth()+1).toString();
     this.padded_day = this.date.getDate().toString();
@@ -83,7 +82,6 @@ export class EditPage {
 
     // Form field setup
     this.label = this.bubble[1];
-    console.log(this.label)
     this.location = this.bubble[5]
 
     this.dateStarts = moment(this.bubble[2]*1000).format("YYYY-MM-DD");
@@ -106,8 +104,6 @@ export class EditPage {
       this.repeat = true;
       this.repeatFreq = this.bubble[10];
       this.repeatStartDate = moment(this.bubble[11]*1000).format("YYYY-MM-DD");
-      console.log(this.repeatStartDate)
-      console.log(this.dateStarts)
       this.repeatEndDate = moment(this.bubble[12]*1000).format("YYYY-MM-DD");
     } else {
       this.repeat = false;

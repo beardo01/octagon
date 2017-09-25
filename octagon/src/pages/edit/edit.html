@@ -20,7 +20,7 @@
         <ion-list>
             <ion-item>
                 <ion-label>Label</ion-label>
-                <ion-select formControlName="label">
+                <ion-select formControlName="label" [(ngModel)]="label">
                     <ion-option value={{labelNames[0]}}>{{labelNames[0]}}</ion-option>
                     <ion-option value={{labelNames[1]}}>{{labelNames[1]}}</ion-option>
                     <ion-option value={{labelNames[2]}}>{{labelNames[2]}}</ion-option>

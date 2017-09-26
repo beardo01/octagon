@@ -126,10 +126,10 @@ export class CreatePage {
       var type = this.labelNames.indexOf(this.createForm.value.label);
       var description = this.createForm.value.description;
       var location = this.createForm.value.location;
-      var start = moment(this.createForm.value.dateStarts + " " + this.createForm.value.timeStarts).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
-      var end = moment(this.createForm.value.dateEnds + " " + this.createForm.value.timeEnds).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
-      var repeat_start = moment(this.createForm.value.repeatStartDate).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
-      var repeat_end = moment(this.createForm.value.repeatEndDate).format('YYYY-MM-DD[T]HH:mm:ss[Z]');
+      var start = moment(this.createForm.value.dateStarts + " " + this.createForm.value.timeStarts).format();
+      var end = moment(this.createForm.value.dateEnds + " " + this.createForm.value.timeEnds).format();
+      var repeat_start = moment(this.createForm.value.repeatStartDate).format();
+      var repeat_end = moment(this.createForm.value.repeatEndDate).format();
       var repeat_freq = parseInt(this.createForm.value.repeatFreq);
 
       let headers: Headers =  new Headers();
@@ -161,7 +161,7 @@ export class CreatePage {
         };
       }
 
-      return this.http.post('http://10.112.124.235:8000/event/', JSON.stringify(body), {headers: headers})
+      return this.http.post('http://0.0.0.0:8000/event/', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
         if(response.id) {
@@ -185,7 +185,7 @@ export class CreatePage {
     let eventHeaders: Headers = new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    this.http.get('http://10.112.124.235:8000/event/list_events/', {headers: eventHeaders})
+    this.http.get('http://0.0.0.0:8000/event/list_events/', {headers: eventHeaders})
       .map(res => res.json())
       .subscribe(response => {
           if (response.success) {

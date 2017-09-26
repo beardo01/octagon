@@ -77,7 +77,7 @@ export class LoginPage {
       'username': this.loginForm.value.id,
       'password': this.loginForm.value.password
     };
-      this.http.post('http://10.112.124.235:8000/auth/', JSON.stringify(userData), {headers: headers})
+      this.http.post('http://0.0.0.0:8000/auth/', JSON.stringify(userData), {headers: headers})
       .map(res =>
         res.json())
       .subscribe( response => {
@@ -109,7 +109,7 @@ export class LoginPage {
   let eventHeaders: Headers =  new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    this.http.get('http://10.112.124.235:8000/event/list_events/', {headers:eventHeaders})
+    this.http.get('http://0.0.0.0:8000/event/list_events/', {headers:eventHeaders})
     .map(res => res.json())
       .subscribe(response => {
         if (response.success) {

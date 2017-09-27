@@ -55,6 +55,19 @@ export class HomePage {
   // set entry conditions
   ionViewCanEnter(): any {
     if (this.localStorage.clientKey) {
+
+
+
+      //     this.http.get('http://ipv4.myexternalip.com/json')
+      // .map(res => res.json())
+      // .subscribe(response => {
+      //     alert(JSON.stringify((response.ip)));
+      //   },
+      //   err => {
+      //     console.log("Something went wrong with your getEvents request")
+      //   })
+
+
       return true;
     } else {
       // redirect user to login page@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ TOMTOMT TOMTOTTMOTMOTMOTMOTOMTTMOTOMTMO

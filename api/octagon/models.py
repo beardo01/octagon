@@ -22,6 +22,7 @@ class Timeline(models.Model):
     label_one = models.CharField(max_length=15, default="Meeting")
     label_two = models.CharField(max_length=15, default="Assignment")
     label_three = models.CharField(max_length=15, default="Event")
+    timezone = models.CharField(max_length=50, blank=True, null=True, default=None)
 
 
 class Event(models.Model):

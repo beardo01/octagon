@@ -6,6 +6,8 @@ import { AlertController } from 'ionic-angular';
 import { ClearLocalStorage } from '../../providers/clear-local-storage';
 import { UserLocalStorage } from '../../providers/user-local-storage';
 import { Http, Headers } from '@angular/http';
+import * as moment from 'moment';
+import 'moment-timezone';
 //import { TabsPage } from '../tabs/tabs';
 
 @Component({
@@ -64,6 +66,7 @@ export class JoinPage {
   /** This method pops to the root of the tab then switches to the home tab. */
   join() {
     this.clearStorage.clearLocalStorage();
+
 
     this.submitAttempt = true;
     if (this.password === this.rpassword) {

@@ -1,19 +1,16 @@
-from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.authentication import TokenAuthentication
-from rest_framework.response import Response
 from datetime import timedelta
-from rest_framework.authtoken.models import Token
-from rest_framework.decorators import detail_route, list_route
+
+from django.utils import timezone
 from rest_framework import parsers, renderers
+from rest_framework import viewsets
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+from rest_framework.decorators import list_route
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.utils import timezone
-from datetime import datetime
-from collections import defaultdict
-import json
+import pendulum
 
 from .permissions import *
 from .serializers import *
@@ -120,10 +117,13 @@ class EventViewSet(viewsets.ModelViewSet):
         while day_counter < 10:
             day = []
 
+            tz = pendulum.timezone(Timeline.objects.get(user=self.request.user).timezone)
+            start_day = tz.convert((timezone.now() + timedelta(days=day_counter)))
+
             days_events = Event.objects.filter(timeline=Timeline.objects.get(user=self.request.user),
-                                               start__day=(timezone.now() + timedelta(days=day_counter)).day)
+                                               start__day=start_day.day)
             days_repeat_events = EventRepeat.objects.filter(event__in=Event.objects.filter(user=self.request.user),
-                                                            start__day=(timezone.now() + timedelta(days=day_counter)).day)
+                                                            start__day=start_day.day)
             days_events.order_by('start')
 
             count = 0
@@ -133,28 +133,29 @@ class EventViewSet(viewsets.ModelViewSet):
                 for event in days_events:
                     json = {}
                     json.update({'type': event.type})
-                    json.update({'start': event.start.timestamp()})
-                    json.update({'end': event.end.timestamp()})
+                    json.update({'start': tz.convert(event.start).timestamp()})
+                    json.update({'end': tz.convert(event.end).timestamp()})
                     json.update({'description': event.description})
                     json.update({'location': event.location})
                     json.update({'id': event.id})
+
                     json.update({'repeat_frequency': event.repeat_frequency})
 
                     if event.repeat_frequency > 0:
-                        json.update({'repeat_start': event.repeat_end.timestamp()})
-                        json.update({'repeat_end': event.repeat_start.timestamp()})
+                        json.update({'repeat_start': tz.convert(event.repeat_start).timestamp()})
+                        json.update({'repeat_end': tz.convert(event.repeat_end).timestamp()})
                     else:
 
-                        json.update({'repeat_start': event.repeat_end})
-                        json.update({'repeat_end': event.repeat_start})
+                        json.update({'repeat_start': event.repeat_start})
+                        json.update({'repeat_end': event.repeat_end})
 
                     day.append(json)
                     count += 1
                 for repeat_event in days_repeat_events:
                     repeat = {}
                     repeat.update({'type': repeat_event.event.type})
-                    repeat.update({'start': repeat_event.start.timestamp()})
-                    repeat.update({'end': repeat_event.end.timestamp()})
+                    repeat.update({'start': tz.convert(repeat_event.start).timestamp()})
+                    repeat.update({'end': tz.convert(repeat_event.end).timestamp()})
                     repeat.update({'description': repeat_event.event.description})
                     repeat.update({'location': repeat_event.event.location})
                     repeat.update({'id': repeat_event.event.id})
@@ -162,12 +163,11 @@ class EventViewSet(viewsets.ModelViewSet):
                     repeat.update({'repeat_frequency': repeat_event.event.repeat_frequency})
 
                     if repeat_event.event.repeat_frequency > 0:
-                        repeat.update({'repeat_start': repeat_event.event.repeat_end.timestamp()})
-                        repeat.update({'repeat_end': repeat_event.event.repeat_start.timestamp()})
+                        repeat.update({'repeat_start': tz.convert(repeat_event.event.repeat_start).timestamp()})
+                        repeat.update({'repeat_end': tz.convert(repeat_event.event.repeat_end).timestamp()})
                     else:
-
-                        repeat.update({'repeat_start': repeat_event.event.repeat_end})
-                        repeat.update({'repeat_end': repeat_event.event.repeat_start})
+                        repeat.update({'repeat_start': repeat_event.event.repeat_start})
+                        repeat.update({'repeat_end': repeat_event.event.repeat_end})
 
                     day.append(repeat)
                     count += 1
@@ -203,6 +203,12 @@ class ObtainAuthToken(APIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
+
+        # Update the user timezone
+        timeline = Timeline.objects.get(user=user)
+        timeline.timezone = serializer.initial_data['timezone']
+        timeline.save()
+
         token, created = Token.objects.get_or_create(user=user)
         return Response({
             'success': True,

@@ -75,7 +75,8 @@ export class LoginPage {
     headers.append('Content-Type', 'application/json');
     let userData = {
       'username': this.loginForm.value.id,
-      'password': this.loginForm.value.password
+      'password': this.loginForm.value.password,
+      'timezone': moment.tz.guess()
     };
       this.http.post('http://0.0.0.0:8000/auth/', JSON.stringify(userData), {headers: headers})
       .map(res =>

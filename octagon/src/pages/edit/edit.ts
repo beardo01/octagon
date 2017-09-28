@@ -84,18 +84,18 @@ export class EditPage {
     this.label = this.bubble[1];
     this.location = this.bubble[5];
 
-    this.dateStarts = moment(this.bubble[2]*1000).format("YYYY-MM-DD");
-    this.dateEnds = moment(this.bubble[3]*1000).format("YYYY-MM-DD");
+    this.dateStarts = moment(this.bubble[2]*1000).utc().format("YYYY-MM-DD");
+    this.dateEnds = moment(this.bubble[3]*1000).utc().format("YYYY-MM-DD");
 
     this.timeStarts = moment()
       .hour(this.bubble[7].slice(0,this.bubble[7].length/2))
       .minute(this.bubble[7].slice(this.bubble[7].length/2,this.bubble[8].length))
-      .format("hh:mm");
+      .format("HH:mm");
 
     this.timeEnds = moment()
       .hour(this.bubble[8].slice(0,this.bubble[8].length/2))
       .minute(this.bubble[8].slice(this.bubble[8].length/2,this.bubble[8].length))
-      .format("hh:mm");
+      .format("HH:mm");
 
     this.description = this.bubble[4];
 
@@ -149,10 +149,10 @@ export class EditPage {
       var type = this.labelNames.indexOf(this.editForm.value.label);
       var description = this.editForm.value.description;
       var location = this.editForm.value.location;
-      var start = moment(this.editForm.value.dateStarts + " " + this.editForm.value.timeStarts).format();
-      var end = moment(this.editForm.value.dateEnds + " " + this.editForm.value.timeEnds).format();
-      var repeat_start = moment(this.editForm.value.repeatStartDate).format();
-      var repeat_end = moment(this.editForm.value.repeatEndDate).format();
+      var start = moment(this.editForm.value.dateStarts + " " + this.editForm.value.timeStarts + "+0000").toISOString();
+      var end = moment(this.editForm.value.dateEnds + " " + this.editForm.value.timeEnds + "+0000").toISOString();
+      var repeat_start = moment(this.editForm.value.repeatStartDate).toISOString();
+      var repeat_end = moment(this.editForm.value.repeatEndDate).toISOString();
       var repeat_freq = parseInt(this.editForm.value.repeatFreq);
 
       let headers: Headers =  new Headers();
@@ -160,7 +160,8 @@ export class EditPage {
       headers.append('Authorization', 'Token ' + this.localStorage.clientKey);
       headers.append('Content-Type', 'application/json');
 
-      let body = {}
+      let body = {};
+
       if(repeat_freq == 0) {
         body = {
           "user": this.localStorage.id,
@@ -184,7 +185,7 @@ export class EditPage {
         };
       }
 
-      return this.http.patch('http://0.0.0.0:8000/event/' + this.bubble[9] + '/', JSON.stringify(body), {headers: headers})
+      return this.http.patch('http://127.0.0.1:8000/event/' + this.bubble[9] + '/', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
         if(response.id) {
@@ -208,7 +209,7 @@ getEvents() {
   let eventHeaders: Headers =  new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    this.http.get('http://0.0.0.0:8000/event/list_events/', {headers:eventHeaders})
+    this.http.get('http://127.0.0.1:8000/event/list_events/', {headers:eventHeaders})
     .map(res => res.json())
       .subscribe(response => {
         if (response.success) {

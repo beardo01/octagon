@@ -174,10 +174,10 @@ export class HomePage {
         }
 
         // Writes a formatted time from UNIX to 24 hours.
-        var start_hours_24 = new Date(this.input_data[day][bubble_selected][2] * 1000).getHours().toString();
-        var start_mins_24 = new Date(this.input_data[day][bubble_selected][2] * 1000).getMinutes().toString();
-        var end_hours_24 = new Date(this.input_data[day][bubble_selected][3] * 1000).getHours().toString();
-        var end_mins_24 = new Date(this.input_data[day][bubble_selected][3] * 1000).getMinutes().toString();
+        var start_hours_24 = moment(this.input_data[day][bubble_selected][2] * 1000).utc().hour().toString();
+        var start_mins_24 = moment(this.input_data[day][bubble_selected][2] * 1000).utc().minute().toString();
+        var end_hours_24 = moment(this.input_data[day][bubble_selected][3] * 1000).utc().hour().toString();
+        var end_mins_24 = moment(this.input_data[day][bubble_selected][3] * 1000).utc().minute().toString();
 
         if (start_hours_24.length <= 1) {
           start_hours_24 = '0' + start_hours_24;
@@ -274,7 +274,7 @@ export class HomePage {
 
   delete(bubble: number) {
     this.actionSheet = this.actionSheetCtrl.create({
-      title: 'Edit or Delete event?',
+      title: 'Edit or delete event?',
       enableBackdropDismiss: true,
       buttons: [
         {
@@ -320,7 +320,7 @@ export class HomePage {
     headers.append('Authorization', 'Token ' + this.localStorage.clientKey);
     headers.append('Content-Type', 'application/json');
 
-    this.http.delete('http://0.0.0.0:8000/event/' + item + '/', {headers: headers})
+    this.http.delete('http://127.0.0.1:8000/event/' + item + '/', {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
         console.log("response: " + response)
@@ -360,7 +360,7 @@ export class HomePage {
     let eventHeaders: Headers = new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    this.http.get('http://0.0.0.0:8000/event/list_events/', {headers: eventHeaders})
+    this.http.get('http://127.0.0.1:8000/event/list_events/', {headers: eventHeaders})
       .map(res => res.json())
       .subscribe(response => {
           if (response.success) {

@@ -10,17 +10,18 @@
 
   @Injectable()
   export class UserLocalStorage {
-    
+
   clientKey: string;
   id: string;
   localColours: string;
   localLabels: string;
   events: string; //object;
   username: string;
+  password: string;
 
     constructor(public http: Http, public storage: Storage) {
       // when constructor is called request local colours
-      this.requestLocalColours(); 
+      this.requestLocalColours();
       this.requestLocalLabels();
       this.requestClientKey();
       this.requestLocalID();
@@ -38,7 +39,7 @@
     }
 
     setLocalEvents(events) {
-      
+
       this.events = events;
       this.storage.set('events', JSON.stringify(events));
     }
@@ -48,10 +49,21 @@
         this.events = JSON.parse(val);
       })
     }
-    
+
     setUsername(username) {
       this.username = username;
       this.storage.set('username', JSON.stringify(username));
+    }
+
+    setPassword(password) {
+      this.password = password;
+      this.storage.set('password', JSON.stringify(password));
+    }
+
+    requestPassword() {
+      this.storage.get('password').then((val) => {
+        this.password = JSON.parse(val);
+      })
     }
 
     requestUsername() {
@@ -60,7 +72,7 @@
       })
     }
     /**
-     * 
+     *
      * Set the local storages values for each colour key
      * @param colours json object
      */
@@ -69,7 +81,7 @@
       this.storage.set('colours', JSON.stringify(colours));
     }
     /**
-    * Set the local storages values for each label key 
+    * Set the local storages values for each label key
     * @param labels Array of strings representing labels
     */
     setLocalLabels(labels){
@@ -79,13 +91,13 @@
 
     /**
    * Save key value to data field and local storage
-   * @param key, value to store 
+   * @param key, value to store
    */
     setClientKey(key) {
       this.clientKey = key;
       this.storage.set('clientKey', JSON.stringify(key));
     }
-    
+
     /**
      * Get Colour names from local DB
      */
@@ -105,20 +117,20 @@
     }
     /**
      * request client key from local storage and set client key data field
-     * 
+     *
     */
     requestClientKey() {
       this.storage.get('clientKey').then((val) =>
         this.clientKey = JSON.parse(val));
     }
 
-  /** 
+  /**
    * Get the colour values stored in the local storage and return an array
    */
     parseColoursToArray() {
       console.log("called parseCOlours to array")
       let colourArr = [];
-      
+
       let colours = JSON.parse(this.localColours);
 
       colourArr.push(colours.colour_one)
@@ -126,7 +138,7 @@
       colourArr.push(colours.colour_three)
       return colourArr;
   }
-  /** 
+  /**
    * Get the label values stored in the local storage and return an array.
    */
     parseLabelsToArray() {
@@ -140,7 +152,7 @@
   }
   /**
    * Takes an array of colours and creates and object we can store in local storage.
-   * 
+   *
    * @param array colour values we want to put in local storage.
    */
     saveArrayOfColours(array) {
@@ -149,14 +161,14 @@
         colour_two: array[1],
         colour_three: array[2]
       }
-      this.setLocalColours(jsonObj);  
-    } 
+      this.setLocalColours(jsonObj);
+    }
 
   /**
    * Takes an array of labels and creates and object we can store in local storage.
-   * 
+   *
    * @param array label values we want to put in local storage.
-   */ 
+   */
     saveArrayOfLabels(array) {
       var jsonObj = {
         label_one: array[0],
@@ -165,6 +177,6 @@
       }
       this.setLocalLabels(jsonObj);
     }
-    
+
 
   }

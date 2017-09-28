@@ -80,13 +80,14 @@ export class JoinPage {
           'first_name': "",
           'last_name': ""
         };
-          this.http.post('http://0.0.0.0:8000/users/', JSON.stringify(userData), {headers: headers})
+          this.http.post('http://127.0.0.1:8000/users/', JSON.stringify(userData), {headers: headers})
           .map(res =>
             res.json())
             .subscribe( response => {
               if (response.username) {
                 // Succesfully register user. set username in provider
                 this.localStorage.setUsername(response.username);
+                this.localStorage.setPassword(userData.password);
                 this.navCtrl.pop();
               } else {
                 this.presentAlert(response.data);

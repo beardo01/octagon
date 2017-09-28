@@ -117,8 +117,11 @@ class EventViewSet(viewsets.ModelViewSet):
         while day_counter < 10:
             day = []
 
-            tz = pendulum.timezone(Timeline.objects.get(user=self.request.user).timezone)
-            start_day = tz.convert((timezone.now() + timedelta(days=day_counter)))
+            # tz = pendulum.timezone(Timeline.objects.get(user=self.request.user).timezone)
+            # start_day = tz.convert((timezone.now() + timedelta(days=day_counter)))
+            now = timezone.now()
+            start_day = (timezone.now() - timedelta(hours=now.hour, minutes=now.minute, seconds=now.second,
+                                                    microseconds=now.microsecond)) + timedelta(days=day_counter)
 
             days_events = Event.objects.filter(timeline=Timeline.objects.get(user=self.request.user),
                                                start__day=start_day.day)
@@ -133,8 +136,8 @@ class EventViewSet(viewsets.ModelViewSet):
                 for event in days_events:
                     json = {}
                     json.update({'type': event.type})
-                    json.update({'start': tz.convert(event.start).timestamp()})
-                    json.update({'end': tz.convert(event.end).timestamp()})
+                    json.update({'start': event.start.timestamp()})
+                    json.update({'end': event.end.timestamp()})
                     json.update({'description': event.description})
                     json.update({'location': event.location})
                     json.update({'id': event.id})
@@ -142,8 +145,8 @@ class EventViewSet(viewsets.ModelViewSet):
                     json.update({'repeat_frequency': event.repeat_frequency})
 
                     if event.repeat_frequency > 0:
-                        json.update({'repeat_start': tz.convert(event.repeat_start).timestamp()})
-                        json.update({'repeat_end': tz.convert(event.repeat_end).timestamp()})
+                        json.update({'repeat_start': event.repeat_start.timestamp()})
+                        json.update({'repeat_end': event.repeat_end.timestamp()})
                     else:
 
                         json.update({'repeat_start': event.repeat_start})
@@ -154,8 +157,8 @@ class EventViewSet(viewsets.ModelViewSet):
                 for repeat_event in days_repeat_events:
                     repeat = {}
                     repeat.update({'type': repeat_event.event.type})
-                    repeat.update({'start': tz.convert(repeat_event.start).timestamp()})
-                    repeat.update({'end': tz.convert(repeat_event.end).timestamp()})
+                    repeat.update({'start': repeat_event.start.timestamp()})
+                    repeat.update({'end': repeat_event.end.timestamp()})
                     repeat.update({'description': repeat_event.event.description})
                     repeat.update({'location': repeat_event.event.location})
                     repeat.update({'id': repeat_event.event.id})
@@ -163,8 +166,8 @@ class EventViewSet(viewsets.ModelViewSet):
                     repeat.update({'repeat_frequency': repeat_event.event.repeat_frequency})
 
                     if repeat_event.event.repeat_frequency > 0:
-                        repeat.update({'repeat_start': tz.convert(repeat_event.event.repeat_start).timestamp()})
-                        repeat.update({'repeat_end': tz.convert(repeat_event.event.repeat_end).timestamp()})
+                        repeat.update({'repeat_start': repeat_event.event.repeat_start.timestamp()})
+                        repeat.update({'repeat_end': repeat_event.event.repeat_end.timestamp()})
                     else:
                         repeat.update({'repeat_start': repeat_event.event.repeat_start})
                         repeat.update({'repeat_end': repeat_event.event.repeat_end})

@@ -77,8 +77,8 @@ export class CreatePage {
 
     this.dateStarts = moment().format("YYYY-MM-DD");
     this.dateEnds = moment().add(1, "hour").format("YYYY-MM-DD");
-    this.timeStarts = moment().format("HH:MM");
-    this.timeEnds = moment().add(1, "hour").format("HH:MM");
+    this.timeStarts = moment().format("HH:mm");
+    this.timeEnds = moment().add(1, "hour").format("HH:mm");
 
     this.repeat = false;
     this.repeatFreq = 0;
@@ -126,10 +126,10 @@ export class CreatePage {
       var type = this.labelNames.indexOf(this.createForm.value.label);
       var description = this.createForm.value.description;
       var location = this.createForm.value.location;
-      var start = moment(this.createForm.value.dateStarts + " " + this.createForm.value.timeStarts).format();
-      var end = moment(this.createForm.value.dateEnds + " " + this.createForm.value.timeEnds).format();
-      var repeat_start = moment(this.createForm.value.repeatStartDate).format();
-      var repeat_end = moment(this.createForm.value.repeatEndDate).format();
+      var start = moment(this.createForm.value.dateStarts + " " + this.createForm.value.timeStarts + "+0000").toISOString();
+      var end = moment(this.createForm.value.dateEnds + " " + this.createForm.value.timeEnds + "+0000").toISOString();
+      var repeat_start = moment(this.createForm.value.repeatStartDate).toISOString();
+      var repeat_end = moment(this.createForm.value.repeatEndDate).toISOString();
       var repeat_freq = parseInt(this.createForm.value.repeatFreq);
 
       let headers: Headers =  new Headers();
@@ -161,7 +161,7 @@ export class CreatePage {
         };
       }
 
-      return this.http.post('http://0.0.0.0:8000/event/', JSON.stringify(body), {headers: headers})
+      return this.http.post('http://127.0.0.1:8000/event/', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
         if(response.id) {

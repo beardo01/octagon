@@ -15,6 +15,7 @@ import { IonicStorageModule } from '@ionic/storage';
 import { FormatDate } from '../pipes/format-date';
 import { ClearLocalStorage } from '../providers/clear-local-storage';
 import { UserLocalStorage } from '../providers/user-local-storage';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 
 @NgModule({
@@ -50,6 +51,11 @@ import { UserLocalStorage } from '../providers/user-local-storage';
     ColourPage,
     LabelPage
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}, ClearLocalStorage, UserLocalStorage ]
+  providers: [
+    { provide: ErrorHandler, useClass: IonicErrorHandler }, 
+    ClearLocalStorage, 
+    UserLocalStorage, 
+    LocalNotifications
+  ]
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,28 +1,28 @@
 <ion-content padding no-bounce>
-  <div class="accountLogo"></div>
-  
-  <form id="loginForm" [formGroup]="loginForm" (ngSubmit)="authenticate(loginForm.value)">
-  <ion-list>
-    <ion-item class="accountInput" [class.invalid]="!loginForm.controls.id.valid && (submitAttempt)">
-      <ion-input type="text" maxlength="35" formControlName="id" [(ngModel)]="id" placeholder="Email/Username" autocapitalize="none" autocomplete="off"></ion-input>
-    </ion-item>
+    <div class="accountLogo"></div>
 
-    <ion-item class="accountInput" [class.invalid]="!loginForm.controls.password.valid && (submitAttempt)">
-      <ion-input type="password" formControlName="password" [(ngModel)]="password" clearOnEdit="true" placeholder="Password"></ion-input>
-    </ion-item>
-  </ion-list>
-  </form>
+    <form id="loginForm" [formGroup]="loginForm" (ngSubmit)="authenticate(loginForm.value)">
+        <ion-list>
+            <ion-item class="accountInput" [class.invalid]="!loginForm.controls.id.valid && (submitAttempt)">
+                <ion-input type="text" maxlength="35" formControlName="id" [(ngModel)]="id" placeholder="Email/Username" autocapitalize="none" autocomplete="off"></ion-input>
+            </ion-item>
 
-  <ion-item class="accountInput" style="color: red" [hidden]="!invalid"><i>Incorrect username or password</i></ion-item>
+            <ion-item class="accountInput" [class.invalid]="!loginForm.controls.password.valid && (submitAttempt)">
+                <ion-input type="password" formControlName="password" [(ngModel)]="password" clearOnEdit="true" placeholder="Password"></ion-input>
+            </ion-item>
+        </ion-list>
+    </form>
 
-  <div class="row">
-    <div class="col actionButton">
-      <button ion-button class="accountActionButton" type="submit" form="loginForm">Sign In</button>
+    <ion-item class="accountInput" style="color: red" [hidden]="!invalid"><i>Incorrect username or password</i></ion-item>
+
+    <div class="row">
+        <div class="col actionButton">
+            <button ion-button class="accountActionButton" type="submit" form="loginForm">Sign In</button>
+        </div>
     </div>
-  </div>
 
-  <div class="linkText text-center">
-    <p (click)="joinPage()">Don't have an account? Join</p>
-  </div>
+    <div class="linkText text-center">
+        <p (click)="joinPage()">Don't have an account? Join</p>
+    </div>
 
 </ion-content>

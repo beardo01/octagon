@@ -87,8 +87,8 @@ class EventViewSet(viewsets.ModelViewSet):
         if repeat_frequency is not None and repeat_frequency != 0:
 
             # Get event information
-            start_date = event.repeat_start + timedelta(hours=event.start.hour) + timedelta(minutes=event.start.minute)
-            end_date = event.repeat_end + timedelta(hours=event.end.hour) + timedelta(minutes=event.end.minute)
+            start_date = event.repeat_start
+            end_date = event.repeat_end
 
             # Get repeat frequency
             if repeat_frequency == 1:
@@ -102,11 +102,11 @@ class EventViewSet(viewsets.ModelViewSet):
             repeats = diff / freq
 
             for repeat in range(int(repeats) + 1):
-                if start_date + timedelta(freq * repeat) == event.start:
+                if start_date + timedelta(days=freq * repeat) == event.start:
                     pass
                 else:
                     EventRepeat.objects.create(event=event, start=start_date + timedelta(freq * repeat),
-                                           end=end_date + timedelta(freq * repeat))
+                                               end=end_date + timedelta(freq * repeat))
 
     @list_route(methods=['get'])
     def list_events(self, request, **kwargs):

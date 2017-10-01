@@ -128,8 +128,8 @@ export class CreatePage {
       var location = this.createForm.value.location;
       var start = moment(this.createForm.value.dateStarts + " " + this.createForm.value.timeStarts + "+0000").toISOString();
       var end = moment(this.createForm.value.dateEnds + " " + this.createForm.value.timeEnds + "+0000").toISOString();
-      var repeat_start = moment(this.createForm.value.repeatStartDate).toISOString();
-      var repeat_end = moment(this.createForm.value.repeatEndDate).toISOString();
+      var repeat_start = moment(this.createForm.value.repeatStartDate + " " + this.createForm.value.timeStarts + "+0000").toISOString();
+      var repeat_end = moment(this.createForm.value.repeatEndDate + " " + this.createForm.value.timeEnds + "+0000").toISOString();
       var repeat_freq = parseInt(this.createForm.value.repeatFreq);
 
       let headers: Headers =  new Headers();

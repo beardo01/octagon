@@ -88,7 +88,6 @@ export class CreatePage {
     this.repeatEndDate = moment().add(1, "hour").format("YYYY-MM-DD");
     this.description = "";
 
-
     this.createForm = this.builder.group({
       'label': [this.label, Validators.compose([Validators.required, CreateFormValidator.validLabel])],
       'location': [this.location, Validators.compose([Validators.required])],
@@ -121,6 +120,7 @@ export class CreatePage {
    */
   add() {
     this.submitAttempt = true;
+
     if (this.createForm.valid) {
 
       var type = this.labelNames.indexOf(this.createForm.value.label);

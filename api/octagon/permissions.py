@@ -11,7 +11,7 @@ class IsOwner(permissions.BasePermission):
             return True
         elif view.action in ['list', 'retrieve', 'destroy']:
             return True
-        elif view.action in ['list_events']:
+        elif view.action in ['list_events', 'get_event']:
             return True
         elif not request.data.get('user') and not request.data.get('user_id'):
             return False

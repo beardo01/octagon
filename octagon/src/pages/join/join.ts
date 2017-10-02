@@ -80,7 +80,7 @@ export class JoinPage {
           'first_name': "",
           'last_name': ""
         };
-          this.http.post('http://127.0.0.1:8000/users/', JSON.stringify(userData), {headers: headers})
+          this.http.post('http://10.112.124.235:8000/users/', JSON.stringify(userData), {headers: headers})
           .map(res =>
             res.json())
             .subscribe( response => {
@@ -94,7 +94,11 @@ export class JoinPage {
               }
             },
             err => {
+              if (err.status == 400) {
+                this.presentAlert("User already exists.")
+              } else {
                 this.presentAlert("Server error. Please try again.");
+              }
             })
           }
       } else {

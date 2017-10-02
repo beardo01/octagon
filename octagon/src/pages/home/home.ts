@@ -29,6 +29,8 @@ export class HomePage {
   colours: string[];
   labels: string[];
 
+  localEvent: JSON;
+
   actionSheet;
   parameter1: number;
 
@@ -279,7 +281,10 @@ export class HomePage {
           text: 'Edit',
           role: 'open',
           handler: () => {
-            this.editPage(this.bubbles[this.selected_date][bubble])
+            // Request for bubble done here from api
+            this.getEvent(this.bubbles[this.selected_date][bubble][9]);
+            console.log(this.localEvent)
+            this.editPage(this.localEvent) //sending bubble data here
           }
         },
         {
@@ -358,7 +363,7 @@ export class HomePage {
     let eventHeaders: Headers = new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    this.http.get('http://127.0.0.1:8000/event/list_events/', {headers: eventHeaders})
+    this.http.get('http://10.112.124.235:8000/event/list_events/', {headers: eventHeaders})
       .map(res => res.json())
       .subscribe(response => {
           if (response.success) {
@@ -373,5 +378,30 @@ export class HomePage {
         err => {
           console.log("Something went wrong with your getEvents request")
         })
+  }
+
+  getEvent(id: number) {
+
+    let eventHeaders: Headers = new Headers();
+    eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
+    eventHeaders.append('Content-Type', 'application/json');
+    this.http.get('http://10.112.124.235:8000/event/' + id + '/get_event/', {headers: eventHeaders})
+
+      .map(res => res.json())
+      .subscribe(response => {
+          if (response.success) {
+            //this.localStorage.events = response.data;
+            // return response.detail[0];
+            console.log(response);            
+            console.log(response.detail);
+            this.localEvent = response.detail;
+          } else {
+            // display error message to user
+            this.presentAlert(response.detail)
+          }
+        },
+        err => {
+          console.log("Something went wrong with your getEvent request")
+        })    
   }
 }

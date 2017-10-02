@@ -66,6 +66,8 @@ export class EditPage {
 
     this.bubble = this.navParams.data;
 
+    console.log(this.bubble);
+
     this.padded_month = (this.date.getMonth()+1).toString();
     this.padded_day = this.date.getDate().toString();
 
@@ -81,36 +83,33 @@ export class EditPage {
     this.maxDate = this.date.getFullYear() + 2;
 
     // Form field setup
-    this.label = this.bubble[1];
-    this.location = this.bubble[5];
+    this.label = this.bubble['type'];
+    this.location = this.bubble['location'];
 
-    this.dateStarts = moment(this.bubble[2]*1000).utc().format("YYYY-MM-DD");
-    this.dateEnds = moment(this.bubble[3]*1000).utc().format("YYYY-MM-DD");
+    this.dateStarts = moment(this.bubble['start']*1000).utc().format("YYYY-MM-DD");
+    this.dateEnds = moment(this.bubble['end']*1000).utc().format("YYYY-MM-DD");
 
-    this.timeStarts = moment()
-      .hour(this.bubble[7].slice(0,this.bubble[7].length/2))
-      .minute(this.bubble[7].slice(this.bubble[7].length/2,this.bubble[8].length))
-      .format("HH:mm");
+    this.timeStarts = moment(this.bubble['start']).utc().format("HH:mm");
+    this.timeEnds = moment(this.bubble['end']).utc().format("HH:mm");
 
-    this.timeEnds = moment()
-      .hour(this.bubble[8].slice(0,this.bubble[8].length/2))
-      .minute(this.bubble[8].slice(this.bubble[8].length/2,this.bubble[8].length))
-      .format("HH:mm");
+    console.log(this.timeStarts)
+    console.log(this.timeEnds)
 
-    this.description = this.bubble[4];
+    this.description = this.bubble['description'];
 
 
-    if (this.bubble[10] != 0){
+    if (this.bubble['repeat_frequency'] != 0){
       this.repeat = true;
-      this.repeatFreq = this.bubble[10];
-      this.repeatStartDate = moment(this.bubble[11]*1000).format("YYYY-MM-DD");
-      this.repeatEndDate = moment(this.bubble[12]*1000).format("YYYY-MM-DD");
+      this.repeatFreq = this.bubble['repeat_frequency'];
+      this.repeatStartDate = moment(this.bubble['repeat_start']*1000).utc().format("YYYY-MM-DD");
+      this.repeatEndDate = moment(this.bubble['repeat_end']*1000).utc().format("YYYY-MM-DD");
     } else {
       this.repeat = false;
-      this.repeatFreq = this.bubble[10];
+      this.repeatFreq = this.bubble['repeat_frequency'];
       this.repeatStartDate = this.dateStarts;
       this.repeatEndDate = this.dateEnds;
     }
+
     //Validate form setting form fields.
     this.editForm = this.builder.group({
       'label': [this.label, Validators.compose([Validators.required, CreateFormValidator.validLabel])],
@@ -185,7 +184,7 @@ export class EditPage {
         };
       }
 
-      return this.http.patch('http://127.0.0.1:8000/event/' + this.bubble[9] + '/', JSON.stringify(body), {headers: headers})
+      return this.http.patch('http://10.112.124.235:8000/event/' + this.bubble[9] + '/', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
         if(response.id) {
@@ -209,7 +208,7 @@ getEvents() {
   let eventHeaders: Headers =  new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    this.http.get('http://127.0.0.1:8000/event/list_events/', {headers:eventHeaders})
+    this.http.get('http://10.112.124.235:8000/event/list_events/', {headers:eventHeaders})
     .map(res => res.json())
       .subscribe(response => {
         if (response.success) {

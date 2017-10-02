@@ -6,7 +6,7 @@ from rest_framework import viewsets
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from rest_framework.decorators import list_route
+from rest_framework.decorators import list_route, detail_route
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -110,8 +110,6 @@ class EventViewSet(viewsets.ModelViewSet):
 
     @list_route(methods=['get'])
     def list_events(self, request, **kwargs):
-        # Ugly methods to check waaaaay tumeke stuff, should be optimised
-
         event_list = []
         day_counter = 0
         while day_counter < 10:
@@ -183,6 +181,41 @@ class EventViewSet(viewsets.ModelViewSet):
             'success': True,
             'detail': event_list
         })
+
+    @detail_route(methods=['get'])
+    def get_event(self, request, **kwargs):
+
+        try:
+            event = Event.objects.get(id=kwargs['pk'])
+
+            json = {}
+            json.update({'type': event.type})
+            json.update({'start': event.start.timestamp()})
+            json.update({'end': event.end.timestamp()})
+            json.update({'description': event.description})
+            json.update({'location': event.location})
+            json.update({'id': event.id})
+
+            json.update({'repeat_frequency': event.repeat_frequency})
+
+            if event.repeat_frequency > 0:
+                json.update({'repeat_start': event.repeat_start.timestamp()})
+                json.update({'repeat_end': event.repeat_end.timestamp()})
+            else:
+
+                json.update({'repeat_start': event.repeat_start})
+                json.update({'repeat_end': event.repeat_end})
+
+            return Response({
+                'success': True,
+                'detail': json
+            })
+        except Event.DoesNotExist:
+
+            return Response({
+                'success': False,
+                'detail': "Event does not exist."
+            })
 
 
 class EventRepeatViewSet(viewsets.ModelViewSet):

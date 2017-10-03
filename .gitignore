@@ -98,5 +98,11 @@ ENV/
 .idea
 db.sqlite3
 .idea/dataSources/
-api/octagon/migrations/00*
+/api/octagon/migrations/00*
 /api/db.sqlite3
+/api/octagon/migrations/0001_initial.py
+api.zip
+octagon/octagon_vultr
+octagon/octagon_vultr.pub
+root@5Q,up*DwTR3tT2J-
+root@octagon.test

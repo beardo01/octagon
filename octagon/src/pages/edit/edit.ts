@@ -246,4 +246,20 @@ getEvents() {
       this.repeat = true;
     }
   }
+
+  updateTimeAndDate() {
+    if(this.timeStarts > this.timeEnds && this.dateEnds <= this.dateStarts) {
+      this.timeEnds = this.timeStarts;
+    }
+    
+    if(this.dateStarts > this.dateEnds) {
+      this.dateEnds = this.dateStarts;
+    }
+  }
+
+  updateRepeatDate() {
+    if(this.repeatStartDate > this.repeatEndDate) {
+      this.repeatEndDate = this.repeatStartDate;
+    }
+  }
 }

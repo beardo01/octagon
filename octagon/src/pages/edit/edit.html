@@ -35,22 +35,22 @@
         <ion-list>
             <ion-item>
                 <ion-label>Start Date</ion-label>
-                <ion-datetime displayFormat="DD MMMM YYYY" min="{{minDate}}" max="{{maxDate}}" formControlName="dateStarts" [(ngModel)]="dateStarts"></ion-datetime>
+                <ion-datetime displayFormat="DD MMMM YYYY" min="{{minDate}}" max="{{maxDate}}" formControlName="dateStarts" [(ngModel)]="dateStarts" (ionChange)="updateTimeAndDate()"></ion-datetime>
             </ion-item>
 
             <ion-item>
                 <ion-label>End Date</ion-label>
-                <ion-datetime displayFormat="DD MMMM YYYY" min="{{minDate}}" max="{{maxDate}}" formControlName="dateEnds" [(ngModel)]="dateEnds"></ion-datetime>
+                <ion-datetime displayFormat="DD MMMM YYYY" min="{{minDate}}" max="{{maxDate}}" formControlName="dateEnds" [(ngModel)]="dateEnds" (ionChange)="updateTimeAndDate()"></ion-datetime>
             </ion-item>
 
             <ion-item>
                 <ion-label>Start Time</ion-label>
-                <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" formControlName="timeStarts" [(ngModel)]="timeStarts"></ion-datetime>
+                <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" formControlName="timeStarts" [(ngModel)]="timeStarts" (ionChange)="updateTimeAndDate()"></ion-datetime>
             </ion-item>
 
             <ion-item>
                 <ion-label>End Time</ion-label>
-                <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" formControlName="timeEnds" [(ngModel)]="timeEnds"></ion-datetime>
+                <ion-datetime displayFormat="h:mm A" pickerFormat="h mm A" formControlName="timeEnds" [(ngModel)]="timeEnds" (ionChange)="updateTimeAndDate()"></ion-datetime>
             </ion-item>
 
             <ion-item>
@@ -65,12 +65,12 @@
 
             <ion-item *ngIf="repeat">
                 <ion-label>Repeat Start</ion-label>
-                <ion-datetime displayFormat="DD MMMM YYYY" max="{{maxDate}}" min="{{minDate}}" formControlName="repeatStartDate" [(ngModel)]="repeatStartDate"></ion-datetime>
+                <ion-datetime displayFormat="DD MMMM YYYY" max="{{maxDate}}" min="{{minDate}}" formControlName="repeatStartDate" [(ngModel)]="repeatStartDate" (ionChange)="updateRepeatDate()"></ion-datetime>
             </ion-item>
 
             <ion-item *ngIf="repeat">
                 <ion-label>Repeat End</ion-label>
-                <ion-datetime displayFormat="DD MMMM YYYY" max="{{maxDate}}" min="{{minDate}}" formControlName="repeatEndDate" [(ngModel)]="repeatEndDate"></ion-datetime>
+                <ion-datetime displayFormat="DD MMMM YYYY" max="{{maxDate}}" min="{{minDate}}" formControlName="repeatEndDate" [(ngModel)]="repeatEndDate" (ionChange)="updateRepeatDate()"></ion-datetime>
             </ion-item>
 
         </ion-list>

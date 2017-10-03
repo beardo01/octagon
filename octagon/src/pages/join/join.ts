@@ -6,7 +6,6 @@ import { AlertController } from 'ionic-angular';
 import { ClearLocalStorage } from '../../providers/clear-local-storage';
 import { UserLocalStorage } from '../../providers/user-local-storage';
 import { Http, Headers } from '@angular/http';
-import * as moment from 'moment';
 import 'moment-timezone';
 //import { TabsPage } from '../tabs/tabs';
 
@@ -80,7 +79,7 @@ export class JoinPage {
           'first_name': "",
           'last_name': ""
         };
-          this.http.post('http://10.112.124.235:8000/users/', JSON.stringify(userData), {headers: headers})
+          this.http.post('http://0.0.0.0:8000/users/', JSON.stringify(userData), {headers: headers})
           .map(res =>
             res.json())
             .subscribe( response => {

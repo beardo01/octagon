@@ -140,7 +140,6 @@
    * Get the colour values stored in the local storage and return an array
    */
     parseColoursToArray() {
-      console.log("called parseCOlours to array")
       let colourArr = [];
 
       let colours = JSON.parse(this.localColours);

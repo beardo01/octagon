@@ -128,7 +128,6 @@ export class CreatePage {
       var description = this.createForm.value.description;
       var location = this.createForm.value.location;
       var start = moment(this.createForm.value.dateStarts + " " + this.createForm.value.timeStarts + "+0000").toISOString();
-      console.log(start);
       var end = moment(this.createForm.value.dateEnds + " " + this.createForm.value.timeEnds + "+0000").toISOString();
       var repeat_start = moment(this.createForm.value.repeatStartDate + " " + this.createForm.value.timeStarts + "+0000").toISOString();
       var repeat_end = moment(this.createForm.value.repeatEndDate + " " + this.createForm.value.timeEnds + "+0000").toISOString();
@@ -174,7 +173,7 @@ export class CreatePage {
         }
       },
       err =>{
-        console.log("Error while adding event");
+        this.presentAlert("Server Error")
       })
     }
   }

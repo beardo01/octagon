@@ -66,8 +66,6 @@ export class EditPage {
 
     this.bubble = this.navParams.data;
 
-    console.log(this.bubble);
-
     this.padded_month = (this.date.getMonth()+1).toString();
     this.padded_day = this.date.getDate().toString();
 
@@ -192,7 +190,7 @@ export class EditPage {
         }
       },
       err =>{
-        console.log("Error while adding event");
+        this.presentAlert("Server Error")
       })
     }
   }
@@ -209,8 +207,6 @@ getEvents() {
     .map(res => res.json())
       .subscribe(response => {
         if (response.success) {
-          console.log("get events")
-          console.log(response)
           //this.localStorage.events = response.data;
           this.localStorage.setLocalEvents(response.detail);
           this.navCtrl.popToRoot();
@@ -220,7 +216,7 @@ getEvents() {
         }
       },
       err => {
-          console.log("Something went wrong with your getEvents request")
+        this.presentAlert("Server Error")
       })
     }
       /**

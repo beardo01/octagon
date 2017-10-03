@@ -46,15 +46,13 @@ export class LoginPage {
       this.password = this.localStorage.password;
     }
   }
-
-  /*  ionViewDidLoad(){
-
-   /// play around with this to get user auto logging in
-   if (this.localStorage.clientKey != null || this.localStorage.clientKey != undefined) {
-   // if we have a client key user doesnt need to re log in so get their data and redirect
-   this.getEvents()
+  /** Autolog user in */
+  ionViewDidLoad() {
+    if (this.localStorage.clientKey != undefined && this.localStorage.clientKey != "") {
+      // if we have a client key user doesnt need to re log in so get their data and redirect
+      this.getEvents()
+    }
    }
-   }*/
 
 
   /** Shows the nav bar when leaving the page. */
@@ -84,8 +82,6 @@ export class LoginPage {
         res.json())
       .subscribe(response => {
           if (response.success) {
-            //console.log("inside login trying to auth user")
-            //console.log("logging response", response)
             this.localStorage.setClientKey(response.data.client_key);
             this.localStorage.setLocalColours(response.data.colours);
             this.localStorage.setLocalLabels(response.data.labels);
@@ -120,8 +116,6 @@ export class LoginPage {
       .map(res => res.json())
       .subscribe(response => {
           if (response.success) {
-            console.log("get events")
-            console.log(response)
             //this.localStorage.events = response.data;
             this.localStorage.setLocalEvents(response.detail);
             this.navCtrl.setRoot(TabsPage);

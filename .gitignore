@@ -106,3 +106,4 @@ octagon/octagon_vultr
 octagon/octagon_vultr.pub
 root@5Q,up*DwTR3tT2J-
 root@octagon.test
+*/__pycache__/*

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { UserLocalStorage } from '../../providers/user-local-storage';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { AlertController } from 'ionic-angular';
 
 
@@ -114,7 +114,6 @@ export class ColourPage {
 
     headers.append('Authorization', 'Token ' + this.localStorage.clientKey);
     headers.append('Content-Type', 'application/json');
-    console.log(this.localStorage.clientKey, this.localStorage.id);
 
     let body = {
       "user": this.localStorage.id,
@@ -126,7 +125,6 @@ export class ColourPage {
       JSON.stringify(body), {headers: headers})
       .map(res =>
        res.json()).subscribe ( response => {
-         console.log(response)
 
         if (response.id) {
 
@@ -137,7 +135,6 @@ export class ColourPage {
           this.presentAlert(response);
         }
       });
-
     }
 
   /**

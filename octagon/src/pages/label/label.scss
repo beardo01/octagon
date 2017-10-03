@@ -30,6 +30,12 @@ page-label {
     .input-wrapper {
         flex-direction: row-reverse;
     }
+    .item {
+        height: 45px!important;
+        .item-inner {
+            height: 45px;
+        }
+    }
     /* Controls the size of the coloured circle displayed
      *
      */

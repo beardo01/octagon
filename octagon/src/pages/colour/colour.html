@@ -10,7 +10,7 @@
     <ion-title>Colour</ion-title>
     <ion-buttons end>
       <button ion-button (click)="save()">
-         Save
+        <ion-label>Add</ion-label>
         </button>
     </ion-buttons>
   </ion-navbar>
@@ -22,7 +22,7 @@
 
   <ion-list>
     <button ion-button block class="item-container" (click)="displayHidden('colourOne')">
-      <p>{{labels[0]}}</p> <!-- will be {{ label1 }} when implemented -->
+      <p>{{labels[0]}}</p>
       <ul class="inner-list">
         <li *ngIf="toggle1"><button ion-button ion-round [ngClass]='availableColours[0]'(click)="setEventColour(availableColours[0], 0)"></button></li>
         <li *ngIf="toggle1"><button ion-button ion-round [ngClass]='availableColours[1]' (click)="setEventColour(availableColours[1], 0)"></button></li>

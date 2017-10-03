@@ -7,7 +7,6 @@ import { Http, Headers } from '@angular/http';
 import { ActionSheetController } from 'ionic-angular';
 import * as moment from 'moment';
 import { UserLocalStorage } from '../../providers/user-local-storage';
-import {Observable} from "rxjs/Observable";
 
 
 @Component({
@@ -56,19 +55,6 @@ export class HomePage {
   // set entry conditions
   ionViewCanEnter(): any {
     if (this.localStorage.clientKey) {
-
-
-
-      //     this.http.get('http://ipv4.myexternalip.com/json')
-      // .map(res => res.json())
-      // .subscribe(response => {
-      //     alert(JSON.stringify((response.ip)));
-      //   },
-      //   err => {
-      //     console.log("Something went wrong with your getEvents request")
-      //   })
-
-
       return true;
     } else {
       // redirect user to login page@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ TOMTOMT TOMTOTTMOTMOTMOTMOTOMTTMOTOMTMO
@@ -150,8 +136,6 @@ export class HomePage {
         var location = this.input_data[day][bubble_selected]['location'];
         var id = this.input_data[day][bubble_selected]['id'];
 
-        console.log(start);
-
         var repeat_freq = this.input_data[day][bubble_selected]['repeat_frequency'];
         var repeatDate_start = this.input_data[day][bubble_selected]['repeat_start'];
         var repeatDate_end = this.input_data[day][bubble_selected]['repeat_end'];
@@ -179,9 +163,6 @@ export class HomePage {
         var start_mins_24 = moment(this.input_data[day][bubble_selected]['start'] * 1000).utc().minute().toString();
         var end_hours_24 = moment(this.input_data[day][bubble_selected]['end'] * 1000).utc().hour().toString();
         var end_mins_24 = moment(this.input_data[day][bubble_selected]['end'] * 1000).utc().minute().toString();
-
-        console.log(start_hours_24);
-        console.log(start_mins_24);
 
         if (start_hours_24.length <= 1) {
           start_hours_24 = '0' + start_hours_24;
@@ -285,11 +266,6 @@ export class HomePage {
           text: 'Edit',
           role: 'open',
           handler: () => {
-            // Request for bubble done here from api
-            // console.log("Event VV");
-            // console.log(this.getEvent(this.bubbles[this.selected_date][bubble][9]));
-            // this.editPage(this.getEvent(this.bubbles[this.selected_date][bubble][9])); //sending bubble data here
-
             this.getEvent(this.bubbles[this.selected_date][bubble][9]);
           }
         },
@@ -332,7 +308,6 @@ export class HomePage {
     this.http.delete('http://0.0.0.0:8000/event/' + item + '/', {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
-        console.log("response: " + response)
           if (response == null) {
             this.getEvents()
 
@@ -342,7 +317,7 @@ export class HomePage {
           }
         },
         err => {
-          console.log("Something went wrong with your getEvents request")
+          this.presentAlert("Server Error")
         })
   }
 
@@ -365,7 +340,6 @@ export class HomePage {
    *
    */
   getEvents() {
-    var start = moment().startOf('day').unix();
     let eventHeaders: Headers = new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
@@ -373,7 +347,6 @@ export class HomePage {
       .map(res => res.json())
       .subscribe(response => {
           if (response.success) {
-            //this.localStorage.events = response.data;
             this.localStorage.setLocalEvents(response.detail);
             this.reinitalizeView();
           } else {
@@ -382,7 +355,7 @@ export class HomePage {
           }
         },
         err => {
-          console.log("Something went wrong with your getEvents request")
+          this.presentAlert("Server Error")
         })
   }
 
@@ -403,7 +376,7 @@ export class HomePage {
           }
         },
         err => {
-          console.log("Something went wrong with your getEvent request")
+          this.presentAlert("Server Error")
         })
   }
 

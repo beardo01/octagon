@@ -105,7 +105,6 @@ export class LabelPage {
     this.submitAttempt = true;
 
     if(!this.labelForm.valid) {
-      console.log("tried to submit invalid form")
     } else {
       this.setLabels(this.labelsToArray());
 

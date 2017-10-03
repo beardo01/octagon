@@ -99,3 +99,4 @@ ENV/
 db.sqlite3
 .idea/dataSources/
 api/octagon/migrations/00*
+/api/db.sqlite3

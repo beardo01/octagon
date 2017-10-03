@@ -115,10 +115,10 @@ class EventViewSet(viewsets.ModelViewSet):
         while day_counter < 10:
             day = []
 
-            # tz = pendulum.timezone(Timeline.objects.get(user=self.request.user).timezone)
+            tz = pendulum.timezone(Timeline.objects.get(user=self.request.user).timezone)
             # start_day = tz.convert((timezone.now() + timedelta(days=day_counter)))
-            now = timezone.now()
-            start_day = (timezone.now() - timedelta(hours=now.hour, minutes=now.minute, seconds=now.second,
+            now = tz.convert(timezone.now())
+            start_day = (now - timedelta(hours=now.hour, minutes=now.minute, seconds=now.second,
                                                     microseconds=now.microsecond)) + timedelta(days=day_counter)
 
             days_events = Event.objects.filter(timeline=Timeline.objects.get(user=self.request.user),

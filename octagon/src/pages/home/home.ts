@@ -110,19 +110,19 @@ export class HomePage {
    */
   parseEvents(eventArr) {
     eventArr.forEach(eventObj => {
-      var outerArr = [];
+      let outerArr = [];
       if (eventObj != "No items today") {
         eventObj.forEach(element => {
-          var arr = [];
-          arr.push(element.id);
-          arr.push(element.type);
-          arr.push(element.start);
-          arr.push(element.end);
-          arr.push(element.description);
-          arr.push(element.location);
-          arr.push(element.repeat_frequency);
-          arr.push(element.repeat_start);
-          arr.push(element.repeat_end);
+          let arr = [];
+          arr['id'] = element.id;
+          arr['type'] = element.type;
+          arr['start'] = element.start;
+          arr['end'] = element.end;
+          arr['description'] = element.description;
+          arr['location'] = element.location;
+          arr['repeat_frequency'] = element.repeat_frequency;
+          arr['repeat_start'] = element.repeat_start;
+          arr['repeat_end'] = element.repeat_end;
           outerArr.push(arr);
         })
       }
@@ -141,18 +141,20 @@ export class HomePage {
         var timebar_location;
         var labels = '';
         var colour = '';
-        var time_start_24 = this.input_data[day][bubble_selected][2];
-        var time_end_24 = this.input_data[day][bubble_selected][3];
-        var type = this.input_data[day][bubble_selected][1];
-        var start = this.input_data[day][bubble_selected][2];
-        var end = this.input_data[day][bubble_selected][3];
-        var description = this.input_data[day][bubble_selected][4];
-        var location = this.input_data[day][bubble_selected][5];
-        var id = this.input_data[day][bubble_selected][0];
+        var time_start_24 = this.input_data[day][bubble_selected]['start'];
+        var time_end_24 = this.input_data[day][bubble_selected]['end'];
+        var type = this.input_data[day][bubble_selected]['type'];
+        var start = this.input_data[day][bubble_selected]['start'];
+        var end = this.input_data[day][bubble_selected]['end'];
+        var description = this.input_data[day][bubble_selected]['description'];
+        var location = this.input_data[day][bubble_selected]['location'];
+        var id = this.input_data[day][bubble_selected]['id'];
 
-        var repeat_freq = this.input_data[day][bubble_selected][6];
-        var repeatDate_start = this.input_data[day][bubble_selected][7];
-        var repeatDate_end = this.input_data[day][bubble_selected][8];
+        console.log(start);
+
+        var repeat_freq = this.input_data[day][bubble_selected]['repeat_frequency'];
+        var repeatDate_start = this.input_data[day][bubble_selected]['repeat_start'];
+        var repeatDate_end = this.input_data[day][bubble_selected]['repeat_end'];
 
         // Writes the correct colour depending on type.
         if (type === 0) {
@@ -173,10 +175,13 @@ export class HomePage {
         }
 
         // Writes a formatted time from UNIX to 24 hours.
-        var start_hours_24 = moment(this.input_data[day][bubble_selected][2] * 1000).utc().hour().toString();
-        var start_mins_24 = moment(this.input_data[day][bubble_selected][2] * 1000).utc().minute().toString();
-        var end_hours_24 = moment(this.input_data[day][bubble_selected][3] * 1000).utc().hour().toString();
-        var end_mins_24 = moment(this.input_data[day][bubble_selected][3] * 1000).utc().minute().toString();
+        var start_hours_24 = moment(this.input_data[day][bubble_selected]['start'] * 1000).utc().hour().toString();
+        var start_mins_24 = moment(this.input_data[day][bubble_selected]['start'] * 1000).utc().minute().toString();
+        var end_hours_24 = moment(this.input_data[day][bubble_selected]['end'] * 1000).utc().hour().toString();
+        var end_mins_24 = moment(this.input_data[day][bubble_selected]['end'] * 1000).utc().minute().toString();
+
+        console.log(start_hours_24);
+        console.log(start_mins_24);
 
         if (start_hours_24.length <= 1) {
           start_hours_24 = '0' + start_hours_24;
@@ -324,7 +329,7 @@ export class HomePage {
     headers.append('Authorization', 'Token ' + this.localStorage.clientKey);
     headers.append('Content-Type', 'application/json');
 
-    this.http.delete('http://127.0.0.1:8000/event/' + item + '/', {headers: headers})
+    this.http.delete('http://0.0.0.0:8000/event/' + item + '/', {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
         console.log("response: " + response)
@@ -364,7 +369,7 @@ export class HomePage {
     let eventHeaders: Headers = new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    this.http.get('http://10.112.124.235:8000/event/list_events/', {headers: eventHeaders})
+    this.http.get('http://0.0.0.0:8000/event/list_events/', {headers: eventHeaders})
       .map(res => res.json())
       .subscribe(response => {
           if (response.success) {
@@ -386,7 +391,7 @@ export class HomePage {
     let eventHeaders: Headers = new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    return this.http.get('http://10.112.124.235:8000/event/' + id + '/get_event/', {headers: eventHeaders})
+    return this.http.get('http://0.0.0.0:8000/event/' + id + '/get_event/', {headers: eventHeaders})
 
       .map(res => res.json())
       .subscribe(response => {
@@ -402,12 +407,4 @@ export class HomePage {
         })
   }
 
-  // getEvent(id: number): Observable<Event> {
-  //   let eventHeaders: Headers = new Headers();
-  //   eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
-  //   eventHeaders.append('Content-Type', 'application/json');
-  //   return this.http.get('http://10.112.124.235:8000/event/' + id + '/get_event/', {headers: eventHeaders})
-  //     .map(res => res.json())
-  //     .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
-  // }
 }

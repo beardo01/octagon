@@ -74,7 +74,7 @@ export class LabelPage {
       "label_two": labelArr[1],
       "label_three": labelArr[2],
     };
-    return this.http.patch('http://10.112.124.235:8000/timeline/' + this.localStorage.id + '/', JSON.stringify(body), {headers: headers})
+    return this.http.patch('http://0.0.0.0:8000/timeline/' + this.localStorage.id + '/', JSON.stringify(body), {headers: headers})
       .map(res =>
        res.json()).subscribe ( response => {
         if (response.id) {

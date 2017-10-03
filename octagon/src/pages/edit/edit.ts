@@ -181,7 +181,7 @@ export class EditPage {
         };
       }
 
-      return this.http.patch('http://10.112.124.235:8000/event/' + this.bubble['id'] + '/', JSON.stringify(body), {headers: headers})
+      return this.http.patch('http://0.0.0.0:8000/event/' + this.bubble['id'] + '/', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
         if(response.id) {
@@ -205,7 +205,7 @@ getEvents() {
   let eventHeaders: Headers =  new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    this.http.get('http://10.112.124.235:8000/event/list_events/', {headers:eventHeaders})
+    this.http.get('http://0.0.0.0:8000/event/list_events/', {headers:eventHeaders})
     .map(res => res.json())
       .subscribe(response => {
         if (response.success) {

@@ -79,10 +79,10 @@ export class LoginPage {
       'password': this.loginForm.value.password,
       'timezone': moment.tz.guess()
     };
-    this.http.post('http://10.112.124.235:8000/auth/', JSON.stringify(userData), {headers: headers})
+    this.http.post('http://0.0.0.0:8000/auth/', JSON.stringify(userData), {headers: headers})
       .map(res =>
         res.json())
-      .subscribe(response => {     
+      .subscribe(response => {
           if (response.success) {
             //console.log("inside login trying to auth user")
             //console.log("logging response", response)
@@ -98,7 +98,7 @@ export class LoginPage {
             this.presentAlert("Username or password is incorrect.");
           }
         },
-        err => {   
+        err => {
           if (err.status == 400) {
             this.presentAlert("Username or password is incorrect.");
           } else {
@@ -116,7 +116,7 @@ export class LoginPage {
     let eventHeaders: Headers = new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    this.http.get('http://10.112.124.235:8000/event/list_events/', {headers: eventHeaders})
+    this.http.get('http://0.0.0.0:8000/event/list_events/', {headers: eventHeaders})
       .map(res => res.json())
       .subscribe(response => {
           if (response.success) {

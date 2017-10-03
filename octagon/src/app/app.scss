@@ -1,6 +1,4 @@
 // http://ionicframework.com/docs/v2/theming/
-
-
 // App Global Sass
 // --------------------------------------------------
 // Put style rules here that you want to apply globally. These
@@ -14,39 +12,38 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-
 .content {
     background: url('../assets/background.png');
     background-size: cover;
     z-index: -1;
 }
 
-.no-scroll .scroll-content{
+.no-scroll .scroll-content {
     overflow: hidden;
 }
 
-.list > .item-block:first-child {
+.list>.item-block:first-child {
     border-radius: 10px 10px 0px 0px;
     border: none;
 }
 
-.list > .item-block:last-child {
+.list>.item-block:last-child {
     border-radius: 0px 0px 10px 10px;
     border: none;
 }
 
-.list > .item-block:last-child:only-child {
+.list>.item-block:last-child:only-child {
     border-radius: 10px;
 }
 
 // Login and join pages
 .accountLogo {
-    background-image: url('../assets/Test.png');
+    background-image: url('../assets/Octagon.png');
     background-size: contain;
     background-repeat: no-repeat;
-    background-position: center; 
+    background-position: center;
     display: block;
-    height: 130px;
+    height: 200px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 30px;
@@ -63,7 +60,8 @@
     margin-top: 20px;
 }
 
-.actionButton, .actionButton > button {
+.actionButton,
+.actionButton>button {
     color: white;
     text-align: center;
 }
@@ -82,7 +80,6 @@
 }
 
 // Create Page
-
 ion-select {
     background-color: transparent;
 }
@@ -95,6 +92,7 @@ ion-backdrop {
 .alert-title {
     color: white;
 }
+
 .alert-message {
     color: white!important;
 }
@@ -112,13 +110,14 @@ ion-backdrop {
 .alert-wrapper {
     background-color: rbga(162, 162, 162, .1) !important;
 }
+
 .picker-wrapper {
     background-color: rgba(255, 255, 255, 0.1) !important;
 }
+
 // .picker-toolbar {
 //     background-color: rgba(255, 255, 255, 0.1);
 // }
-
 // Android list bottom shadow.
 .list-md .item-input:last-child {
     box-shadow: none !important;

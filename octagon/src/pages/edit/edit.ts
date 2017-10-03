@@ -89,11 +89,8 @@ export class EditPage {
     this.dateStarts = moment(this.bubble['start']*1000).utc().format("YYYY-MM-DD");
     this.dateEnds = moment(this.bubble['end']*1000).utc().format("YYYY-MM-DD");
 
-    this.timeStarts = moment(this.bubble['start']).utc().format("HH:mm");
-    this.timeEnds = moment(this.bubble['end']).utc().format("HH:mm");
-
-    console.log(this.timeStarts)
-    console.log(this.timeEnds)
+    this.timeStarts = moment(this.bubble['start']*1000).utc().format("HH:mm");
+    this.timeEnds = moment(this.bubble['end']*1000).utc().format("HH:mm");
 
     this.description = this.bubble['description'];
 
@@ -145,13 +142,13 @@ export class EditPage {
     this.submitAttempt = true;
     if (this.editForm.valid) {
 
-      var type = this.labelNames.indexOf(this.editForm.value.label);
+      var type = this.editForm.value.label;
       var description = this.editForm.value.description;
       var location = this.editForm.value.location;
       var start = moment(this.editForm.value.dateStarts + " " + this.editForm.value.timeStarts + "+0000").toISOString();
       var end = moment(this.editForm.value.dateEnds + " " + this.editForm.value.timeEnds + "+0000").toISOString();
-      var repeat_start = moment(this.editForm.value.repeatStartDate).toISOString();
-      var repeat_end = moment(this.editForm.value.repeatEndDate).toISOString();
+      var repeat_start = moment(this.editForm.value.repeatStartDate + " " + this.editForm.value.timeStarts + "+0000").toISOString();
+      var repeat_end = moment(this.editForm.value.repeatEndDate + " " + this.editForm.value.timeEnds + "+0000").toISOString();
       var repeat_freq = parseInt(this.editForm.value.repeatFreq);
 
       let headers: Headers =  new Headers();
@@ -184,7 +181,7 @@ export class EditPage {
         };
       }
 
-      return this.http.patch('http://10.112.124.235:8000/event/' + this.bubble[9] + '/', JSON.stringify(body), {headers: headers})
+      return this.http.patch('http://10.112.124.235:8000/event/' + this.bubble['id'] + '/', JSON.stringify(body), {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
         if(response.id) {

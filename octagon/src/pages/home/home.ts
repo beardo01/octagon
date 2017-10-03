@@ -7,6 +7,7 @@ import { Http, Headers } from '@angular/http';
 import { ActionSheetController } from 'ionic-angular';
 import * as moment from 'moment';
 import { UserLocalStorage } from '../../providers/user-local-storage';
+import {Observable} from "rxjs/Observable";
 
 
 @Component({
@@ -28,8 +29,6 @@ export class HomePage {
   input_data: any[][][] = new Array();
   colours: string[];
   labels: string[];
-
-  localEvent: JSON;
 
   actionSheet;
   parameter1: number;
@@ -274,7 +273,7 @@ export class HomePage {
 
   delete(bubble: number) {
     this.actionSheet = this.actionSheetCtrl.create({
-      title: 'Edit or delete event?',
+      title: 'Modify event',
       enableBackdropDismiss: true,
       buttons: [
         {
@@ -282,9 +281,11 @@ export class HomePage {
           role: 'open',
           handler: () => {
             // Request for bubble done here from api
+            // console.log("Event VV");
+            // console.log(this.getEvent(this.bubbles[this.selected_date][bubble][9]));
+            // this.editPage(this.getEvent(this.bubbles[this.selected_date][bubble][9])); //sending bubble data here
+
             this.getEvent(this.bubbles[this.selected_date][bubble][9]);
-            console.log(this.localEvent)
-            this.editPage(this.localEvent) //sending bubble data here
           }
         },
         {
@@ -385,16 +386,12 @@ export class HomePage {
     let eventHeaders: Headers = new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    this.http.get('http://10.112.124.235:8000/event/' + id + '/get_event/', {headers: eventHeaders})
+    return this.http.get('http://10.112.124.235:8000/event/' + id + '/get_event/', {headers: eventHeaders})
 
       .map(res => res.json())
       .subscribe(response => {
           if (response.success) {
-            //this.localStorage.events = response.data;
-            // return response.detail[0];
-            console.log(response);            
-            console.log(response.detail);
-            this.localEvent = response.detail;
+            this.editPage(response.detail);
           } else {
             // display error message to user
             this.presentAlert(response.detail)
@@ -402,6 +399,15 @@ export class HomePage {
         },
         err => {
           console.log("Something went wrong with your getEvent request")
-        })    
+        })
   }
+
+  // getEvent(id: number): Observable<Event> {
+  //   let eventHeaders: Headers = new Headers();
+  //   eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
+  //   eventHeaders.append('Content-Type', 'application/json');
+  //   return this.http.get('http://10.112.124.235:8000/event/' + id + '/get_event/', {headers: eventHeaders})
+  //     .map(res => res.json())
+  //     .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+  // }
 }

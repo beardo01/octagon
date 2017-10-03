@@ -123,7 +123,8 @@ export class CreatePage {
 
     if (this.createForm.valid) {
 
-      var type = this.labelNames.indexOf(this.createForm.value.label);
+      // var type = this.labelNames.indexOf(this.createForm.value.label);
+      var type = this.createForm.value.label;
       var description = this.createForm.value.description;
       var location = this.createForm.value.location;
       var start = moment(this.createForm.value.dateStarts + " " + this.createForm.value.timeStarts + "+0000").toISOString();

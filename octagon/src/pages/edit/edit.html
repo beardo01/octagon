@@ -21,9 +21,10 @@
             <ion-item>
                 <ion-label>Label</ion-label>
                 <ion-select formControlName="label" [(ngModel)]="label">
-                    <ion-option value={{labelNames[0]}}>{{labelNames[0]}}</ion-option>
-                    <ion-option value={{labelNames[1]}}>{{labelNames[1]}}</ion-option>
-                    <ion-option value={{labelNames[2]}}>{{labelNames[2]}}</ion-option>
+                    <!--<ion-option value="0">{{labelNames[0]}}</ion-option>
+                    <ion-option value="1">{{labelNames[1]}}</ion-option>
+                    <ion-option value="2">{{labelNames[2]}}</ion-option>-->
+                    <ion-option *ngFor="let labelName of labelNames let i = index" value="{{ i }}">{{labelNames[i]}}</ion-option>
                 </ion-select>
             </ion-item>
             <ion-item>

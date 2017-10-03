@@ -11,13 +11,14 @@
   @Injectable()
   export class UserLocalStorage {
 
-  clientKey: string;
-  id: string;
-  localColours: string;
-  localLabels: string;
-  events: string; //object;
-  username: string;
-  password: string;
+    clientKey: string;
+    id: string;
+    localColours: string;
+    localLabels: string;
+    events: string; //object;
+    editEvent: string;
+    username: string;
+    password: string;
 
     constructor(public http: Http, public storage: Storage) {
       // when constructor is called request local colours
@@ -42,6 +43,17 @@
 
       this.events = events;
       this.storage.set('events', JSON.stringify(events));
+    }
+
+    setEditEvent(event) {
+      this.editEvent = event;
+      this.storage.set('editEvent', JSON.stringify(event));
+    }
+
+    requestEditEvent() {
+      this.storage.get('editEvent').then((val) => {
+        this.editEvent = JSON.parse(val);
+      });
     }
 
     requestLocalEvents() {

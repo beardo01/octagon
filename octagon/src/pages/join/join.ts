@@ -79,7 +79,7 @@ export class JoinPage {
           'first_name': "",
           'last_name': ""
         };
-          this.http.post('http://0.0.0.0:8000/users/', JSON.stringify(userData), {headers: headers})
+          this.http.post('https://api.simpalapps.com/users/', JSON.stringify(userData), {headers: headers})
           .map(res =>
             res.json())
             .subscribe( response => {

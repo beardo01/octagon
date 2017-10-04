@@ -305,7 +305,7 @@ export class HomePage {
     headers.append('Authorization', 'Token ' + this.localStorage.clientKey);
     headers.append('Content-Type', 'application/json');
 
-    this.http.delete('http://0.0.0.0:8000/event/' + item + '/', {headers: headers})
+    this.http.delete('https://api.simpalapps.com/event/' + item + '/', {headers: headers})
       .map(res => res.json())
       .subscribe(response => {
           if (response == null) {
@@ -343,7 +343,7 @@ export class HomePage {
     let eventHeaders: Headers = new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    this.http.get('http://0.0.0.0:8000/event/list_events/', {headers: eventHeaders})
+    this.http.get('https://api.simpalapps.com/event/list_events/', {headers: eventHeaders})
       .map(res => res.json())
       .subscribe(response => {
           if (response.success) {
@@ -364,7 +364,7 @@ export class HomePage {
     let eventHeaders: Headers = new Headers();
     eventHeaders.set('Authorization', 'Token ' + this.localStorage.clientKey);
     eventHeaders.append('Content-Type', 'application/json');
-    return this.http.get('http://0.0.0.0:8000/event/' + id + '/get_event/', {headers: eventHeaders})
+    return this.http.get('https://api.simpalapps.com/event/' + id + '/get_event/', {headers: eventHeaders})
 
       .map(res => res.json())
       .subscribe(response => {

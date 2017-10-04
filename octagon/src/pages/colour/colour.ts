@@ -121,7 +121,7 @@ export class ColourPage {
       "colour_two": colourArr[1],
       "colour_three": colourArr[2],
     };
-    return this.http.patch('http://0.0.0.0:8000/timeline/' + this.localStorage.id + '/',
+    return this.http.patch('https://api.simpalapps.com/timeline/' + this.localStorage.id + '/',
       JSON.stringify(body), {headers: headers})
       .map(res =>
        res.json()).subscribe ( response => {
